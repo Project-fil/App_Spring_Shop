@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "orders")
@@ -18,7 +20,18 @@ public class Order {
     @Column(name = "order_id", nullable = false, columnDefinition = "BIGINT", unique = true)
     private long order_id;
 
-    private String prod_list;
+    @Column(name= "products", nullable = false, columnDefinition = "TEXT")
+    private String products;
 
+    @Column(name= "price", nullable = false, columnDefinition = "DECIMAL")
+    private BigDecimal price;
 
+    @Column(name= "createdAt", nullable = false, columnDefinition = "TEXT")
+    private Date createdAt;
+
+    @Column(name= "email", nullable = false, columnDefinition = "TEXT")
+    private String email;
+
+    @Column(name= "address", nullable = false, columnDefinition = "TEXT")
+    private String address;
 }
