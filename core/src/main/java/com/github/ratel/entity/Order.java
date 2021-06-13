@@ -20,8 +20,8 @@ public class Order {
     @Column(name = "order_id", nullable = false, columnDefinition = "BIGINT", unique = true)
     private long order_id;
 
-    @Column(name= "products", nullable = false, columnDefinition = "TEXT")
-    private String products;
+    @Column(name= "order_item_id", nullable = false, columnDefinition = "BIGINT")
+    private long order_item_id;
 
     @Column(name= "price", nullable = false, columnDefinition = "DECIMAL")
     private BigDecimal price;
