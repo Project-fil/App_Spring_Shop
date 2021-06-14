@@ -18,20 +18,33 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long order_id;
+    private long orderId;
 
-    @Column(name= "order_item_id", nullable = false, columnDefinition = "BIGINT")
-    private long order_item_id;
+    @Column(name = "order_item_id", nullable = false, columnDefinition = "BIGINT")
+    private long orderItemId;
 
-    @Column(name= "price", nullable = false, columnDefinition = "DECIMAL")
+    @Column(name = "price", nullable = false, columnDefinition = "DECIMAL")
     private BigDecimal price;
 
-    @Column(name= "createdAt", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP")
     private Date createdAt;
 
-    @Column(name= "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    @Column(name= "address", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "address", nullable = false, columnDefinition = "TEXT")
     private String address;
+
+    public Order(
+            long orderItemId,
+            BigDecimal price,
+            Date createdAt,
+            String email,
+            String address) {
+        this.orderItemId = orderItemId;
+        this.price = price;
+        this.createdAt = createdAt;
+        this.email = email;
+        this.address = address;
+    }
 }
