@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -17,21 +18,21 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long order_id;
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
+    private Long id;
 
-    @Column(name= "order_item_id", nullable = false, columnDefinition = "BIGINT")
-    private long order_item_id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    private User buyer;
 
-    @Column(name= "price", nullable = false, columnDefinition = "DECIMAL")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items;
+
+    @Column(name= "price", nullable = false)
     private BigDecimal price;
 
-    @Column(name= "createdAt", nullable = false, columnDefinition = "TEXT")
+    @Column(name= "createdAt", nullable = false)
     private Date createdAt;
 
-    @Column(name= "email", nullable = false, columnDefinition = "TEXT")
-    private String email;
-
-    @Column(name= "address", nullable = false, columnDefinition = "TEXT")
-    private String address;
+    // ORDER_CONTACT_INFO
 }

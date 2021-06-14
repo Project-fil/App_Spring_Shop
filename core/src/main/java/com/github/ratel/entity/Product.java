@@ -16,33 +16,24 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long product_id;
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
+    private Long id;
 
-    @Column(name= "name", nullable = false, columnDefinition = "TEXT")
-    private String name;
-
-    @Column(name= "price", nullable = false, columnDefinition = "DECIMAL")
-    private BigDecimal price;
-
-    @Column(name= "brand", nullable = false, columnDefinition = "TEXT")
-    private String brand;
-
-    @Column(name= "quantity", nullable = false, columnDefinition = "BIGINT")
-    private long quantity;
-
-    @Column(name= "article", nullable = false, columnDefinition = "TEXT")
+    @Column(name= "article", nullable = false)
     private String article;
 
-    @Column(name= "img", nullable = false, columnDefinition = "TEXT")
-    private String img;
+    @Column(name= "name", nullable = false)
+    private String name;
 
-    @Column(name= "supplier", nullable = false, columnDefinition = "TEXT")
-    private String supplier;
+    @Column(name= "description", nullable = false)
+    private String description;
 
-    @Column(name= "specification", nullable = false, columnDefinition = "TEXT")
-    private String specification;
+    @Column(name= "price", nullable = false)
+    private BigDecimal price;
 
-    @Column(name= "comments", columnDefinition = "TEXT")
-    private String comments;
+    @Column(name= "brand", nullable = false)
+    private String brand;
+
+    @Column(name= "quantity", nullable = false)
+    private long quantity;
 }

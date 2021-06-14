@@ -18,40 +18,40 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long user_id;
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
+    private Long id;
 
-    @Column(name = "firstname", nullable = false, columnDefinition = "TEXT")
-    private String firstname;
+    @Column(name = "firstname", nullable = false)
+    private String firstName;
 
-    @Column(name = "lastname", nullable = false, columnDefinition = "TEXT")
-    private String lastname;
+    @Column(name = "lastname", nullable = false)
+    private String lastName;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "username", nullable = false, columnDefinition = "TEXT", unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "address", columnDefinition = "TEXT")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "createdAt", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "createdAt", nullable = false)
     private Date createdAt;
 
-    @Column(name = "updatedAt", columnDefinition = "TEXT")
+    @Column(name = "updatedAt")
     private Date updatedAt;
 
-    @Column(name = "role", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "verification", nullable = false)
     private UserVerificationStatus verification;
 
 }
