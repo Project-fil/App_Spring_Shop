@@ -14,8 +14,4 @@ public class UserAuthDto {
 
     private String password;
 
-    public UserAuthDto(User user) {
-        this.login = user.getEmail();
-        this.password = user.getPassword();
-    }
 }

@@ -23,11 +23,4 @@ public class OrderDto {
 
     private String address;
 
-    public OrderDto(Order order) {
-        this.order_item_id = order.getOrder_item_id();
-        this.price = order.getPrice();
-        this.createdAt = order.getCreatedAt();
-        this.email = order.getEmail();
-        this.address = order.getAddress();
-    }
 }
