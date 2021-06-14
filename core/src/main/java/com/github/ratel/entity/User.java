@@ -30,8 +30,8 @@ public class User {
     @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
     private String email;
 
-    @Column(name = "username", nullable = false, columnDefinition = "TEXT", unique = true)
-    private String username;
+    @Column(name = "login", nullable = false, columnDefinition = "TEXT", unique = true)
+    private String login;
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
@@ -53,5 +53,6 @@ public class User {
 
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
+
 
 }
