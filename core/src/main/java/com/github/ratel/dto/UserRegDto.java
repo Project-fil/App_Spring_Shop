@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserRegDto {
 
+
     private String firstname;
 
     private String lastname;

@@ -25,20 +25,22 @@ public class OrderService {
 
     public long createOrder(OrderDto orderDto) {
         Order order = new Order();
-        order.setBuyer(orderDto.getBuyer());
-        order.setItems(orderDto.getItems());
-        order.setPrice(orderDto.getPrice());
+        order.setOrderItemId(orderDto.getOrder_item_id());
         order.setCreatedAt(orderDto.getCreatedAt());
+        order.setPrice(orderDto.getPrice());
+        order.setEmail(orderDto.getEmail());
+        order.setAddress(orderDto.getAddress());
 
-        return orderRepository.save(order).getId();
+        return orderRepository.save(order).getOrderId();
     }
 
     public Order changeOrderInfo(long orderId, OrderDto orderDto) {
         Order order = findOrderById(orderId).orElseThrow(() -> new RuntimeException("Not found order!"));
-        order.setBuyer(orderDto.getBuyer());
-        order.setItems(orderDto.getItems());
-        order.setPrice(orderDto.getPrice());
+        order.setOrderItemId(orderDto.getOrder_item_id());
         order.setCreatedAt(orderDto.getCreatedAt());
+        order.setPrice(orderDto.getPrice());
+        order.setEmail(orderDto.getEmail());
+        order.setAddress(orderDto.getAddress());
 
         return orderRepository.save(order);
     }

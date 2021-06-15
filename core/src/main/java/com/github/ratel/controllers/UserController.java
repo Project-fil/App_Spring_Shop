@@ -1,6 +1,6 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.UserDto;
+import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.exception.IncorrectUserFieldsException;
 import com.github.ratel.security.JwtTokenProvider;
@@ -16,26 +16,16 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @Autowired
     private UserService userService;
 
-    @PostMapping("/registration")
-    public String registration(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            throw new IncorrectUserFieldsException(errorMessage);
-        }
-        User user = new User();
-        user.setPassword(userDto.getPassword());
-//        user.setUsername();
-        userService.saveUser(user);
-        return "Ok";
+    /** In method AuthController **/
+//    @PostMapping("/registration")
+    public void registration() {
+        // TODO: delegate to spring security
     }
 
-    @PostMapping("/authorization")
+    /** In method AuthController **/
+//    @PostMapping("/authorization")
     public void authorization() {
         // TODO: delegate to spring security
     }
@@ -51,13 +41,13 @@ public class UserController {
     }
 
     @PostMapping
-    public long createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public long createUser(@RequestBody UserRegDto userRegDto) {
+        return userService.createUser(userRegDto);
     }
 
     @PutMapping("/{userId}")
-    public User changeUserInfo(@PathVariable long userId, @RequestBody UserDto userDto) {
-        return userService.changeUserInfo(userId, userDto);
+    public User changeUserInfo(@PathVariable long userId, @RequestBody UserRegDto userRegDto) {
+        return userService.changeUserInfo(userId, userRegDto);
     }
 
     @DeleteMapping("/{userId}")

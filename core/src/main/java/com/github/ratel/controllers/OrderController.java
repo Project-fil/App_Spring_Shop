@@ -1,7 +1,6 @@
 package com.github.ratel.controllers;
 
 import com.github.ratel.dto.OrderDto;
-import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.Order;
 import com.github.ratel.services.impl.OrderService;
 import lombok.AllArgsConstructor;
