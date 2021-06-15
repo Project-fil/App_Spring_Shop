@@ -21,8 +21,6 @@ import static org.springframework.util.StringUtils.hasText;
 @Log
 public class JwtFilter extends GenericFilterBean {
 
-    ;
-
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
