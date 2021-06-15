@@ -28,14 +28,4 @@ public class ProductDto {
 
     private String specification;
 
-    public ProductDto(Product product) {
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.brand = product.getBrand();
-        this.quantity = product.getQuantity();
-        this.article = product.getArticle();
-        this.img = product.getImg();
-        this.supplier = product.getSupplier();
-        this.specification = product.getSpecification();
-    }
 }

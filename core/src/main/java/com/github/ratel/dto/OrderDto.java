@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class OrderDto {
 
-    private String products;
+    private long order_item_id;
 
     private BigDecimal price;
 
@@ -23,11 +23,4 @@ public class OrderDto {
 
     private String address;
 
-    public OrderDto(Order order) {
-        this.products = order.getProducts();
-        this.price = order.getPrice();
-        this.createdAt = order.getCreatedAt();
-        this.email = order.getEmail();
-        this.address = order.getAddress();
-    }
 }
