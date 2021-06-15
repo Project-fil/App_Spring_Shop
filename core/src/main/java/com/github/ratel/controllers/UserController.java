@@ -1,26 +1,31 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.UserDto;
+import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
+import com.github.ratel.exception.IncorrectUserFieldsException;
+import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@AllArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
 
-    @PostMapping("/registration")
+    /** In method AuthController **/
+//    @PostMapping("/registration")
     public void registration() {
         // TODO: delegate to spring security
     }
 
-    @PostMapping("/authorization")
+    /** In method AuthController **/
+//    @PostMapping("/authorization")
     public void authorization() {
         // TODO: delegate to spring security
     }
@@ -36,13 +41,13 @@ public class UserController {
     }
 
     @PostMapping
-    public long createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public long createUser(@RequestBody UserRegDto userRegDto) {
+        return userService.createUser(userRegDto);
     }
 
     @PutMapping("/{userId}")
-    public User changeUserInfo(@PathVariable long userId, @RequestBody UserDto userDto) {
-        return userService.changeUserInfo(userId, userDto);
+    public User changeUserInfo(@PathVariable long userId, @RequestBody UserRegDto userRegDto) {
+        return userService.changeUserInfo(userId, userRegDto);
     }
 
     @DeleteMapping("/{userId}")

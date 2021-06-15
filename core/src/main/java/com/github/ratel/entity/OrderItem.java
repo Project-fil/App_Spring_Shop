@@ -17,11 +17,15 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private Long id;
+    private long id;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "item_name", nullable = false, columnDefinition = "TEXT", unique = true)
+    private String itemName;
+
+    @Column(name = "quantity", nullable = false, columnDefinition = "BIGINT")
     private long quantity;
 
-    @Column(name= "price", nullable = false)
-    private BigDecimal price;
+    @Column(name = "total_amount", nullable = false, columnDefinition = "DECIMAL")
+    private BigDecimal totalAmount;
+
 }
