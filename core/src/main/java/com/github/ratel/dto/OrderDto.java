@@ -1,33 +1,22 @@
 package com.github.ratel.dto;
 
-import com.github.ratel.entity.Order;
+import com.github.ratel.entity.OrderItem;
+import com.github.ratel.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class OrderDto {
 
-    private long order_item_id;
-
+    private User buyer;
+    private List<OrderItem> items;
     private BigDecimal price;
-
     private Date createdAt;
-
-    private String email;
-
-    private String address;
-
-    public OrderDto(Order order) {
-        this.order_item_id = order.getOrder_item_id();
-        this.price = order.getPrice();
-        this.createdAt = order.getCreatedAt();
-        this.email = order.getEmail();
-        this.address = order.getAddress();
-    }
 }
