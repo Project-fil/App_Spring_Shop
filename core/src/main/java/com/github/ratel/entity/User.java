@@ -48,10 +48,11 @@ public class User {
     @Column(name = "updatedAt")
     private Date updatedAt;
 
-    @Column(name = "role", nullable = false)
-    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+//    @Column(name = "role", nullable = false)
+    private RoleEntity role;
 
     @Column(name = "verification", nullable = false)
     private UserVerificationStatus verification;
-
 }

@@ -1,5 +1,6 @@
 package com.github.ratel.dto;
 
+import com.github.ratel.entity.RoleEntity;
 import com.github.ratel.payload.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +18,5 @@ public class UserDto {
     private String password;
     private String phone;
     private String address;
-    private Role role;
+    private RoleEntity role;
 }

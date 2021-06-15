@@ -2,22 +2,37 @@ package com.github.ratel.controllers;
 
 import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
+import com.github.ratel.exception.IncorrectUserFieldsException;
+import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@AllArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/registration")
-    public void registration() {
-        // TODO: delegate to spring security
+    public String registration(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new IncorrectUserFieldsException(errorMessage);
+        }
+        User user = new User();
+        user.setPassword(userDto.getPassword());
+//        user.setUsername();
+        userService.saveUser(user);
+        return "Ok";
     }
 
     @PostMapping("/authorization")

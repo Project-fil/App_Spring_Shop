@@ -1,20 +1,35 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.dto.UserDto;
+import com.github.ratel.entity.RoleEntity;
 import com.github.ratel.entity.User;
+import com.github.ratel.payload.Role;
+import com.github.ratel.repositories.RoleEntityRepo;
 import com.github.ratel.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+
+    private RoleEntityRepo roleEntityRepo;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, RoleEntityRepo roleEntityRepo, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleEntityRepo = roleEntityRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public List<User> findAllUsers() {
         return userRepository.findAll();
@@ -22,6 +37,27 @@ public class UserService {
 
     public Optional<User> findUserById(long userId) {
         return userRepository.findById(userId);
+    }
+
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public User findByLoginAndPassword(String login, String password) {
+        User user = findByLogin(login);
+        if (user != null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public User saveUser(User user) {
+        RoleEntity userRole = roleEntityRepo.findByName("ROLE_USER");
+        user.setRole(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     public long createUser(UserDto userDto) {
