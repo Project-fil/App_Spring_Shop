@@ -1,4 +1,4 @@
-package com.github.ratel.Config;
+package com.github.ratel.config;
 
 import com.github.ratel.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;

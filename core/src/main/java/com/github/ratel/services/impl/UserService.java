@@ -4,7 +4,7 @@ import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.RoleEntity;
 import com.github.ratel.entity.User;
 import com.github.ratel.repositories.RoleEntityRepo;
-import com.github.ratel.repositories.IUserRepository;
+import com.github.ratel.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,29 +15,29 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private IUserRepository IUserRepository;
+    private UserRepository UserRepository;
 
     private RoleEntityRepo roleEntityRepo;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(IUserRepository IUserRepository, RoleEntityRepo roleEntityRepo, PasswordEncoder passwordEncoder) {
-        this.IUserRepository = IUserRepository;
+    public UserService(UserRepository UserRepository, RoleEntityRepo roleEntityRepo, PasswordEncoder passwordEncoder) {
+        this.UserRepository = UserRepository;
         this.roleEntityRepo = roleEntityRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAllUsers() {
-        return IUserRepository.findAll();
+        return UserRepository.findAll();
     }
 
     public Optional<User> findUserById(long userId) {
-        return IUserRepository.findById(userId);
+        return UserRepository.findById(userId);
     }
 
     public User findByLogin(String login) {
-        return IUserRepository.findByLogin(login);
+        return UserRepository.findByLogin(login);
     }
 
     public User findByLoginAndPassword(String login, String password) {
@@ -54,7 +54,7 @@ public class UserService {
         RoleEntity userRole = roleEntityRepo.findByName("ROLE_USER");
         user.setRole(userRole);
         user.setHashPassword(passwordEncoder.encode(user.getHashPassword()));
-        return IUserRepository.save(user);
+        return UserRepository.save(user);
     }
 
     public long createUser(UserRegDto userRegDto) {
@@ -68,7 +68,7 @@ public class UserService {
         user.setAddress(userRegDto.getAddress());
 
         doesUserExist(user.getUserId());
-        return IUserRepository.save(user).getUserId();
+        return UserRepository.save(user).getUserId();
     }
 
     public User changeUserInfo(long userId, UserRegDto userRegDto) {
@@ -82,11 +82,11 @@ public class UserService {
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
 
-        return IUserRepository.save(user);
+        return UserRepository.save(user);
     }
 
     public void deleteUser(long userId) {
-        IUserRepository.deleteById(userId);
+        UserRepository.deleteById(userId);
     }
 
     private void doesUserExist(long userId) {

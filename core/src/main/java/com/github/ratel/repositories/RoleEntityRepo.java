@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleEntityRepo extends JpaRepository<Role, Long> {
+public interface RoleEntityRepo extends JpaRepository<RoleEntity, Long> {
 
     RoleEntity findByName(String name);
 }

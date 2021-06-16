@@ -1,6 +1,5 @@
 package com.github.ratel.dto;
 
-import com.github.ratel.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
