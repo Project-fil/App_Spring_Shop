@@ -48,8 +48,10 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private Date updatedAt;
 
-    @Column(name = "role", nullable = false, columnDefinition = "TEXT")
-    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+//    @Column(name = "role", nullable = false)
+    private RoleEntity role;
 
     @Column(name = "salt", nullable = false, columnDefinition = "TEXT")
     private String salt;
