@@ -7,6 +7,7 @@ import com.github.ratel.exception.IncorrectUserFieldsException;
 import com.github.ratel.security.AuthResponse;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
+import com.github.ratel.utils.SaltProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,24 +21,23 @@ import javax.validation.Valid;
 @RestController
 public class AuthController {
 
-    private final JwtTokenProvider tokenProvider;
-
-    private final UserService userService;
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public AuthController(JwtTokenProvider tokenProvider, UserService userService) {
-        this.tokenProvider = tokenProvider;
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @PostMapping("/registration")
-    public String registration(@Valid @RequestBody UserRegDto userRegDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            throw new IncorrectUserFieldsException(errorMessage);
-        }
+    public String registration(@RequestBody @Valid UserRegDto userRegDto) {
+//        if (bindingResult.hasErrors()) {
+//            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+//            throw new IncorrectUserFieldsException(errorMessage);
+//        }
         User user = new User();
-        user.setHashPassword(userRegDto.getHashPassword());
+//        user.setSalt(SaltProvider.getRandomSalt());
+//        String hashCode = userRegDto.getPassword() + user.getSalt();
+//        user.setHashPassword(SaltProvider.encrypt(hashCode));
+        user.setHashPassword(userRegDto.getPassword());
         user.setLogin(userRegDto.getLogin());
         userService.saveUser(user);
         return "Ok";

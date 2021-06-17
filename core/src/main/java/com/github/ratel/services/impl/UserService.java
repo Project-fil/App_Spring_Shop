@@ -15,9 +15,9 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository UserRepository;
+    private final UserRepository UserRepository;
 
-    private RoleEntityRepo roleEntityRepo;
+    private final RoleEntityRepo roleEntityRepo;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -63,7 +63,7 @@ public class UserService {
         user.setLastname(userRegDto.getLastname());
         user.setEmail(userRegDto.getEmail());
         user.setLogin(userRegDto.getLogin());
-        user.setHashPassword(userRegDto.getHashPassword());
+        user.setHashPassword(userRegDto.getPassword());
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
 
@@ -78,7 +78,7 @@ public class UserService {
         user.setLastname(userRegDto.getLastname());
         user.setEmail(userRegDto.getEmail());
         user.setLogin(userRegDto.getLogin());
-        user.setHashPassword(userRegDto.getHashPassword());
+        user.setHashPassword(userRegDto.getPassword());
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
 

@@ -41,7 +41,7 @@ public class User {
     @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Date createdAt;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
@@ -49,7 +49,6 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-//    @Column(name = "role", nullable = false)
     private RoleEntity role;
 
     @Column(name = "salt", nullable = false, columnDefinition = "TEXT")

@@ -3,7 +3,8 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    generate-ddl: false
   datasource:
     url: jdbc:postgresql://ec2-54-72-155-238.eu-west-1.compute.amazonaws.com:5432/do0ajc9tqhfou
     username: wumlyfzcdpcsff

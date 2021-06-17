@@ -56,7 +56,7 @@ public class TransferObj {
                 data.getLastname(),
                 data.getEmail(),
                 data.getLogin(),
-                data.getHashPassword(),
+                data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),

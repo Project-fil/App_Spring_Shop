@@ -21,7 +21,7 @@ public class UserRegDto {
 
     private String login;
 
-    private String hashPassword;
+    private String password;
 
     private String phone;
 
