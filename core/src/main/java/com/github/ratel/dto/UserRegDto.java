@@ -29,6 +29,4 @@ public class UserRegDto {
 
     private Date createdAt;
 
-    private String salt;
-
 }

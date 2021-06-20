@@ -46,7 +46,7 @@ public class TransferObj {
     public static UserAuthDto fromUserAuth(User data) {
         return new UserAuthDto(
                 data.getLogin(),
-                data.getHashPassword()
+                data.getPassword()
         );
     }
 
@@ -59,8 +59,7 @@ public class TransferObj {
                 data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),
-                data.getCreatedAt(),
-                data.getSalt()
+                data.getCreatedAt()
         );
     }
 
@@ -70,11 +69,10 @@ public class TransferObj {
                 data.getLastname(),
                 data.getEmail(),
                 data.getLogin(),
-                data.getHashPassword(),
+                data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),
-                data.getCreatedAt(),
-                data.getSalt()
+                data.getCreatedAt()
         );
     }
 

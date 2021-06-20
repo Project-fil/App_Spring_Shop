@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "users")
+@Table(name = "user_table")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -32,8 +32,8 @@ public class User {
     @Column(name = "login", nullable = false, columnDefinition = "TEXT", unique = true)
     private String login;
 
-    @Column(name = "hash_password", nullable = false, columnDefinition = "TEXT")
-    private String hashPassword;
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    private String password;
 
     @Column(name = "phone", nullable = false, columnDefinition = "TEXT")
     private String phone;
@@ -51,15 +51,12 @@ public class User {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    @Column(name = "salt", nullable = false, columnDefinition = "TEXT")
-    private String salt;
-
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
     public User(String login, String hashPassword) {
         this.login = login;
-        this.hashPassword = hashPassword;
+        this.password = password;
     }
 
     public User(
@@ -67,20 +64,19 @@ public class User {
             String lastname,
             String email,
             String login,
-            String hashPassword,
+            String password,
             String phone,
             String address,
-            Date createdAt,
-            String salt
+            Date createdAt
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.login = login;
-        this.hashPassword = hashPassword;
+        this.password = password;
         this.phone = phone;
         this.address = address;
         this.createdAt = createdAt;
-        this.salt = salt;
+
     }
 }

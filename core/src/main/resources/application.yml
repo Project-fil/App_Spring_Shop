@@ -4,4 +4,4 @@ spring:
   application:
     name: ratel
   profiles:
-    active: test
+    active: prod

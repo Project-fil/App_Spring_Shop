@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
 
-@Component
 @Slf4j
 public class JwtFilter extends GenericFilterBean {
 
@@ -39,9 +38,7 @@ public class JwtFilter extends GenericFilterBean {
                     new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
-        logger.info("Do to do to: ");
         chain.doFilter(request, response);
-
     }
 
     private String getTokenFromRequest(HttpServletRequest req) {
