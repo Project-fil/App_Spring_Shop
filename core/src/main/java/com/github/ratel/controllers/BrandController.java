@@ -13,12 +13,8 @@ import java.util.List;
 @RequestMapping("/brand")
 public class BrandController {
 
-    private final BrandService brandService;
-
     @Autowired
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
-    }
+    private BrandService brandService;
 
     @GetMapping
     public List<Brand> findAllBrand() { return brandService.findAllBrand(); }
@@ -33,12 +29,12 @@ public class BrandController {
         return brandService.saveBrand(brandDto);
     }
 
-    @PostMapping("/{brandId}")
+    @PutMapping("/{brandId}")
     public Brand updateBrand(@PathVariable long brandId, @RequestBody BrandDto brandDto) {
         return brandService.updateBrandById(brandId, brandDto);
     }
 
-    @PostMapping("/{brandId}")
+    @DeleteMapping("/{brandId}")
     public void deleteBrand(@PathVariable long brandId) {
         brandService.deleteBrandById(brandId);
     }
