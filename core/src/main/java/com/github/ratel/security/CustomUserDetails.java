@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     public static CustomUserDetails fromUserToCustomUserDetails(User user) {
         CustomUserDetails cud = new CustomUserDetails();
         cud.login = user.getLogin();
-        cud.password = user.getHashPassword();
+        cud.password = user.getPassword();
         cud.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
     return cud;
     }

@@ -3,55 +3,53 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.UserAuthDto;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
-import com.github.ratel.exception.IncorrectUserFieldsException;
+import com.github.ratel.exception.UserAlreadyExistException;
+import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.security.AuthResponse;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
+import com.github.ratel.utils.TransferObj;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Slf4j
 @RestController
 public class AuthController {
 
-    private final JwtTokenProvider tokenProvider;
-
-    private final UserService userService;
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public AuthController(JwtTokenProvider tokenProvider, UserService userService) {
-        this.tokenProvider = tokenProvider;
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @PostMapping("/registration")
-    public String registration(@Valid @RequestBody UserRegDto userRegDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            throw new IncorrectUserFieldsException(errorMessage);
+    public HttpStatus registration(@RequestBody @Valid UserRegDto payload) {
+        if (userService.findByLogin(payload.getLogin()) != null) {
+            throw new UserAlreadyExistException("User already exist");
         }
-        User user = new User();
-        user.setHashPassword(userRegDto.getHashPassword());
-        user.setLogin(userRegDto.getLogin());
+       User user = TransferObj.toUser(payload);
         userService.saveUser(user);
-        return "Ok";
+        return HttpStatus.OK;
     }
 
     @PostMapping("/authorization")
-    public AuthResponse auth(@Valid @RequestBody UserAuthDto userAuthDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            log.error(errorMessage);
-            throw new IncorrectUserFieldsException(errorMessage);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public AuthResponse auth(@RequestBody @Valid UserAuthDto userAuthDto) {
         User user = userService.findByLoginAndPassword(userAuthDto.getLogin(), userAuthDto.getPassword());
-        String token = tokenProvider.generateToken(user.getLogin());
+        String token = null;
+//        if(user.getVerification().equals(UserVerificationStatus.UNVERIFIED)){
+//            log.error("You are not verified");
+//        } else if(user.getVerification().equals(UserVerificationStatus.VERIFIED)) {
+        token = tokenProvider.generateToken(user.getLogin());
+//        }
         return new AuthResponse(token);
     }
 }

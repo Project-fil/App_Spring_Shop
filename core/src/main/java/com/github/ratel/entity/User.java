@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "users")
+@Table(name = "user_table")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -32,8 +32,8 @@ public class User {
     @Column(name = "login", nullable = false, columnDefinition = "TEXT", unique = true)
     private String login;
 
-    @Column(name = "hash_password", nullable = false, columnDefinition = "TEXT")
-    private String hashPassword;
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    private String password;
 
     @Column(name = "phone", nullable = false, columnDefinition = "TEXT")
     private String phone;
@@ -41,7 +41,7 @@ public class User {
     @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Date createdAt;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
@@ -49,18 +49,14 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-//    @Column(name = "role", nullable = false)
     private RoleEntity role;
-
-    @Column(name = "salt", nullable = false, columnDefinition = "TEXT")
-    private String salt;
 
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
     public User(String login, String hashPassword) {
         this.login = login;
-        this.hashPassword = hashPassword;
+        this.password = password;
     }
 
     public User(
@@ -68,20 +64,21 @@ public class User {
             String lastname,
             String email,
             String login,
-            String hashPassword,
+            String password,
             String phone,
             String address,
             Date createdAt,
-            String salt
+            UserVerificationStatus verification
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.login = login;
-        this.hashPassword = hashPassword;
+        this.password = password;
         this.phone = phone;
         this.address = address;
         this.createdAt = createdAt;
-        this.salt = salt;
+        this.verification = verification;
+
     }
 }

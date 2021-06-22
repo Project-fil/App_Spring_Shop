@@ -21,4 +21,7 @@ public class Brand {
     @Column(name = "brand_name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String brandName;
 
+    public Brand(String brandName) {
+        this.brandName = brandName;
+    }
 }

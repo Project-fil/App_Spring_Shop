@@ -1,6 +1,7 @@
 package com.github.ratel.dto;
 
 import com.github.ratel.entity.User;
+import com.github.ratel.payload.UserVerificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +22,14 @@ public class UserRegDto {
 
     private String login;
 
-    private String hashPassword;
+    private String password;
 
     private String phone;
 
     private String address;
 
-    private Date createdAt;
+    private Date createdAt = new Date();
 
-    private String salt;
+    private UserVerificationStatus verification = UserVerificationStatus.UNVERIFIED;
 
 }

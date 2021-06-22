@@ -2,6 +2,7 @@ package com.github.ratel.security;
 
 import com.github.ratel.services.impl.CustomUserDetailsService;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +18,7 @@ import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
 
-@Component
-@Log
+@Slf4j
 public class JwtFilter extends GenericFilterBean {
 
     @Autowired
@@ -31,7 +31,7 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         logger.info("Do filter: ");
         String token = getTokenFromRequest((HttpServletRequest) request);
-        if(token != null && jwtTokenProvider.validateToken(token)) {
+        if (token != null && jwtTokenProvider.validateToken(token)) {
             String userLogin = jwtTokenProvider.getLoginFromToken(token);
             CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
             UsernamePasswordAuthenticationToken auth =

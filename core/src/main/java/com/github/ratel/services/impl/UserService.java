@@ -9,19 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private UserRepository UserRepository;
+    private final UserRepository UserRepository;
 
-    private RoleEntityRepo roleEntityRepo;
+    private final RoleEntityRepo roleEntityRepo;
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
+
     public UserService(UserRepository UserRepository, RoleEntityRepo roleEntityRepo, PasswordEncoder passwordEncoder) {
         this.UserRepository = UserRepository;
         this.roleEntityRepo = roleEntityRepo;
@@ -43,7 +44,7 @@ public class UserService {
     public User findByLoginAndPassword(String login, String password) {
         User user = findByLogin(login);
         if (user != null) {
-            if (passwordEncoder.matches(password, user.getHashPassword())) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
         }
@@ -53,7 +54,7 @@ public class UserService {
     public User saveUser(User user) {
         RoleEntity userRole = roleEntityRepo.findByName("ROLE_USER");
         user.setRole(userRole);
-        user.setHashPassword(passwordEncoder.encode(user.getHashPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return UserRepository.save(user);
     }
 
@@ -63,7 +64,7 @@ public class UserService {
         user.setLastname(userRegDto.getLastname());
         user.setEmail(userRegDto.getEmail());
         user.setLogin(userRegDto.getLogin());
-        user.setHashPassword(userRegDto.getHashPassword());
+        user.setPassword(userRegDto.getPassword());
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
 
@@ -78,10 +79,10 @@ public class UserService {
         user.setLastname(userRegDto.getLastname());
         user.setEmail(userRegDto.getEmail());
         user.setLogin(userRegDto.getLogin());
-        user.setHashPassword(userRegDto.getHashPassword());
+        user.setPassword(userRegDto.getPassword());
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
-
+        user.setUpdatedAt(new Date());
         return UserRepository.save(user);
     }
 

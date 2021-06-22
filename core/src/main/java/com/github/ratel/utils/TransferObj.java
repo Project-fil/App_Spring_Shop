@@ -1,9 +1,7 @@
 package com.github.ratel.utils;
 
-import com.github.ratel.dto.OrderDto;
-import com.github.ratel.dto.ProductDto;
-import com.github.ratel.dto.UserAuthDto;
-import com.github.ratel.dto.UserRegDto;
+import com.github.ratel.dto.*;
+import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.Order;
 import com.github.ratel.entity.Product;
 import com.github.ratel.entity.User;
@@ -46,7 +44,7 @@ public class TransferObj {
     public static UserAuthDto fromUserAuth(User data) {
         return new UserAuthDto(
                 data.getLogin(),
-                data.getHashPassword()
+                data.getPassword()
         );
     }
 
@@ -56,11 +54,11 @@ public class TransferObj {
                 data.getLastname(),
                 data.getEmail(),
                 data.getLogin(),
-                data.getHashPassword(),
+                data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
-                data.getSalt()
+                data.getVerification()
         );
     }
 
@@ -70,11 +68,11 @@ public class TransferObj {
                 data.getLastname(),
                 data.getEmail(),
                 data.getLogin(),
-                data.getHashPassword(),
+                data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
-                data.getSalt()
+                data.getVerification()
         );
     }
 
@@ -96,5 +94,13 @@ public class TransferObj {
                 data.getEmail(),
                 data.getAddress()
         );
+    }
+
+    public static Brand toBrand(BrandDto data) {
+        return new Brand(data.getBrandName());
+    }
+
+    public static BrandDto fromBrand(Brand data) {
+        return new BrandDto(data.getBrandName());
     }
 }
