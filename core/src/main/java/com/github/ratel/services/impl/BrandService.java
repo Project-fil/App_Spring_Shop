@@ -27,16 +27,16 @@ public class BrandService {
         return brandRepository.findById(brandId);
     }
 
-    public Brand saveBrand(BrandDto brandDto) {
-        Brand brand = new Brand();
-        brand.setBrandName(brandDto.getBrandName());
-        return brandRepository.save(brand);
+    public Brand saveBrand(Brand brand) {
+        Brand newBrand = new Brand();
+        newBrand.setBrandName(brand.getBrandName());
+        return brandRepository.save(newBrand);
     }
 
-    public Brand updateBrandById(long brandId, BrandDto brandDto) {
-        Brand brand = findBrandById(brandId).orElseThrow(() -> new RuntimeException("Not found brand"));
-        brand.setBrandName(brandDto.getBrandName());
-        return brandRepository.save(brand);
+    public Brand updateBrandById(long brandId, Brand brand) {
+        Brand brandUpdate = findBrandById(brandId).orElseThrow(() -> new RuntimeException("Not found brand"));
+        brandUpdate.setBrandName(brand.getBrandName());
+        return brandRepository.save(brandUpdate);
     }
 
     public void deleteBrandById(long brandId) {

@@ -67,7 +67,8 @@ public class User {
             String password,
             String phone,
             String address,
-            Date createdAt
+            Date createdAt,
+            UserVerificationStatus verification
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -77,6 +78,7 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.createdAt = createdAt;
+        this.verification = verification;
 
     }
 }

@@ -3,6 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.BrandDto;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.services.impl.BrandService;
+import com.github.ratel.utils.TransferObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,14 @@ public class BrandController {
 
     @PostMapping
     public Brand createBrand(@RequestBody BrandDto brandDto) {
-        return brandService.saveBrand(brandDto);
+        Brand brand = TransferObj.toBrand(brandDto);
+        return brandService.saveBrand(brand);
     }
 
     @PutMapping("/{brandId}")
     public Brand updateBrand(@PathVariable long brandId, @RequestBody BrandDto brandDto) {
-        return brandService.updateBrandById(brandId, brandDto);
+        Brand brand = TransferObj.toBrand(brandDto);
+        return brandService.updateBrandById(brandId, brand);
     }
 
     @DeleteMapping("/{brandId}")

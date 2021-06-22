@@ -8,6 +8,7 @@ import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.security.AuthResponse;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
+import com.github.ratel.utils.TransferObj;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -33,16 +35,7 @@ public class AuthController {
         if (userService.findByLogin(payload.getLogin()) != null) {
             throw new UserAlreadyExistException("User already exist");
         }
-        User user = new User();
-        user.setFirstname(payload.getFirstname());
-        user.setLastname(payload.getLastname());
-        user.setEmail(payload.getEmail());
-        user.setLogin(payload.getLogin());
-        user.setPassword(payload.getPassword());
-        user.setPhone(payload.getPhone());
-        user.setAddress(payload.getAddress());
-        user.setCreatedAt(payload.getCreatedAt());
-        user.setVerification(UserVerificationStatus.UNVERIFIED);
+       User user = TransferObj.toUser(payload);
         userService.saveUser(user);
         return HttpStatus.OK;
     }

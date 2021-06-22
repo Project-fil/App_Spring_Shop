@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,7 @@ public class UserService {
         user.setPassword(userRegDto.getPassword());
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
-
+        user.setUpdatedAt(new Date());
         return UserRepository.save(user);
     }
 
