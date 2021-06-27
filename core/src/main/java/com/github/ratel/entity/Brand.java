@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "brands")
@@ -23,5 +24,26 @@ public class Brand {
 
     public Brand(String brandName) {
         this.brandName = brandName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Brand brand = (Brand) o;
+        return brandId == brand.brandId && Objects.equals(brandName, brand.brandName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(brandId, brandName);
+    }
+
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "brandId=" + brandId +
+                ", brandName='" + brandName + '\'' +
+                '}' + "\n";
     }
 }

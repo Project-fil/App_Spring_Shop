@@ -25,6 +25,11 @@ public class BrandController {
         return brandService.findBrandById(brandId).orElseThrow(()-> new RuntimeException("Id missing"));
     }
 
+    @GetMapping("/{brandName}")
+    public Brand findByName(@PathVariable String brandName) {
+        return brandService.findBrandByName(brandName).orElseThrow(()-> new RuntimeException("Name missing"));
+    }
+
     @PostMapping
     public Brand createBrand(@RequestBody BrandDto brandDto) {
         Brand brand = TransferObj.toBrand(brandDto);

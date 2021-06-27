@@ -4,15 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum UserVerificationStatus {
-    VERIFIED("verified"),
-    UNVERIFIED("unverified");
 
-    private final String text;
+    VERIFIED, UNVERIFIED
 
-    @Override
-    public String toString() {
-        return "UserVerificationStatus{ " +
-                "text= " + text + '\'' +
-                '}';
-    }
 }

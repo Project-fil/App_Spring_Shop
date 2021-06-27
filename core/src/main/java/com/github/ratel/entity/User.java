@@ -59,6 +59,12 @@ public class User {
         this.password = password;
     }
 
+    public User(String login, String password, UserVerificationStatus verification) {
+        this.login = login;
+        this.password = password;
+        this.verification = verification;
+    }
+
     public User(
             String firstname,
             String lastname,
