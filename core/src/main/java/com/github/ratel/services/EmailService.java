@@ -1,4 +1,4 @@
-package com.github.ratel.services.impl;
+package com.github.ratel.services;
 
 public interface EmailService {
 

@@ -2,23 +2,19 @@ package com.github.ratel.controllers;
 
 import com.github.ratel.dto.UserAuthDto;
 import com.github.ratel.dto.UserRegDto;
-import com.github.ratel.dto.VerificationDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.exception.UserAlreadyExistException;
 import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.security.AuthResponse;
 import com.github.ratel.security.JwtTokenProvider;
-import com.github.ratel.services.impl.EmailService;
+import com.github.ratel.services.EmailService;
 import com.github.ratel.services.impl.UserService;
 import com.github.ratel.utils.TransferObj;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -35,7 +31,10 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(JwtTokenProvider tokenProvider, UserService userService, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public AuthController(JwtTokenProvider tokenProvider,
+                          UserService userService,
+                          EmailService emailService,
+                          PasswordEncoder passwordEncoder) {
         this.tokenProvider = tokenProvider;
         this.userService = userService;
         this.emailService = emailService;
@@ -49,7 +48,8 @@ public class AuthController {
         }
         User user = TransferObj.toUser(payload);
         emailService.sendMessageToEmail(user.getEmail(), "Verification user",
-                "Follow the link for verification: http://localhost:8083/authorization/verification");
+                "Follow the link for verification: http://localhost:8083/authorization/verification?login="
+                        + user.getLogin() + "&password=" + user.getPassword());
         userService.saveUser(user);
         return HttpStatus.OK;
     }
@@ -67,15 +67,17 @@ public class AuthController {
         return new AuthResponse(token);
     }
 
-    @PostMapping("/authorization/verification")
-    @ResponseStatus(HttpStatus.OK)
-    public void passingVerification(@RequestBody @Valid UserAuthDto verificationDto) {
-        User user = userService.findByLogin(verificationDto.getLogin());
-        if (passwordEncoder.matches(verificationDto.getPassword(), user.getPassword())) {
+    @GetMapping("/authorization/verification")
+    public String passingVerification(@RequestParam("login") String login,
+                                      @RequestParam("password") String password) {
+        User user = userService.findByLogin(login);
+        if (passwordEncoder.matches(password, user.getPassword())) {
             user.setVerification(UserVerificationStatus.VERIFIED);
             userService.updateUser(user);
+            return "<h1>User verification</h1>";
         } else {
-            throw new NullPointerException();
+            log.error("Verification data is not correct");
         }
+        return "<h1>Verification data is not correct</h1>";
     }
 }

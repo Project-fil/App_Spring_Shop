@@ -5,18 +5,18 @@ spring:
     name: ratel
   profiles:
     active: prod
-#  mail:
-#    default-encoding: UTF-8
-#    host: smtp.gmail.com
-#    username: forgotandry@gmail.com
-#    password: 12345@wsw
-#    port: 587
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
-#            required: true
-#    protocol: smtp
-#    test-connection: false
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: forgotandry@gmail.com
+    password: 12345@wsw
+    port: 465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+          auth: true
+          starttls:
+            enable: true
+
