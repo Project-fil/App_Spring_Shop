@@ -1,4 +1,4 @@
-package com.github.ratel.exception;
+package com.github.ratel.exceptions;
 
 public class UserAlreadyExistException extends RuntimeException {
     public UserAlreadyExistException(String message) {super(message);}

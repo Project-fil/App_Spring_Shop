@@ -3,8 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.UserAuthDto;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
-import com.github.ratel.exception.UserAlreadyExistException;
-import com.github.ratel.payload.UserVerificationStatus;
+import com.github.ratel.exceptions.UserAlreadyExistException;
 import com.github.ratel.security.AuthResponse;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @Slf4j
 @RestController
