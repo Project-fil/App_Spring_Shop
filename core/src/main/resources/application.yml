@@ -21,3 +21,5 @@ spring:
             enable: true
 jwt:
   secret: javamaster
+message:
+  email: Follow the link for verification http://localhost:8083/authorization/verification?code=

@@ -3,6 +3,7 @@ package com.github.ratel.services.impl;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.Role;
 import com.github.ratel.entity.User;
+import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.repositories.RoleRepo;
 import com.github.ratel.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -61,7 +63,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-
     public long createUser(UserRegDto userRegDto) {
         User user = new User();
         user.setFirstname(userRegDto.getFirstname());
@@ -98,5 +99,17 @@ public class UserService {
         if (findUserById(userId).isPresent()) {
             throw new RuntimeException("This user already exists!");
         }
+    }
+
+    public boolean verificationUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+        if (user == null) {
+            return false;
+        }
+        if (user.getActivationCode().equals(code)) {
+            user.setVerification(UserVerificationStatus.VERIFIED);
+            userRepository.save(user);
+        }
+        return true;
     }
 }

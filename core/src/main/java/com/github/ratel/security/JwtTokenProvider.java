@@ -12,11 +12,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-@Component
 @Log
+@Component
 public class JwtTokenProvider {
 
-    @Value("$(jwt.secret)")
+    @Value("${jwt.secret}")
     private String secretWord;
 
     public String generateToken(String login) {

@@ -18,6 +18,6 @@ public class EmailServiceImpl implements EmailService {
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(text);
         mailSender.send(simpleMailMessage);
-    return "Email Send";
+        return "Email Send";
     }
 }

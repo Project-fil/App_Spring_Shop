@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -54,7 +55,11 @@ public class User {
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
-    public User(String login, String hashPassword) {
+    @NotNull
+    @Column(name = "activation_code", columnDefinition = "TEXT")
+    private String activationCode;
+
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
     }
