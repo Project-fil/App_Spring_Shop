@@ -1,5 +1,6 @@
 package com.github.ratel.security;
 
+import com.github.ratel.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,7 +24,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(login)
                 .setExpiration(date)
-                .signWith(SignatureAlgorithm.HS512, secretWord)
+                .signWith(SignatureAlgorithm.HS256, secretWord)
                 .compact();
     }
 
@@ -32,9 +33,8 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(secretWord).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            log.severe("Invalid token");
+            throw new InvalidTokenException("Invalid token");
         }
-        return false;
     }
 
     public String getLoginFromToken(String token) {

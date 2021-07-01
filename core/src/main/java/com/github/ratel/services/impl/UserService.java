@@ -1,11 +1,10 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.dto.UserRegDto;
-import com.github.ratel.entity.RoleEntity;
+import com.github.ratel.entity.Role;
 import com.github.ratel.entity.User;
-import com.github.ratel.repositories.RoleEntityRepo;
+import com.github.ratel.repositories.RoleRepo;
 import com.github.ratel.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +17,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final RoleEntityRepo roleEntityRepo;
+    private final RoleRepo roleRepo;
 
     private final PasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository userRepository, RoleEntityRepo roleEntityRepo, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleEntityRepo = roleEntityRepo;
+        this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -52,7 +51,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        RoleEntity userRole = roleEntityRepo.findByName("ROLE_USER");
+        Role userRole = roleRepo.findByName("ROLE_USER");
         user.setRole(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -73,8 +72,8 @@ public class UserService {
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
 
-        doesUserExist(user.getUserId());
-        return userRepository.save(user).getUserId();
+        doesUserExist(user.getId());
+        return userRepository.save(user).getId();
     }
 
     public User changeUserInfo(long userId, UserRegDto userRegDto) {

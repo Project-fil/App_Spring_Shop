@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.github.ratel.repositories")
-@ComponentScan(basePackages = "com.github.ratel")
 @EntityScan(basePackages = "com.github.ratel.entity")
 public class AppConfig {
 }

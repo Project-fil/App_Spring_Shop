@@ -1,13 +1,14 @@
 package com.github.ratel.entity;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Data
 @Entity
 @Table(name = "products")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -23,8 +24,10 @@ public class Product {
     @Column(name = "price", nullable = false, columnDefinition = "DECIMAL")
     private BigDecimal price;
 
-    @Column(name = "brand", nullable = false, columnDefinition = "TEXT")
-    private String brand;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "brand")
+    private Brand brand;
 
     @Column(name = "quantity", nullable = false, columnDefinition = "BIGINT")
     private long quantity;
@@ -47,7 +50,7 @@ public class Product {
     public Product(
             String name,
             BigDecimal price,
-            String brand,
+            Brand brand,
             long quantity,
             String article,
             String img,
@@ -63,4 +66,5 @@ public class Product {
         this.supplier = supplier;
         this.specification = specification;
     }
+
 }

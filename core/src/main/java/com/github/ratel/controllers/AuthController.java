@@ -5,7 +5,7 @@ import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.exception.UserAlreadyExistException;
 import com.github.ratel.payload.UserVerificationStatus;
-import com.github.ratel.security.AuthResponse;
+import com.github.ratel.payload.AuthResponse;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.impl.UserService;
@@ -42,7 +42,8 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public HttpStatus registration(@RequestBody @Valid UserRegDto payload) {
+    @ResponseStatus(HttpStatus.OK)
+    public void registration(@RequestBody @Valid UserRegDto payload) {
         if (userService.findByLogin(payload.getLogin()) != null) {
             throw new UserAlreadyExistException("User already exist");
         }
@@ -51,7 +52,6 @@ public class AuthController {
                 "Follow the link for verification: http://localhost:8083/authorization/verification?login="
                         + user.getLogin() + "&password=" + user.getPassword());
         userService.saveUser(user);
-        return HttpStatus.OK;
     }
 
     @PostMapping("/authorization")

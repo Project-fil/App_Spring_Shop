@@ -1,5 +1,6 @@
 package com.github.ratel.dto;
 
+import com.github.ratel.entity.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class ProductDto {
 
     private BigDecimal price;
 
-    private String brand;
+    private Brand brand;
 
     private long quantity;
 
