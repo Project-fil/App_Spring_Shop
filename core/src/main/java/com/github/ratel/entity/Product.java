@@ -2,7 +2,6 @@ package com.github.ratel.entity;
 
 import com.sun.istack.NotNull;
 import lombok.*;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -15,13 +14,20 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long productId;
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
+    private Long id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "vendor_code", nullable = false)
+    private String vendorCode;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    private Category category;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price", nullable = false, columnDefinition = "DECIMAL")
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
 
     @NotNull

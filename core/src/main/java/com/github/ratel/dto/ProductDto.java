@@ -2,15 +2,17 @@ package com.github.ratel.dto;
 
 import com.github.ratel.entity.Brand;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductDto {
+
+    private String vendorCode;
 
     private String name;
 
@@ -19,13 +21,4 @@ public class ProductDto {
     private Brand brand;
 
     private long quantity;
-
-    private String article;
-
-    private String img;
-
-    private String supplier;
-
-    private String specification;
-
 }
