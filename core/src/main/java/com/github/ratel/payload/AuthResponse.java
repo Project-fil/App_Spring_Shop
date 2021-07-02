@@ -1,4 +1,4 @@
-package com.github.ratel.security;
+package com.github.ratel.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

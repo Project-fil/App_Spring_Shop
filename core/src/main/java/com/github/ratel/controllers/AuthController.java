@@ -3,23 +3,29 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.UserAuthDto;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
-import com.github.ratel.exceptions.UserAlreadyExistException;
-import com.github.ratel.security.AuthResponse;
+import com.github.ratel.exception.UserAlreadyExistException;
+import com.github.ratel.payload.AuthResponse;
+import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.impl.UserService;
 import com.github.ratel.utils.TransferObj;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Slf4j
 @RestController
 public class AuthController {
+
+    @Value("${message.email}")
+    private String textMessageSendEmail;
 
     private final JwtTokenProvider tokenProvider;
 
@@ -27,30 +33,26 @@ public class AuthController {
 
     private final EmailService emailService;
 
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
     public AuthController(JwtTokenProvider tokenProvider,
                           UserService userService,
-                          EmailService emailService,
-                          PasswordEncoder passwordEncoder) {
+                          EmailService emailService) {
         this.tokenProvider = tokenProvider;
         this.userService = userService;
         this.emailService = emailService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/registration")
-    public HttpStatus registration(@RequestBody @Valid UserRegDto payload) {
+    @ResponseStatus(HttpStatus.OK)
+    public void registration(@RequestBody @Valid UserRegDto payload) {
         if (userService.findByLogin(payload.getLogin()) != null) {
             throw new UserAlreadyExistException("User already exist");
         }
         User user = TransferObj.toUser(payload);
+        user.setActivationCode(UUID.randomUUID().toString());
         emailService.sendMessageToEmail(user.getEmail(), "Verification user",
-                "Follow the link for verification: http://localhost:8083/authorization/verification?login="
-                        + user.getLogin() + "&password=" + user.getPassword());
+                textMessageSendEmail + user.getActivationCode());
         userService.saveUser(user);
-        return HttpStatus.OK;
     }
 
     @PostMapping("/authorization")
@@ -67,16 +69,13 @@ public class AuthController {
     }
 
     @GetMapping("/authorization/verification")
-    public String passingVerification(@RequestParam("login") String login,
-                                      @RequestParam("password") String password) {
-        User user = userService.findByLogin(login);
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            user.setVerification(UserVerificationStatus.VERIFIED);
-            userService.updateUser(user);
-            return "<h1>User verification</h1>";
+    public String passingVerification(Model model, @RequestParam String code) {
+        boolean isActivateUser = userService.verificationUser(code);
+        if (isActivateUser) {
+            model.addAttribute("message", "User successfully activated");
         } else {
-            log.error("Verification data is not correct");
+            model.addAttribute("message", "Activation code is not found!");
         }
-        return "<h1>Verification data is not correct</h1>";
+        return "<h1>Verification correct</h1>";
     }
 }

@@ -5,20 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Data
 @Entity
 @Table(name = "brands")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Brand {
 
     @Id
+    @NotNull
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "brand_id", nullable = false, unique = true, columnDefinition = "BIGINT")
-    private long brandId;
+    private long id;
 
+    @NotNull
     @Column(name = "brand_name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String brandName;
 
@@ -31,18 +34,18 @@ public class Brand {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Brand brand = (Brand) o;
-        return brandId == brand.brandId && Objects.equals(brandName, brand.brandName);
+        return id == brand.id && Objects.equals(brandName, brand.brandName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(brandId, brandName);
+        return Objects.hash(id, brandName);
     }
 
     @Override
     public String toString() {
         return "Brand{" +
-                "brandId=" + brandId +
+                "id=" + id +
                 ", brandName='" + brandName + '\'' +
                 '}' + "\n";
     }

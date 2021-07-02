@@ -23,8 +23,8 @@ public class BrandService {
         return brandRepository.findAll();
     }
 
-    public Optional<Brand> findBrandById(long brandId) {
-        return brandRepository.findById(brandId);
+    public Optional<Brand> findBrandById(long id) {
+        return brandRepository.findById(id);
     }
 
     public Optional<Brand> findBrandByName(String name) {
@@ -37,13 +37,13 @@ public class BrandService {
         return brandRepository.save(newBrand);
     }
 
-    public Brand updateBrandById(long brandId, Brand brand) {
-        Brand brandUpdate = findBrandById(brandId).orElseThrow(() -> new RuntimeException("Not found brand"));
+    public Brand updateBrandById(long id, Brand brand) {
+        Brand brandUpdate = findBrandById(id).orElseThrow(() -> new RuntimeException("Not found brand"));
         brandUpdate.setBrandName(brand.getBrandName());
         return brandRepository.save(brandUpdate);
     }
 
-    public void deleteBrandById(long brandId) {
-        brandRepository.deleteById(brandId);
+    public void deleteBrandById(long id) {
+        brandRepository.deleteById(id);
     }
 }

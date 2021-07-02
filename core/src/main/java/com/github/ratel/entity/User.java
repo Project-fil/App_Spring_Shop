@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -17,8 +18,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long userId;
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
+    private long id;
 
     @Column(name = "firstname", nullable = false, columnDefinition = "TEXT")
     private String firstname;
@@ -48,13 +49,17 @@ public class User {
     private Date updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
+    @JoinColumn(name = "role")
+    private Role role;
 
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
-    public User(String login, String hashPassword) {
+    @NotNull
+    @Column(name = "activation_code", columnDefinition = "TEXT")
+    private String activationCode;
+
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
     }
