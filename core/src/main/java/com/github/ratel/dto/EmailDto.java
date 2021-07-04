@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ForgotEmailDto {
+public class EmailDto {
 
     @Email
     @NotEmpty

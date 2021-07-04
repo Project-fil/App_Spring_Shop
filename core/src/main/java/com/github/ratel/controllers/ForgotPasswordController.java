@@ -1,6 +1,6 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.ForgotEmailDto;
+import com.github.ratel.dto.EmailDto;
 import com.github.ratel.dto.ForgotPassDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.exception.ConfirmPasswordException;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/forgot")
@@ -44,11 +45,13 @@ public class ForgotPasswordController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void sendingLetterToReplacementPassword(@RequestBody @Valid ForgotEmailDto passDto) {
-        User user = passwordService.findByEmail(passDto.getEmail());
+    public void sendingLetterToReplacementPassword(@RequestBody @Valid EmailDto emailDto) {
+        User user = passwordService.findByEmail(emailDto.getEmail());
         if (user.getEmail() != null) {
+            user.setActivationCode(UUID.randomUUID().toString());
             emailService.sendMessageToEmail(user.getEmail(), "Password change",
                     forgotPassword + user.getActivationCode());
+            userRepository.save(user);
         } else { throw new NullPointerException("Email does not match"); }
     }
 
