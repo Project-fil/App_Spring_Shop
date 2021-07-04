@@ -69,7 +69,7 @@ public class AuthController {
     }
 
     @GetMapping("/authorization/verification")
-    public String passingVerification(Model model, @RequestParam String code) {
+    public String passingVerification(Model model, @RequestParam("code") String code) {
         boolean isActivateUser = userService.verificationUser(code);
         if (isActivateUser) {
             model.addAttribute("message", "User successfully activated");
