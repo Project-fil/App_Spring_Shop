@@ -1,7 +1,9 @@
 package com.github.ratel.entity;
 
-import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -30,47 +32,10 @@ public class Product {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "brand")
-    private Brand brand;
-
-    @Column(name = "quantity", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "quantity", nullable = false)
     private long quantity;
 
-    @Column(name = "article", nullable = false, columnDefinition = "TEXT")
-    private String article;
-
-    @Column(name = "img", nullable = false, columnDefinition = "TEXT")
-    private String img;
-
-    @Column(name = "supplier", nullable = false, columnDefinition = "TEXT")
-    private String supplier;
-
-    @Column(name = "specification", nullable = false, columnDefinition = "TEXT")
-    private String specification;
-
-    @Column(name = "comments", columnDefinition = "TEXT")
-    private String comments;
-
-    public Product(
-            String name,
-            BigDecimal price,
-            Brand brand,
-            long quantity,
-            String article,
-            String img,
-            String supplier,
-            String specification
-    ) {
-        this.name = name;
-        this.price = price;
-        this.brand = brand;
-        this.quantity = quantity;
-        this.article = article;
-        this.img = img;
-        this.supplier = supplier;
-        this.specification = specification;
-    }
-
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status;
 }

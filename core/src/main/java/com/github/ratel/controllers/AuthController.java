@@ -3,7 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.UserAuthDto;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
-import com.github.ratel.exception.UserAlreadyExistException;
+import com.github.ratel.exceptions.UserAlreadyExistException;
 import com.github.ratel.payload.AuthResponse;
 import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.security.JwtTokenProvider;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @RestController
 public class AuthController {
 
-    @Value("${message.email}")
+    @Value("${app.message.email}")
     private String textMessageSendEmail;
 
     private final JwtTokenProvider tokenProvider;
@@ -69,7 +69,7 @@ public class AuthController {
     }
 
     @GetMapping("/authorization/verification")
-    public String passingVerification(Model model, @RequestParam String code) {
+    public String passingVerification(Model model, @RequestParam("code") String code) {
         boolean isActivateUser = userService.verificationUser(code);
         if (isActivateUser) {
             model.addAttribute("message", "User successfully activated");

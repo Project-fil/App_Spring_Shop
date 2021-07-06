@@ -1,6 +1,6 @@
 package com.github.ratel.security;
 
-import com.github.ratel.exception.InvalidTokenException;
+import com.github.ratel.exceptions.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +16,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
+    @Value("${app.jwt.secret}")
     private String secretWord;
 
     public String generateToken(String login) {

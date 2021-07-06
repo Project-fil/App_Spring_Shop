@@ -19,7 +19,11 @@ spring:
           auth: true
           starttls:
             enable: true
-jwt:
-  secret: javamaster
-message:
-  email: Follow the link for verification http://localhost:8083/authorization/verification?code=
+
+app:
+  jwt:
+     secret: javamaster
+  message:
+     email: Follow the link for verification http://localhost:8083/authorization/verification?code=
+  forgot:
+     password: Follow the link for change password http://localhost:8083/forgot/password?code=

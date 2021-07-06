@@ -31,7 +31,7 @@ public class UserRegDto {
     private String login;
 
     @NotEmpty
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 70)
     private String password;
 
     @NotNull
