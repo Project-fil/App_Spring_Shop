@@ -1,38 +1,14 @@
 package com.github.ratel.utils;
 
-import com.github.ratel.dto.*;
+import com.github.ratel.dto.BrandDto;
+import com.github.ratel.dto.OrderDto;
+import com.github.ratel.dto.UserAuthDto;
+import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.Order;
-import com.github.ratel.entity.Product;
 import com.github.ratel.entity.User;
 
 public class TransferObj {
-
-    public static Product toProduct(ProductDto data) {
-        return new Product(
-                data.getName(),
-                data.getPrice(),
-                data.getBrand(),
-                data.getQuantity(),
-                data.getArticle(),
-                data.getImg(),
-                data.getSupplier(),
-                data.getSpecification()
-        );
-    }
-
-    public static ProductDto fromProduct(Product data) {
-        return new ProductDto(
-                data.getName(),
-                data.getPrice(),
-                data.getBrand(),
-                data.getQuantity(),
-                data.getArticle(),
-                data.getImg(),
-                data.getSupplier(),
-                data.getSpecification()
-        );
-    }
 
     public static User toUser(UserAuthDto data) {
         return new User(

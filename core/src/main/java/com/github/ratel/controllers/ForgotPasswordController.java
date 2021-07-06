@@ -3,7 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.EmailDto;
 import com.github.ratel.dto.ForgotPassDto;
 import com.github.ratel.entity.User;
-import com.github.ratel.exception.ConfirmPasswordException;
+import com.github.ratel.exceptions.ConfirmPasswordException;
 import com.github.ratel.repositories.UserRepository;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.impl.ForgotPasswordService;
@@ -21,8 +21,9 @@ import java.util.UUID;
 @RequestMapping("/forgot")
 public class ForgotPasswordController {
 
-//    @Value("${forgot.password}")
-    private final String forgotPassword = "Follow the link for change password http://localhost:8083/forgot/password?code=";
+    @Value("${app.forgot.password}")
+    private String forgotPassword;
+    // = "Follow the link for change password http://localhost:8083/forgot/password?code=";
 
     private final UserRepository userRepository;
 
