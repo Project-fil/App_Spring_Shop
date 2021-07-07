@@ -12,7 +12,7 @@ import static com.github.ratel.utils.TransferObj.toComment;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "/{product-id}")
+@RequestMapping(path = "/product/{product-id}")
 public class CommentController {
 
     @Autowired
