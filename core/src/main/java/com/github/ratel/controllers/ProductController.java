@@ -1,7 +1,7 @@
 package com.github.ratel.controllers;
 
 import com.github.ratel.dto.ProductDto;
-import com.github.ratel.entity.EntityStatus;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.entity.Product;
 import com.github.ratel.exceptions.ProductException;
 import com.github.ratel.services.impl.ProductService;

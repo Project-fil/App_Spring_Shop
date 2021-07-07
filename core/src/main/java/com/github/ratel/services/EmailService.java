@@ -2,7 +2,7 @@ package com.github.ratel.services;
 
 public interface EmailService {
 
-   public String sendMessageToEmail(final String toAddress, final String subject, final String text);
+   void sendMessageToEmail(String toAddress, String subject, String text);
 
 
 }

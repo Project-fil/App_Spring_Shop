@@ -92,4 +92,9 @@ public class User {
         this.verification = verification;
 
     }
+
+    public User newPass(String password) {
+        this.password = password;
+        return this;
+    }
 }

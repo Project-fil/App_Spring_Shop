@@ -1,6 +1,5 @@
 package com.github.ratel.dto;
 
-import com.github.ratel.entity.User;
 import com.github.ratel.payload.UserVerificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
