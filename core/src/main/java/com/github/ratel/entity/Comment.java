@@ -30,4 +30,11 @@ public class Comment {
 
     @Column(name = "created_at", nullable = false, columnDefinition = "TEXT")
     private Date createdAt;
+
+    public Comment(long userId, long productId, String commentText, Date createdAt) {
+        this.userId = userId;
+        this.productId = productId;
+        this.commentText = commentText;
+        this.createdAt = createdAt;
+    }
 }
