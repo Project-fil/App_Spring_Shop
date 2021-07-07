@@ -1,5 +1,6 @@
 package com.github.ratel.entity;
 
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.payload.UserVerificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,8 +57,8 @@ public class User {
     private UserVerificationStatus verification;
 
     @NotNull
-    @Column(name = "activation_code", columnDefinition = "TEXT")
-    private String activationCode;
+    @Column(name = "status")
+    private EntityStatus status;
 
     public User(String login, String password) {
         this.login = login;
@@ -79,7 +80,8 @@ public class User {
             String phone,
             String address,
             Date createdAt,
-            UserVerificationStatus verification
+            UserVerificationStatus verification,
+            EntityStatus status
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -90,11 +92,16 @@ public class User {
         this.address = address;
         this.createdAt = createdAt;
         this.verification = verification;
-
+        this.status = status;
     }
 
     public User newPass(String password) {
         this.password = password;
+        return this;
+    }
+
+    public User verificUser(UserVerificationStatus verification) {
+        this.verification = verification;
         return this;
     }
 }

@@ -3,6 +3,7 @@ package com.github.ratel.services.impl;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.Role;
 import com.github.ratel.entity.User;
+import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.payload.UserVerificationStatus;
 import com.github.ratel.repositories.RoleRepository;
 import com.github.ratel.repositories.UserRepository;
@@ -48,7 +49,7 @@ public class UserService {
                 return user;
             }
         }
-        return null;
+     throw new EntityNotFound();
     }
 
     public User saveUser(User user) {
@@ -100,15 +101,15 @@ public class UserService {
         }
     }
 
-    public boolean verificationUser(String code) {
-        User user = userRepository.findByActivationCode(code);
-        if (user == null) {
-            return false;
-        }
-        if (user.getActivationCode().equals(code)) {
-            user.setVerification(UserVerificationStatus.VERIFIED);
-            userRepository.save(user);
-        }
-        return true;
-    }
+//    public boolean verificationUser(String code) {
+//        User user = userRepository.findByActivationCode(code);
+//        if (user == null) {
+//            return false;
+//        }
+//        if (user.getActivationCode().equals(code)) {
+//            user.setVerification(UserVerificationStatus.VERIFIED);
+//            userRepository.save(user);
+//        }
+//        return true;
+//    }
 }

@@ -3,6 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.ForgotPassDto;
 import com.github.ratel.entity.ConfirmToken;
 import com.github.ratel.entity.User;
+import com.github.ratel.exceptions.InvalidTokenException;
 import com.github.ratel.exceptions.WrongUserEmail;
 import com.github.ratel.services.ConfirmTokenService;
 import com.github.ratel.services.EmailService;
@@ -24,9 +25,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ForgotPasswordController {
 
-    private static final String EMAIL_FORGOT_PATTERN = "Follow the link for change password %s%s%s";
+    @Value("${app.email.text}")
+    private String textMessageEmail;
 
-    @Value("${app.forgot.password}")
+    @Value("${app.forgot.domain}")
     private String forgotPasswordDomain;
 
     private final UserService userService;
@@ -47,7 +49,8 @@ public class ForgotPasswordController {
             String token = UUID.randomUUID().toString();
             ConfirmToken ct = new ConfirmToken(user, token, this.passwordEncoder.encode(payload.getConfirmPassword()));
             var pattern = String.format(
-                    EMAIL_FORGOT_PATTERN, this.forgotPasswordDomain,
+                    this.textMessageEmail, "change password ",
+                    this.forgotPasswordDomain,
                     "/forgot/password?token=", token);
             this.emailService.sendMessageToEmail(
                     user.getEmail(), "Password change", pattern);
@@ -61,8 +64,11 @@ public class ForgotPasswordController {
     @ResponseStatus(HttpStatus.OK)
     public void changePassword(@RequestParam("token") String token) {
         ConfirmToken ct = this.confirmTokenService.findByToken(token);
-        User user = ct.getUser();
-        this.userService.updateUser(user.newPass(ct.getNewPass()));
+        if (ct.getToken().equals(token)) {
+            User user = ct.getUser();
+            this.userService.updateUser(user.newPass(ct.getNewPass()));
+        } else {
+            throw new InvalidTokenException("Invalid forgot token");
+        }
     }
-
 }

@@ -1,5 +1,6 @@
 package com.github.ratel.dto;
 
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.payload.UserVerificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,23 +14,23 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserRegDto {
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 20)
     private String firstname;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 20)
     private String lastname;
 
     @Email
-    @NotEmpty
+    @NotBlank
     private String email;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 20)
     private String login;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 70)
     private String password;
 
@@ -47,4 +48,6 @@ public class UserRegDto {
     @NotNull
     private UserVerificationStatus verification = UserVerificationStatus.UNVERIFIED;
 
+    @NotNull
+    private EntityStatus status = EntityStatus.on;
 }

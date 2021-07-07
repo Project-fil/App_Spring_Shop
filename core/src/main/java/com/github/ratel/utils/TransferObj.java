@@ -32,7 +32,8 @@ public class TransferObj {
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
-                data.getVerification()
+                data.getVerification(),
+                data.getStatus()
         );
     }
 
@@ -46,7 +47,8 @@ public class TransferObj {
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
-                data.getVerification()
+                data.getVerification(),
+                data.getStatus()
         );
     }
 

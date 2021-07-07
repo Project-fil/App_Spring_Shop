@@ -23,7 +23,9 @@ spring:
 app:
   jwt:
      secret: javamaster
-  message:
-     email: Follow the link for verification http://localhost:8083/authorization/verification?code=
+  email:
+    text: Follow the link for %s%s%s%s
+  verification:
+    domain: http://localhost:8083
   forgot:
-     password: http://localhost:8083
+    domain: http://localhost:8083
