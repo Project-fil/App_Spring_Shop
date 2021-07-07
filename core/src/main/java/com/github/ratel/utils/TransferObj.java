@@ -1,10 +1,8 @@
 package com.github.ratel.utils;
 
-import com.github.ratel.dto.BrandDto;
-import com.github.ratel.dto.OrderDto;
-import com.github.ratel.dto.UserAuthDto;
-import com.github.ratel.dto.UserRegDto;
+import com.github.ratel.dto.*;
 import com.github.ratel.entity.Brand;
+import com.github.ratel.entity.Comment;
 import com.github.ratel.entity.Order;
 import com.github.ratel.entity.User;
 
@@ -78,5 +76,23 @@ public class TransferObj {
 
     public static BrandDto fromBrand(Brand data) {
         return new BrandDto(data.getBrandName());
+    }
+
+    public static Comment toComment(CommentDto data) {
+        return new Comment(
+                data.getUserId(),
+                data.getProductId(),
+                data.getCommentText(),
+                data.getCreatedAt()
+        );
+    }
+
+    public static CommentDto fromComment(Comment data) {
+        return new CommentDto(
+                data.getProductId(),
+                data.getUserId(),
+                data.getCommentText(),
+                data.getCreatedAt()
+        );
     }
 }
