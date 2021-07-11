@@ -1,10 +1,11 @@
 package com.github.ratel.utils;
 
 import com.github.ratel.dto.*;
-import com.github.ratel.entity.Brand;
-import com.github.ratel.entity.Comment;
-import com.github.ratel.entity.Order;
-import com.github.ratel.entity.User;
+import com.github.ratel.entity.*;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TransferObj {
 
@@ -19,6 +20,35 @@ public class TransferObj {
         return new UserAuthDto(
                 data.getLogin(),
                 data.getPassword()
+        );
+    }
+
+    public static UserDto toDto(Optional<User> user) {
+        Set<RoleDto> roleDTO = toDTO(user.get().getRoles());
+        return new UserDto(
+                user.get().getFirstname(),
+                user.get().getLastname(),
+                user.get().getEmail(),
+                user.get().getLogin(),
+                user.get().getPassword(),
+                user.get().getPhone(),
+                user.get().getAddress(),
+                user.get().getCreatedAt(),
+                user.get().getUpdatedAt(),
+                roleDTO,
+                user.get().getVerification(),
+                user.get().getStatus()
+                );
+    }
+
+    private static Set<RoleDto> toDTO(Set<Roles> role) {
+        return role.stream().map(role1 -> toDto(role1)).collect(Collectors.toSet());
+    }
+
+    private static RoleDto toDto(Roles roles) {
+        return new RoleDto(
+                roles.getId(),
+                roles.getRole()
         );
     }
 
@@ -47,6 +77,7 @@ public class TransferObj {
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
+                data.getRoles(),
                 data.getVerification(),
                 data.getStatus()
         );

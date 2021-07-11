@@ -2,6 +2,7 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.dto.BrandDto;
 import com.github.ratel.entity.Brand;
+import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class BrandService {
     }
 
     public Brand updateBrandById(long id, Brand brand) {
-        Brand brandUpdate = findBrandById(id).orElseThrow(() -> new RuntimeException("Not found brand"));
+        Brand brandUpdate = findBrandById(id).orElseThrow( () -> new EntityNotFound("Entity not found in db"));
         brandUpdate.setBrandName(brand.getBrandName());
         return brandRepository.save(brandUpdate);
     }

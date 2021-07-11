@@ -21,7 +21,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     @Override
     public VerificationToken findByToken(String token) {
-        return this.tokenRepository.findByToken(token).orElseThrow(EntityNotFound::new);
+        return this.tokenRepository.findByToken(token).orElseThrow( () -> new EntityNotFound("Entity not found in db"));
     }
 
     @Override

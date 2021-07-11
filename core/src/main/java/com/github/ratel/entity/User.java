@@ -2,13 +2,13 @@ package com.github.ratel.entity;
 
 import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.payload.UserVerificationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -49,9 +49,12 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private Date updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "role")
-    private Role role;
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Roles> roles = new HashSet<>();
 
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;

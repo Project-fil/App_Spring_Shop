@@ -1,13 +1,13 @@
 package com.github.ratel.dto;
 
+import com.github.ratel.entity.Roles;
 import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.payload.UserVerificationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -44,6 +44,8 @@ public class UserRegDto {
     @NotNull
     @PastOrPresent
     private Date createdAt = new Date();
+
+    private Set<Roles> roles;
 
     @NotNull
     private UserVerificationStatus verification = UserVerificationStatus.UNVERIFIED;
