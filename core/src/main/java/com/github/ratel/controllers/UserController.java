@@ -26,7 +26,7 @@ public class UserController {
 
     @Secured("ROLE_USER")
     @GetMapping
-    public List<UserDto> findAllUsers() {
+    public List<UserDto> findAllActiveUsers() {
         List<User> users = userService.findAllUsers();
         return TransferObj.toAllDto(users).stream()
                 .filter(user -> user.getStatus().equals(EntityStatus.on))

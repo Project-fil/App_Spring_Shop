@@ -35,8 +35,8 @@ public class BrandController {
         return TransferObj.toBrand(brand);
     }
 
-    @GetMapping("/name")
-    public BrandDto findByName(@RequestParam(name = "name") String brandName) {
+    @GetMapping("/name-{brandName}")
+    public BrandDto findByName(@PathVariable("brandName") String brandName) {
         Brand brand = this.brandService.findBrandByName(brandName);
         return TransferObj.toBrand(brand);
     }
