@@ -56,11 +56,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
-    @NotNull
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
     public User(String login, String password) {
