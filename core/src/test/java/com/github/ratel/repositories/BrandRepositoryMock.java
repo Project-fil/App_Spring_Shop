@@ -2,6 +2,7 @@ package com.github.ratel.repositories;
 
 
 import com.github.ratel.entity.Brand;
+import com.github.ratel.payload.EntityStatus;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ public class BrandRepositoryMock {
 
     public static List<Brand> prepareBrandList() {
         return List.of(
-                new Brand("Ceresit"),
-                new Brand("Bubmaster"),
-                new Brand("Feber")
+                new Brand("Ceresit", EntityStatus.on),
+                new Brand("Bubmaster", EntityStatus.on),
+                new Brand("Feber", EntityStatus.on)
         );
     }
 
@@ -22,17 +23,17 @@ public class BrandRepositoryMock {
 
     public static Brand brand_1() {
         return new Brand(1L,
-                "Ceresit");
+                "Ceresit", EntityStatus.on);
     }
 
     public static Brand brand_2() {
         return new Brand(2L,
-                "Bubmaster");
+                "Bubmaster", EntityStatus.on);
     }
 
     public static Brand brand_3() {
         return new Brand(3L,
-                "Feber");
+                "Feber", EntityStatus.on);
     }
 
 

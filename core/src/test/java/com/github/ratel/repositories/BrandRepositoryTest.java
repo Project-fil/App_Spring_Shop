@@ -1,6 +1,7 @@
 package com.github.ratel.repositories;
 
 import com.github.ratel.entity.Brand;
+import com.github.ratel.payload.EntityStatus;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class BrandRepositoryTest {
 
     @Test
     public void createBrandTest() {
-        this.brandRepository.save(new Brand("Ceresit"));
+        this.brandRepository.save(new Brand("Ceresit", EntityStatus.on));
     }
 
     @Test

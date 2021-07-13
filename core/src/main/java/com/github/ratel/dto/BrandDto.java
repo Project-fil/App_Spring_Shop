@@ -1,5 +1,6 @@
 package com.github.ratel.dto;
 
+import com.github.ratel.payload.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,8 @@ public class BrandDto {
     @NotEmpty
     @Size(min = 2, max = 20)
     private String brandName;
+
+    @NotNull
+    private EntityStatus status;
 
 }

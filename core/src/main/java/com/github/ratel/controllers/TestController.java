@@ -11,6 +11,7 @@ public class TestController {
         return "Hi admin";
     }
 
+
     @GetMapping("/user/get")
         public String getUser() {
             return "Hi user";

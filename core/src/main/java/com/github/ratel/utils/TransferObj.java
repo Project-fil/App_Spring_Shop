@@ -3,6 +3,8 @@ package com.github.ratel.utils;
 import com.github.ratel.dto.*;
 import com.github.ratel.entity.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,21 +25,29 @@ public class TransferObj {
         );
     }
 
-    public static UserDto toDto(Optional<User> user) {
-        Set<RoleDto> roleDTO = toDTO(user.get().getRoles());
+    public static List<UserDto> toAllDto(List<User> users) {
+        List<UserDto> convertToDto = new ArrayList<>();
+        for (User user : users) {
+            convertToDto.add(toDto(user));
+        }
+        return convertToDto;
+    }
+
+    public static UserDto toDto(User user) {
+        Set<RoleDto> roleDTO = toDTO(user.getRoles());
         return new UserDto(
-                user.get().getFirstname(),
-                user.get().getLastname(),
-                user.get().getEmail(),
-                user.get().getLogin(),
-                user.get().getPassword(),
-                user.get().getPhone(),
-                user.get().getAddress(),
-                user.get().getCreatedAt(),
-                user.get().getUpdatedAt(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getLogin(),
+                user.getPassword(),
+                user.getPhone(),
+                user.getAddress(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
                 roleDTO,
-                user.get().getVerification(),
-                user.get().getStatus()
+                user.getVerification(),
+                user.getStatus()
                 );
     }
 
@@ -104,11 +114,24 @@ public class TransferObj {
     }
 
     public static Brand toBrand(BrandDto data) {
-        return new Brand(data.getBrandName());
+        return new Brand(
+                data.getBrandName(),
+                data.getStatus()
+        );
     }
 
     public static BrandDto fromBrand(Brand data) {
-        return new BrandDto(data.getBrandName());
+        return new BrandDto(
+                data.getBrandName(),
+                data.getStatus()
+        );
+    }
+
+    public static BrandDto toBrand(Brand data) {
+        return new BrandDto(
+                data.getBrandName(),
+                data.getStatus()
+        );
     }
 
     public static Comment toComment(CommentDto data) {
