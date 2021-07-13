@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
@@ -12,15 +13,16 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class ForgotPassDto {
 
-    @NotEmpty
-    @Size(min = 2, max = 50)
-    String login;
+    @Email
+    @NotBlank
+    private String email;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 70)
-    String newPassword;
+    private String newPassword;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 70)
-    String confirmPassword;
+    private String confirmPassword;
+
 }

@@ -1,26 +1,43 @@
 package com.github.ratel.controllers;
 
+import com.github.ratel.dto.UserDto;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
+import com.github.ratel.exceptions.EntityNotFound;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.services.impl.UserService;
+import com.github.ratel.utils.TransferObj;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
+    @Secured("ROLE_USER")
     @GetMapping
-    public List<User> findAllUsers() {
-        return userService.findAllUsers();
+    public List<UserDto> findAllUsers() {
+        List<User> users = userService.findAllUsers();
+        return TransferObj.toAllDto(users).stream()
+                .filter(user -> user.getStatus().equals(EntityStatus.on))
+                .collect(Collectors.toList());
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{userId}")
-    public User findUserById(@PathVariable long userId) {
-        return userService.findUserById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
+    public UserDto findUserById(@PathVariable long userId) {
+        User user = userService.findById(userId);
+            return TransferObj.toDto(user);
     }
 
     @PostMapping
@@ -35,6 +52,6 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable long userId) {
-        userService.deleteUser(userId);
+        this.userService.deleteUserById(userId);
     }
 }

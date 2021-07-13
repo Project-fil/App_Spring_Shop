@@ -1,4 +1,4 @@
-package com.github.ratel.services;
+package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Comment;
 import com.github.ratel.repositories.CommentRepository;

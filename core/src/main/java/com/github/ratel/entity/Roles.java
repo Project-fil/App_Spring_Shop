@@ -4,11 +4,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Entity
-@Table(name = "role_table")
 @Data
-public class Role {
+@Entity
+@Table(name = "roles")
+public class Roles {
 
     @Id
     @NotNull
@@ -17,7 +18,10 @@ public class Role {
     private long id;
 
     @NotNull
-    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
-    private String name;
+    @Column(name = "role")
+    private String role;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
 }

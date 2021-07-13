@@ -1,11 +1,12 @@
 package com.github.ratel.controllers;
 
 import com.github.ratel.dto.ProductDto;
-import com.github.ratel.entity.EntityStatus;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.entity.Product;
 import com.github.ratel.exceptions.ProductException;
 import com.github.ratel.services.impl.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class ProductController {
     }
 
     //POST /product
+    @PreAuthorize(value = "hasRole('admin')")
     @PostMapping
     public long createProduct(@RequestBody ProductDto productDto) {
         return productService.createProduct(productDto);

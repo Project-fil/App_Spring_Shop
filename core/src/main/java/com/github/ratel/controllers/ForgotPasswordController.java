@@ -1,17 +1,20 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.EmailDto;
 import com.github.ratel.dto.ForgotPassDto;
+import com.github.ratel.entity.ConfirmToken;
 import com.github.ratel.entity.User;
-import com.github.ratel.exceptions.ConfirmPasswordException;
-import com.github.ratel.repositories.UserRepository;
+import com.github.ratel.exceptions.InvalidTokenException;
+import com.github.ratel.exceptions.WrongUserEmail;
+import com.github.ratel.services.ConfirmTokenService;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.impl.ForgotPasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.ratel.services.impl.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,13 +22,16 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/forgot")
+@RequiredArgsConstructor
 public class ForgotPasswordController {
 
-    @Value("${app.forgot.password}")
-    private String forgotPassword;
-    // = "Follow the link for change password http://localhost:8083/forgot/password?code=";
+    @Value("${app.email.text}")
+    private String textMessageEmail;
 
-    private final UserRepository userRepository;
+    @Value("${app.forgot.domain}")
+    private String forgotPasswordDomain;
+
+    private final UserService userService;
 
     private final ForgotPasswordService passwordService;
 
@@ -33,51 +39,36 @@ public class ForgotPasswordController {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public ForgotPasswordController(UserRepository userRepository,
-                                    ForgotPasswordService passwordService,
-                                    EmailService emailService,
-                                    PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordService = passwordService;
-        this.emailService = emailService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final ConfirmTokenService confirmTokenService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public void sendingLetterToReplacementPassword(@RequestBody @Valid EmailDto emailDto) {
-        User user = passwordService.findByEmail(emailDto.getEmail());
-        if (user.getEmail() != null) {
-            user.setActivationCode(UUID.randomUUID().toString());
-            emailService.sendMessageToEmail(user.getEmail(), "Password change",
-                    forgotPassword + user.getActivationCode());
-            userRepository.save(user);
-        } else { throw new NullPointerException("Email does not match"); }
+    @ResponseStatus(HttpStatus.CREATED)
+    public void submitForgotPassword(@Valid @RequestBody ForgotPassDto payload) {
+        User user = this.passwordService.findByEmail(payload.getEmail());
+        if (StringUtils.hasText(user.getEmail())) {
+            String token = UUID.randomUUID().toString();
+            ConfirmToken ct = new ConfirmToken(user, token, this.passwordEncoder.encode(payload.getConfirmPassword()));
+            var pattern = String.format(
+                    this.textMessageEmail, "change password ",
+                    this.forgotPasswordDomain,
+                    "/forgot/password?token=", token);
+            this.emailService.sendMessageToEmail(
+                    user.getEmail(), "Password change", pattern);
+            this.confirmTokenService.create(ct);
+        } else {
+            throw new WrongUserEmail();
+        }
     }
 
     @GetMapping("/password")
     @ResponseStatus(HttpStatus.OK)
-    public void changePassword(@RequestParam ("code") String code) {
-        User user = userRepository.findByActivationCode(code);
-        if (user.getActivationCode() == null) {
-            throw new NullPointerException("ActivationCode to change the password not found");
-        }
-    }
-
-    @PostMapping("/change")
-    @ResponseStatus(HttpStatus.OK)
-    public void enterNewPassword(@RequestBody @Valid ForgotPassDto forgotDto) {
-        User user = passwordService.findByLogin(forgotDto.getLogin());
-        if (user.getLogin().equals(forgotDto.getLogin())) {
-            if(forgotDto.getNewPassword().equals(forgotDto.getConfirmPassword())) {
-            user.setPassword(passwordEncoder.encode(forgotDto.getConfirmPassword()));
-            userRepository.save(user);
-            } else { throw new ConfirmPasswordException("NewPassword does not match confirmPassword");
-            }
+    public void changePassword(@RequestParam("token") String token) {
+        ConfirmToken ct = this.confirmTokenService.findByToken(token);
+        if (ct.getToken().equals(token)) {
+            User user = ct.getUser();
+            this.userService.updateUser(user.newPass(ct.getNewPass()));
         } else {
-            throw new NullPointerException("There is no user with this login");
+            throw new InvalidTokenException("Invalid forgot token");
         }
     }
-
 }

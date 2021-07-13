@@ -1,5 +1,6 @@
 package com.github.ratel.entity;
 
+import com.github.ratel.payload.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,28 +26,16 @@ public class Brand {
     @Column(name = "brand_name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String brandName;
 
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private EntityStatus status;
+
     public Brand(String brandName) {
         this.brandName = brandName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Brand brand = (Brand) o;
-        return id == brand.id && Objects.equals(brandName, brand.brandName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, brandName);
-    }
-
-    @Override
-    public String toString() {
-        return "Brand{" +
-                "id=" + id +
-                ", brandName='" + brandName + '\'' +
-                '}' + "\n";
+    public Brand(String brandName, EntityStatus status) {
+        this.brandName = brandName;
+        this.status = status;
     }
 }

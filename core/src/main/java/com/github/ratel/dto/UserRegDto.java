@@ -1,36 +1,36 @@
 package com.github.ratel.dto;
 
-import com.github.ratel.entity.User;
+import com.github.ratel.entity.Roles;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.payload.UserVerificationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegDto {
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 20)
     private String firstname;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 20)
     private String lastname;
 
     @Email
-    @NotEmpty
+    @NotBlank
     private String email;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 20)
     private String login;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 70)
     private String password;
 
@@ -45,7 +45,11 @@ public class UserRegDto {
     @PastOrPresent
     private Date createdAt = new Date();
 
+    private Set<Roles> roles;
+
     @NotNull
     private UserVerificationStatus verification = UserVerificationStatus.UNVERIFIED;
 
+    @NotNull
+    private EntityStatus status = EntityStatus.on;
 }

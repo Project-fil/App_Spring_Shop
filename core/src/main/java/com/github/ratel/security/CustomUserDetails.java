@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -20,8 +22,10 @@ public class CustomUserDetails implements UserDetails {
         CustomUserDetails cud = new CustomUserDetails();
         cud.login = user.getLogin();
         cud.password = user.getPassword();
-        cud.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
-    return cud;
+        cud.grantedAuthorities = user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                        .collect(Collectors.toList());
+        return cud;
     }
 
     @Override

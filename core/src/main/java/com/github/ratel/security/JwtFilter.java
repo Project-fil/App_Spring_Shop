@@ -1,12 +1,10 @@
 package com.github.ratel.security;
 
 import com.github.ratel.services.impl.CustomUserDetailsService;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -29,7 +27,6 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        logger.info("Do filter: ");
         String token = getTokenFromRequest((HttpServletRequest) request);
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String userLogin = jwtTokenProvider.getLoginFromToken(token);

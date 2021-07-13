@@ -1,13 +1,14 @@
 package com.github.ratel.entity;
 
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.payload.UserVerificationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -48,16 +49,19 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private Date updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "role")
-    private Role role;
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Roles> roles = new HashSet<>();
 
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
     @NotNull
-    @Column(name = "activation_code", columnDefinition = "TEXT")
-    private String activationCode;
+    @Column(name = "status")
+    private EntityStatus status;
 
     public User(String login, String password) {
         this.login = login;
@@ -79,7 +83,8 @@ public class User {
             String phone,
             String address,
             Date createdAt,
-            UserVerificationStatus verification
+            UserVerificationStatus verification,
+            EntityStatus status
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -90,6 +95,16 @@ public class User {
         this.address = address;
         this.createdAt = createdAt;
         this.verification = verification;
+        this.status = status;
+    }
 
+    public User newPass(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public User verificUser(UserVerificationStatus verification) {
+        this.verification = verification;
+        return this;
     }
 }

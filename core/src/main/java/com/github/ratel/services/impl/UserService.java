@@ -1,17 +1,18 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.dto.UserRegDto;
-import com.github.ratel.entity.Role;
+import com.github.ratel.entity.Roles;
 import com.github.ratel.entity.User;
-import com.github.ratel.payload.UserVerificationStatus;
+import com.github.ratel.exceptions.EntityNotFound;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.repositories.RoleRepository;
 import com.github.ratel.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -22,7 +23,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-
+    @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -33,8 +34,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUserById(long userId) {
-        return userRepository.findById(userId);
+    public User findById(long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
+    public User findUserById(long userId) {
+       return userRepository.getById(userId);
     }
 
     public User findByLogin(String login) {
@@ -48,17 +53,19 @@ public class UserService {
                 return user;
             }
         }
-        return null;
+     throw new EntityNotFound("Entity not found in db");
     }
 
+    @Transactional
     public User saveUser(User user) {
-        Role userRole = roleRepository.findByName("ROLE_USER");
-        user.setRole(userRole);
+        Roles userRoles = this.roleRepository.getById(1L);
+        user.setRoles(Set.of(userRoles));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public void updateUser(User user) {
+        user.setUpdatedAt(new Date());
         userRepository.save(user);
     }
 
@@ -71,13 +78,12 @@ public class UserService {
         user.setPassword(userRegDto.getPassword());
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
-
         doesUserExist(user.getId());
-        return userRepository.save(user).getId();
+        return this.userRepository.save(user).getId();
     }
 
     public User changeUserInfo(long userId, UserRegDto userRegDto) {
-        User user = findUserById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
 
         user.setFirstname(userRegDto.getFirstname());
         user.setLastname(userRegDto.getLastname());
@@ -87,28 +93,22 @@ public class UserService {
         user.setPhone(userRegDto.getPhone());
         user.setAddress(userRegDto.getAddress());
         user.setUpdatedAt(new Date());
-        return userRepository.save(user);
+        return this.userRepository.save(user);
     }
 
-    public void deleteUser(long userId) {
-        userRepository.deleteById(userId);
+    public void deleteUserById(long userId) {
+        User user = this.userRepository.getById(userId);
+        if(user.getStatus().equals(EntityStatus.on)) {
+            user.setStatus(EntityStatus.off);
+            this.updateUser(user);
+        } else {
+           throw new EntityNotFound("User has been deleted");
+        }
     }
 
     private void doesUserExist(long userId) {
-        if (findUserById(userId).isPresent()) {
+        if (this.userRepository.findById(userId).isPresent()) {
             throw new RuntimeException("This user already exists!");
         }
-    }
-
-    public boolean verificationUser(String code) {
-        User user = userRepository.findByActivationCode(code);
-        if (user == null) {
-            return false;
-        }
-        if (user.getActivationCode().equals(code)) {
-            user.setVerification(UserVerificationStatus.VERIFIED);
-            userRepository.save(user);
-        }
-        return true;
     }
 }
