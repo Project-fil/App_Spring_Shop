@@ -9,13 +9,13 @@ public interface SubcategoryService {
 
     List<Subcategory> findByAllSubcategory();
 
-    SubcategoryDto findById(long id);
+    Subcategory findById(long id);
 
-    SubcategoryDto findByName(String name);
+    Subcategory findByName(String name);
 
-    Subcategory create(Subcategory subcategory);
+    void create(Subcategory subcategory);
 
-    Subcategory update(Subcategory subcategory);
+    void update(Subcategory subcategory);
 
     void delete(long id);
 }

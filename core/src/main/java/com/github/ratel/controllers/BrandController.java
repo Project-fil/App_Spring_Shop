@@ -3,6 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.BrandDto;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.exceptions.EntityNotFound;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.services.impl.BrandService;
 import com.github.ratel.utils.TransferObj;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,11 +13,22 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/brand")
+@ApiImplicitParams(
+        @ApiImplicitParam(
+                name = "Authorization",
+                value = "Access Token",
+                required = true,
+                paramType = "header",
+                example = "Bearer access_token"
+        )
+)
 public class BrandController {
 
     private final BrandService brandService;
@@ -28,39 +40,46 @@ public class BrandController {
 
     @GetMapping
     public List<Brand> findAllBrand() {
-       return this.brandService.findAllBrand();
+        return this.brandService.findAllBrand();
+    }
+
+    @GetMapping("/user")
+    public List<BrandDto> findAllBrandFromUser() {
+        List<Brand> brands = this.brandService.findAllBrand().stream()
+                .filter(brand -> brand.getStatus().equals(EntityStatus.on))
+                .collect(Collectors.toList());
+        return TransferObj.toAllBrandDto(brands);
     }
 
     @GetMapping("/{brandId}")
-    public BrandDto findByIdBrand(@PathVariable long brandId) {
+    public Brand findByIdBrand(@PathVariable long brandId) {
         Brand brand = this.brandService.findBrandById(brandId);
-        return TransferObj.toBrand(brand);
+        if (brand.getStatus().equals(EntityStatus.on)) {
+            return brand;
+        } else {
+            throw new EntityNotFound("Brand not found");
+        }
     }
 
-    @GetMapping("/name-{brandName}")
+    @GetMapping("/name/{brandName}")
     public BrandDto findByName(@PathVariable("brandName") String brandName) {
         Brand brand = this.brandService.findBrandByName(brandName);
-        return TransferObj.toBrand(brand);
+        if (brand.getStatus().equals(EntityStatus.on)) {
+            return TransferObj.toBrand(brand);
+        } else {
+            throw new EntityNotFound("Brand not found");
+        }
     }
 
     @PostMapping
-    @ApiImplicitParams(
-            @ApiImplicitParam(
-                    name = "Authorization",
-                    value = "Access Token",
-                    required = true,
-                    paramType = "header",
-                    example = "Bearer access_token"
-            )
-    )
-    public Brand createBrand(@RequestBody BrandDto brandDto) {
+    public void createBrand(@RequestBody BrandDto brandDto) {
         Brand brand = TransferObj.toBrand(brandDto);
-        return brandService.saveBrand(brand);
+        brandService.saveBrand(brand);
     }
 
     @PutMapping
-    public Brand updateBrand(@RequestBody Brand brand) {
-        return brandService.updateBrandById(brand);
+    public void updateBrand(@RequestBody Brand brand) {
+        brandService.updateBrandById(brand);
     }
 
     @DeleteMapping("/{brandId}")

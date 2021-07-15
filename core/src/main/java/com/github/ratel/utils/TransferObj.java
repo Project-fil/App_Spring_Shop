@@ -5,7 +5,6 @@ import com.github.ratel.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -115,24 +114,29 @@ public class TransferObj {
         );
     }
 
+    public static List<BrandDto> toAllBrandDto (List<Brand> brands) {
+        List<BrandDto> convertBrand = new ArrayList<>();
+        for (Brand brand : brands) {
+            convertBrand.add(toBrand(brand));
+        }
+        return convertBrand;
+    }
+
     public static Brand toBrand(BrandDto data) {
         return new Brand(
-                data.getBrandName(),
-                data.getStatus()
+                data.getBrandName()
         );
     }
 
     public static BrandDto fromBrand(Brand data) {
         return new BrandDto(
-                data.getBrandName(),
-                data.getStatus()
+                data.getBrandName()
         );
     }
 
     public static BrandDto toBrand(Brand data) {
         return new BrandDto(
-                data.getBrandName(),
-                data.getStatus()
+                data.getBrandName()
         );
     }
 

@@ -30,34 +30,35 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     }
 
     @Override
-    public SubcategoryDto findById(long id) {
+    public Subcategory findById(long id) {
         Subcategory subcategory = this.repository.findById(id).orElseThrow();
-        if (subcategory.equals(EntityStatus.on)) {
-            return TransferObj.toSubcategory(subcategory);
+        if (subcategory.getStatus().equals(EntityStatus.on)) {
+            return subcategory;
+        } else {
+            throw new EntityNotFound("Subcategory does not exist");
         }
-        throw new EntityNotFound("Subcategory does not exist");
     }
 
     @Override
-    public SubcategoryDto findByName(String name) {
+    public Subcategory findByName(String name) {
         Subcategory subcategory = this.repository.findByName(name).orElseThrow();
-        if (subcategory.equals(EntityStatus.on)) {
-            return TransferObj.toSubcategory(subcategory);
+        if (subcategory.getStatus().equals(EntityStatus.on)) {
+            return subcategory;
         }
         throw new EntityNotFound("Subcategory does not exist");
     }
 
     @Override
-    public Subcategory create(Subcategory subcategory) {
+    public void create(Subcategory subcategory) {
         subcategory.setStatus(EntityStatus.on);
-        return this.repository.save(subcategory);
+        this.repository.save(subcategory);
     }
 
     @Override
-    public Subcategory update(Subcategory subcategory) {
+    public void update(Subcategory subcategory) {
         Subcategory updateSubcategory = this.repository.getById(subcategory.getId());
         updateSubcategory.setName(subcategory.getName());
-        return this.repository.save(updateSubcategory);
+        this.repository.save(updateSubcategory);
     }
 
     @Override
@@ -66,7 +67,8 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         if (subcategory.getStatus().equals(EntityStatus.on)) {
             subcategory.setStatus(EntityStatus.off);
             this.repository.save(subcategory);
+        } else {
+            throw new EntityNotFound("Subcategory not found");
         }
-        throw new EntityNotFound("Subcategory not found");
     }
 }

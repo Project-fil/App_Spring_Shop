@@ -4,17 +4,30 @@ import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.dto.SubcategoryDto;
 import com.github.ratel.entity.Category;
 import com.github.ratel.entity.Subcategory;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.services.CategoryService;
 import com.github.ratel.services.SubcategoryService;
 import com.github.ratel.utils.TransferObj;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/subcategory")
+@ApiImplicitParams(
+        @ApiImplicitParam(
+                name = "Authorization",
+                value = "Access Token",
+                required = true,
+                paramType = "header",
+                example = "Bearer access_token"
+        )
+)
 public class SubcategoryController {
 
     private final CategoryService categoryService;
@@ -34,32 +47,44 @@ public class SubcategoryController {
         return TransferObj.toAllSubcategoryDto(subcategories);
     }
 
+    @GetMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SubcategoryDto> readAllSubcategoryForUser() {
+        List<Subcategory> subcategories = this.subcategoryService.findByAllSubcategory().stream()
+                .filter(subcategory -> subcategory.getStatus().equals(EntityStatus.on))
+                .collect(Collectors.toList());
+        return TransferObj.toAllSubcategoryDto(subcategories);
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SubcategoryDto readById(@PathVariable long id) {
-        return this.subcategoryService.findById(id);
+       Subcategory subcategory = this.subcategoryService.findById(id);
+       return TransferObj.toSubcategory(subcategory);
     }
 
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public SubcategoryDto readByName(@PathVariable String name) {
-        return this.subcategoryService.findByName(name);
+        Subcategory subcategory = this.subcategoryService.findByName(name);
+        return TransferObj.toSubcategory(subcategory);
     }
 
     @PostMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Subcategory saveSubcategory(@PathVariable Long categoryId, @RequestBody SubcategoryDto subcategoryDto) {
+    public void saveSubcategory(@PathVariable Long categoryId, @RequestBody SubcategoryDto subcategoryDto) {
         Category c = this.categoryService.raedById(categoryId);
         Subcategory subcategory = TransferObj.toSubcategoryFromUser(subcategoryDto);
         subcategory.setCategory(c);
         c.addSubcategory(subcategory);
-        return this.subcategoryService.create(subcategory);
+        this.subcategoryService.create(subcategory);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-    public Subcategory updateSubcategory(@RequestBody Subcategory subcategory) {
-        return this.subcategoryService.update(subcategory);
+    public void updateSubcategory(@RequestBody SubcategoryDto subcategoryDto) {
+        Subcategory subcategory = TransferObj.toSubcategoryFromUser(subcategoryDto);
+        this.subcategoryService.update(subcategory);
     }
 
     @DeleteMapping("/{id}")
