@@ -42,8 +42,8 @@ public class BrandService {
         return this.brandRepository.save(brand);
     }
 
-    public Brand updateBrandById(long id, Brand brand) {
-        Brand updateBrand = findBrandById(id);
+    public Brand updateBrandById(Brand brand) {
+        Brand updateBrand = findBrandById(brand.getId());
         updateBrand.setBrandName(brand.getBrandName());
         return this.brandRepository.save(updateBrand);
     }

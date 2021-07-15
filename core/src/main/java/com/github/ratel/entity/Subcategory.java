@@ -1,10 +1,11 @@
 package com.github.ratel.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.ratel.payload.EntityStatus;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "subcategories")
@@ -15,12 +16,28 @@ public class Subcategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subcategory_id", nullable = false, unique = true, columnDefinition = "BIGINT")
-    private long categoryId;
+    @Column(name = "id", nullable = false, unique = true, columnDefinition = "BIGINT")
+    private long id;
 
-    @Column(name = "subcategory_name", nullable = false, unique = true, columnDefinition = "TEXT")
-    private String categoryName;
+    @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
+    private String name;
 
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT")
-    private String subcategoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subcategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Product> products = new HashSet<>();
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status = EntityStatus.on;
+
+    public Subcategory(String name, Category category, Set<Product> products) {
+        this.name = name;
+        this.category = category;
+        this.products = products;
+    }
 }

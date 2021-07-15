@@ -26,7 +26,6 @@ public class Brand {
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String brandName;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private EntityStatus status;

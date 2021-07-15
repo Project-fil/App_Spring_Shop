@@ -48,11 +48,13 @@ public class TransferObj {
                 roleDTO,
                 user.getVerification(),
                 user.getStatus()
-                );
+        );
     }
 
     private static Set<RoleDto> toDTO(Set<Roles> role) {
-        return role.stream().map(role1 -> toDto(role1)).collect(Collectors.toSet());
+        return role.stream()
+                .map(role1 -> toDto(role1))
+                .collect(Collectors.toSet());
     }
 
     private static RoleDto toDto(Roles roles) {
@@ -151,4 +153,90 @@ public class TransferObj {
                 data.getCreatedAt()
         );
     }
-}
+
+    public static List<CategoryDto> toAllCategoryDto(List<Category> categories) {
+        List<CategoryDto> convertToDto = new ArrayList<>();
+        for (Category category : categories) {
+            convertToDto.add(toCategory(category));
+        }
+        return convertToDto;
+    }
+
+    public static Category toCategoryFromUser(CategoryDto categoryDto) {
+        return new Category(
+                categoryDto.getName()
+        );
+    }
+
+    public static CategoryDto toCategory(Category category) {
+        Set<SubcategoryDto> categoryDtoSet = subcategoryDtoSet(category.getSubcategories());
+        return new CategoryDto(
+                category.getName(),
+                categoryDtoSet,
+                category.getStatus()
+        );
+    }
+
+    public static List<SubcategoryDto> toAllSubcategoryDto(List<Subcategory> subcategories) {
+        List<SubcategoryDto> convertToDto = new ArrayList<>();
+        for (Subcategory subcategory : subcategories) {
+            convertToDto.add(toSubcategory(subcategory));
+        }
+        return convertToDto;
+    }
+
+    public static Set<SubcategoryDto> subcategoryDtoSet(Set<Subcategory> subcategories) {
+        return subcategories.stream()
+                .map(subcategory -> toSubcategory(subcategory))
+                .collect(Collectors.toSet());
+    }
+
+    public static SubcategoryDto toSubcategory(Subcategory subcategory) {
+        Set<ProductDto> productDtoList = toProductDtos(subcategory.getProducts());
+        return new SubcategoryDto(
+                subcategory.getName(),
+                subcategory.getCategory(),
+                productDtoList
+        );
+    }
+
+    public static Subcategory toSubcategoryFromUser(SubcategoryDto subcategoryDto) {
+        Set<Product> productDtoList = toProductDt(subcategoryDto.getProducts());
+        return new Subcategory(
+                subcategoryDto.getName(),
+                subcategoryDto.getCategory(),
+                productDtoList
+        );
+    }
+
+    public static Set<Product> toProductDt(Set<ProductDto> products) {
+        return products.stream()
+                .map(product -> toProductos(product))
+                .collect(Collectors.toSet());
+    }
+
+    public static Set<ProductDto> toProductDtos(Set<Product> products) {
+        return products.stream()
+                .map(product -> toProduct(product))
+                .collect(Collectors.toSet());
+    }
+
+    public static ProductDto toProduct(Product product) {
+        return new ProductDto(
+                product.getVendorCode(),
+                product.getName(),
+                product.getPrice(),
+                product.getQuantity()
+        );
+    }
+
+        public static Product toProductos(ProductDto productDto){
+            return new Product(
+                    productDto.getVendorCode(),
+                    productDto.getName(),
+                    productDto.getPrice(),
+                    productDto.getQuantity()
+            );
+        }
+
+    }

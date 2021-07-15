@@ -47,10 +47,9 @@ public class BrandController {
         return brandService.saveBrand(brand);
     }
 
-    @PutMapping("/{brandId}")
-    public Brand updateBrand(@PathVariable long brandId, @RequestBody BrandDto brandDto) {
-        Brand brand = TransferObj.toBrand(brandDto);
-        return brandService.updateBrandById(brandId, brand);
+    @PutMapping
+    public Brand updateBrand(@RequestBody Brand brand) {
+        return brandService.updateBrandById(brand);
     }
 
     @DeleteMapping("/{brandId}")

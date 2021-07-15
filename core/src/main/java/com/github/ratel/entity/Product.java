@@ -23,9 +23,13 @@ public class Product {
     @Column(name = "vendor_code", nullable = false)
     private String vendorCode;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subcategory_id", referencedColumnName = "id")
+    private Subcategory subcategory;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -38,5 +42,12 @@ public class Product {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EntityStatus status;
+    private EntityStatus status = EntityStatus.on;
+
+    public Product(String vendorCode, String name, BigDecimal price, long quantity) {
+        this.vendorCode = vendorCode;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
 }
