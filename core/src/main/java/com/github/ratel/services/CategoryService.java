@@ -11,6 +11,8 @@ public interface CategoryService {
 
     CategoryDto findCategoryById(long id);
 
+    Category raedById(long id);
+
     CategoryDto findCategoryByName(String name);
 
     Category createCategory(Category category);

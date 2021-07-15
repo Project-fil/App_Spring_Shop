@@ -41,6 +41,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category raedById(long id) {
+        return this.categoryRepository.findById(id).orElseThrow();
+    }
+
+    @Override
     public CategoryDto findCategoryByName(String name) {
         Category category = this.categoryRepository.findByName(name).orElseThrow();
         if(category.getStatus().equals(EntityStatus.on)) {

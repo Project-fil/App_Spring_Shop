@@ -9,11 +9,12 @@ import com.github.ratel.services.SubcategoryService;
 import com.github.ratel.utils.TransferObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SubcategoryServiceImpl implements SubcategoryService {
 
     private final SubcategoryRepository repository;
@@ -24,11 +25,8 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     }
 
     @Override
-    public List<SubcategoryDto> findByAllSubcategory() {
-        List<Subcategory> subcategories = this.repository.findAll();
-        return TransferObj.toAllSubcategoryDto(subcategories).stream()
-                .filter(subcategory -> subcategory.equals(EntityStatus.on))
-                .collect(Collectors.toList());
+    public List<Subcategory> findByAllSubcategory() {
+        return this.repository.findAll();
     }
 
     @Override

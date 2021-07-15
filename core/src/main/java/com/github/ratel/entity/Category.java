@@ -35,7 +35,14 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
+
     public Category(String name) {
         this.name = name;
     }
+
+
+    public void addSubcategory(Subcategory subcategory) {
+        this.subcategories.add(subcategory);
+    }
+
 }

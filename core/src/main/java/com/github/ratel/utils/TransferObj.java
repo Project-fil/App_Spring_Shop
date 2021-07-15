@@ -192,20 +192,16 @@ public class TransferObj {
     }
 
     public static SubcategoryDto toSubcategory(Subcategory subcategory) {
-        Set<ProductDto> productDtoList = toProductDtos(subcategory.getProducts());
         return new SubcategoryDto(
-                subcategory.getName(),
-                subcategory.getCategory(),
-                productDtoList
+                subcategory.getId(),
+                subcategory.getName()
         );
     }
 
     public static Subcategory toSubcategoryFromUser(SubcategoryDto subcategoryDto) {
-        Set<Product> productDtoList = toProductDt(subcategoryDto.getProducts());
         return new Subcategory(
-                subcategoryDto.getName(),
-                subcategoryDto.getCategory(),
-                productDtoList
+                subcategoryDto.getId(),
+                subcategoryDto.getName()
         );
     }
 

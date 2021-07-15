@@ -22,6 +22,8 @@ public class Subcategory {
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
@@ -34,6 +36,11 @@ public class Subcategory {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EntityStatus status = EntityStatus.on;
+
+    public Subcategory(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Subcategory(String name, Category category, Set<Product> products) {
         this.name = name;

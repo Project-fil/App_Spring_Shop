@@ -1,7 +1,10 @@
 package com.github.ratel.controllers;
 
+import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.dto.SubcategoryDto;
+import com.github.ratel.entity.Category;
 import com.github.ratel.entity.Subcategory;
+import com.github.ratel.services.CategoryService;
 import com.github.ratel.services.SubcategoryService;
 import com.github.ratel.utils.TransferObj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +17,21 @@ import java.util.List;
 @RequestMapping("/subcategory")
 public class SubcategoryController {
 
+    private final CategoryService categoryService;
+
     private final SubcategoryService subcategoryService;
 
     @Autowired
-    public SubcategoryController(SubcategoryService subcategoryService) {
+    public SubcategoryController(CategoryService categoryService, SubcategoryService subcategoryService) {
+        this.categoryService = categoryService;
         this.subcategoryService = subcategoryService;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<SubcategoryDto> readAllSubcategory() {
-        return this.subcategoryService.findByAllSubcategory();
+        List<Subcategory> subcategories = this.subcategoryService.findByAllSubcategory();
+        return TransferObj.toAllSubcategoryDto(subcategories);
     }
 
     @GetMapping("/{id}")
@@ -39,10 +46,13 @@ public class SubcategoryController {
         return this.subcategoryService.findByName(name);
     }
 
-    @PostMapping
+    @PostMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Subcategory saveSubcategory(@RequestBody SubcategoryDto subcategoryDto) {
+    public Subcategory saveSubcategory(@PathVariable Long categoryId, @RequestBody SubcategoryDto subcategoryDto) {
+        Category c = this.categoryService.raedById(categoryId);
         Subcategory subcategory = TransferObj.toSubcategoryFromUser(subcategoryDto);
+        subcategory.setCategory(c);
+        c.addSubcategory(subcategory);
         return this.subcategoryService.create(subcategory);
     }
 

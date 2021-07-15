@@ -5,6 +5,8 @@ import com.github.ratel.entity.Brand;
 import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.services.impl.BrandService;
 import com.github.ratel.utils.TransferObj;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,15 @@ public class BrandController {
     }
 
     @PostMapping
+    @ApiImplicitParams(
+            @ApiImplicitParam(
+                    name = "Authorization",
+                    value = "Access Token",
+                    required = true,
+                    paramType = "header",
+                    example = "Bearer access_token"
+            )
+    )
     public Brand createBrand(@RequestBody BrandDto brandDto) {
         Brand brand = TransferObj.toBrand(brandDto);
         return brandService.saveBrand(brand);

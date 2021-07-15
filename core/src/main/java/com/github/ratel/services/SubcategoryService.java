@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SubcategoryService {
 
-    List<SubcategoryDto> findByAllSubcategory();
+    List<Subcategory> findByAllSubcategory();
 
     SubcategoryDto findById(long id);
 
