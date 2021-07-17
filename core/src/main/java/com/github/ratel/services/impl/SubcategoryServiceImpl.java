@@ -1,12 +1,10 @@
 package com.github.ratel.services.impl;
 
-import com.github.ratel.dto.SubcategoryDto;
 import com.github.ratel.entity.Subcategory;
 import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.repositories.SubcategoryRepository;
 import com.github.ratel.services.SubcategoryService;
-import com.github.ratel.utils.TransferObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +24,13 @@ public class SubcategoryServiceImpl implements SubcategoryService {
 
     @Override
     public List<Subcategory> findByAllSubcategory() {
+
         return this.repository.findAll();
+    }
+
+    @Override
+    public List<Subcategory> findAllSubcategoryByStatus(EntityStatus status) {
+        return this.repository.findAllByStatus(status);
     }
 
     @Override

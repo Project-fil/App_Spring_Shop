@@ -40,10 +40,10 @@ public class SubcategoryController {
         this.subcategoryService = subcategoryService;
     }
 
-    @GetMapping
+    @GetMapping("/status")
     @ResponseStatus(HttpStatus.OK)
-    public List<SubcategoryDto> readAllSubcategory() {
-        List<Subcategory> subcategories = this.subcategoryService.findByAllSubcategory();
+    public List<SubcategoryDto> readAllSubcategoryByStatus(@PathVariable EntityStatus status) {
+        List<Subcategory> subcategories = this.subcategoryService.findAllSubcategoryByStatus(status);
         return TransferObj.toAllSubcategoryDto(subcategories);
     }
 
@@ -72,9 +72,9 @@ public class SubcategoryController {
 
     @PostMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveSubcategory(@PathVariable Long categoryId, @RequestBody SubcategoryDto subcategoryDto) {
+    public void saveSubcategory(@PathVariable Long categoryId, @RequestBody SubcategoryDto payload) {
         Category c = this.categoryService.raedById(categoryId);
-        Subcategory subcategory = TransferObj.toSubcategoryFromUser(subcategoryDto);
+        Subcategory subcategory = TransferObj.toSubcategoryFromUser(payload);
         subcategory.setCategory(c);
         c.addSubcategory(subcategory);
         this.subcategoryService.create(subcategory);
@@ -82,8 +82,8 @@ public class SubcategoryController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-    public void updateSubcategory(@RequestBody SubcategoryDto subcategoryDto) {
-        Subcategory subcategory = TransferObj.toSubcategoryFromUser(subcategoryDto);
+    public void updateSubcategory(@RequestBody SubcategoryDto payload) {
+        Subcategory subcategory = TransferObj.toSubcategoryFromUser(payload);
         this.subcategoryService.update(subcategory);
     }
 

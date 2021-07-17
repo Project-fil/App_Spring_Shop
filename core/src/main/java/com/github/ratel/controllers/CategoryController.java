@@ -2,6 +2,8 @@ package com.github.ratel.controllers;
 
 import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.entity.Category;
+import com.github.ratel.exceptions.EntityNotFound;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.services.CategoryService;
 import com.github.ratel.utils.TransferObj;
 import io.swagger.annotations.ApiImplicitParam;
@@ -35,32 +37,43 @@ public class CategoryController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryDto> readAllCategory() {
-        return this.categoryService.findAllCategory();
+        List<Category> categories = this.categoryService.findAllCategory();
+        return TransferObj.toAllCategoryDto(categories);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto readById(@PathVariable long id) {
-        return this.categoryService.findCategoryById(id);
+        Category category = this.categoryService.raedById(id);
+        if (category.getStatus().equals(EntityStatus.on)) {
+            return TransferObj.toCategory(category);
+        } else {
+            throw new EntityNotFound("Category does not exist");
+        }
     }
 
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto readByName(@PathVariable String name) {
-        return this.categoryService.findCategoryByName(name);
+        Category category = this.categoryService.findCategoryByName(name);
+        if (category.getStatus().equals(EntityStatus.on)) {
+            return TransferObj.toCategory(category);
+        } else {
+            throw new EntityNotFound("Category does not exist");
+        }
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Category saveCategory(@RequestBody CategoryDto categoryDto) {
+    public void saveCategory(@RequestBody CategoryDto categoryDto) {
         Category category = TransferObj.toCategoryFromUser(categoryDto);
-        return this.categoryService.createCategory(category);
+        this.categoryService.createCategory(category);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-    public Category updateCategory(@RequestBody Category category) {
-        return this.categoryService.updateCategory(category);
+    public void updateCategory(@RequestBody Category category) {
+        this.categoryService.updateCategory(category);
     }
 
     @DeleteMapping("/{id}")

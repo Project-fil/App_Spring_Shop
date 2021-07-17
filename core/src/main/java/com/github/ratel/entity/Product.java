@@ -1,9 +1,7 @@
 package com.github.ratel.entity;
 
 import com.github.ratel.payload.EntityStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -27,6 +25,8 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subcategory_id", referencedColumnName = "id")
     private Subcategory subcategory;
@@ -42,10 +42,19 @@ public class Product {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EntityStatus status = EntityStatus.on;
+    private EntityStatus status;
 
     public Product(String vendorCode, String name, BigDecimal price, long quantity) {
         this.vendorCode = vendorCode;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Product(String vendorCode, String name, BigDecimal price, long quantity, Category category, Subcategory subcategory) {
+        this.vendorCode = vendorCode;
+        this.category = category;
+        this.subcategory = subcategory;
         this.name = name;
         this.price = price;
         this.quantity = quantity;

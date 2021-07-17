@@ -4,7 +4,8 @@ import com.github.ratel.payload.EntityStatus;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,7 +32,7 @@ public class Subcategory {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subcategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -42,9 +43,20 @@ public class Subcategory {
         this.name = name;
     }
 
-    public Subcategory(String name, Category category, Set<Product> products) {
+    public Subcategory(long id, String name, Category category) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+    }
+
+    public Subcategory(long id, String name, Category category, List<Product> products) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.products = products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
     }
 }

@@ -7,17 +7,15 @@ import java.util.List;
 
 public interface CategoryService {
 
-    List<CategoryDto> findAllCategory();
-
-    CategoryDto findCategoryById(long id);
+    List<Category> findAllCategory();
 
     Category raedById(long id);
 
-    CategoryDto findCategoryByName(String name);
+    Category findCategoryByName(String name);
 
-    Category createCategory(Category category);
+    void createCategory(Category category);
 
-    Category updateCategory(Category category);
+    void updateCategory(Category category);
 
     void deleteCategoryById(long id);
 

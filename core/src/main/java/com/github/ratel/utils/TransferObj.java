@@ -196,9 +196,11 @@ public class TransferObj {
     }
 
     public static SubcategoryDto toSubcategory(Subcategory subcategory) {
+        List<ProductDto> productDtoList = toProductDtos(subcategory.getProducts());
         return new SubcategoryDto(
                 subcategory.getId(),
-                subcategory.getName()
+                subcategory.getName(),
+                productDtoList
         );
     }
 
@@ -209,17 +211,18 @@ public class TransferObj {
         );
     }
 
-    public static Set<Product> toProductDt(Set<ProductDto> products) {
+    public static List<Product> toProductDt(List<ProductDto> products) {
         return products.stream()
                 .map(product -> toProductos(product))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public static Set<ProductDto> toProductDtos(Set<Product> products) {
+    public static List<ProductDto> toProductDtos(List<Product> products) {
         return products.stream()
                 .map(product -> toProduct(product))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
+
 
     public static ProductDto toProduct(Product product) {
         return new ProductDto(
@@ -237,6 +240,14 @@ public class TransferObj {
                     productDto.getPrice(),
                     productDto.getQuantity()
             );
+        }
+
+        public static List<ProductDto> toAllProductDto(List<Product> productList) {
+        List<ProductDto> productDtoList = new ArrayList<>();
+            for (Product product:productList) {
+                productDtoList.add(toProduct(product));
+            }
+            return productDtoList;
         }
 
     }

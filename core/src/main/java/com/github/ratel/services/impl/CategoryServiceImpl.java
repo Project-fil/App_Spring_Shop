@@ -24,20 +24,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findAllCategory() {
-         List<Category> categories = this.categoryRepository.findAll();
-        return TransferObj.toAllCategoryDto(categories).stream()
-                .filter(category -> category.getStatus().equals(EntityStatus.on))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public CategoryDto findCategoryById(long id) {
-        Category category = this.categoryRepository.findById(id).orElseThrow();
-        if(category.getStatus().equals(EntityStatus.on)) {
-            return TransferObj.toCategory(category);
-        }
-        throw new EntityNotFound("Category does not exist");
+    public List<Category> findAllCategory() {
+        return this.categoryRepository.findAll();
     }
 
     @Override
@@ -46,25 +34,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto findCategoryByName(String name) {
-        Category category = this.categoryRepository.findByName(name).orElseThrow();
-        if(category.getStatus().equals(EntityStatus.on)) {
-            return TransferObj.toCategory(category);
-        }
-        throw new EntityNotFound("Category does not exist");
+    public Category findCategoryByName(String name) {
+        return this.categoryRepository.findByName(name).orElseThrow();
     }
 
     @Override
-    public Category createCategory(Category category) {
+    public void createCategory(Category category) {
        category.setStatus(EntityStatus.on);
-       return this.categoryRepository.save(category);
+       this.categoryRepository.save(category);
     }
 
     @Override
-    public Category updateCategory(Category category) {
+    public void updateCategory(Category category) {
         Category updateCategory = this.categoryRepository.findById(category.getId()).orElseThrow();
         updateCategory.setName(category.getName());
-        return this.categoryRepository.save(updateCategory);
+        this.categoryRepository.save(updateCategory);
     }
 
     @Override

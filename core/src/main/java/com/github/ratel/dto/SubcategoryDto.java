@@ -1,11 +1,11 @@
 package com.github.ratel.dto;
 
-import com.github.ratel.payload.EntityStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.ratel.entity.Category;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +16,7 @@ public class SubcategoryDto {
 
     @NotBlank
     private String name;
+
+    private List<ProductDto> products = new ArrayList<>();
 
 }
