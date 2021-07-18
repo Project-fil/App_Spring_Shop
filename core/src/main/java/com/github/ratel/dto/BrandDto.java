@@ -14,6 +14,6 @@ public class BrandDto {
 
     @NotEmpty
     @Size(min = 2, max = 20)
-    private String brandName;
+    private String name;
 
 }

@@ -28,7 +28,7 @@ public class BrandService {
     }
 
     public Brand findBrandByName(String name) {
-        return this.brandRepository.findByBrandName(name).orElseThrow(() -> new RuntimeException("Name missing"));
+        return this.brandRepository.findByName(name).orElseThrow(() -> new RuntimeException("Name missing"));
     }
 
     public void saveBrand(Brand brand) {
@@ -38,7 +38,7 @@ public class BrandService {
 
     public void updateBrandById(Brand brand) {
         Brand updateBrand = findBrandById(brand.getId());
-        updateBrand.setBrandName(brand.getBrandName());
+        updateBrand.setName(brand.getName());
         this.brandRepository.save(updateBrand);
     }
 

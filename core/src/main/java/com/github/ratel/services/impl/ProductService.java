@@ -1,16 +1,14 @@
 package com.github.ratel.services.impl;
 
-import com.github.ratel.dto.ProductDto;
+import com.github.ratel.entity.Product;
 import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.payload.EntityStatus;
-import com.github.ratel.entity.Product;
 import com.github.ratel.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,9 +17,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public List<Product> findAllProducts() {
-        return productRepository.findAll().stream()
-                .filter(product -> product.getStatus().equals(EntityStatus.on))
-                .collect(Collectors.toList());
+        return productRepository.findAll();
     }
 
     public List<Product> findAllProductsByStatus(EntityStatus status) {
@@ -47,7 +43,7 @@ public class ProductService {
     }
 
     public Optional<Product> findProductByNameAndStatus(EntityStatus status, String name) {
-        return productRepository.findProductByNameAndStatus(status, name);
+        return this.productRepository.findProductByNameAndStatus(status, name);
     }
 
     public void createProduct(Product product) {
@@ -64,17 +60,18 @@ public class ProductService {
         this.productRepository.save(newProduct);
     }
 
-    public void deleteProduct(long productId) {
+    public void updateProductStatusOff(long productId, EntityStatus status) {
         Product product = this.productRepository.findById(productId).orElseThrow();
-        if(product.getStatus().equals(EntityStatus.on)) {
+        status = product.getStatus();
+        if (status.equals(EntityStatus.on)) {
             product.setStatus(EntityStatus.off);
             this.productRepository.save(product);
         } else {
-         throw new EntityNotFound("Product not found");
+            throw new EntityNotFound("Product not found");
         }
     }
 
     public Optional<Product> findByName(String name) {
-        return productRepository.findByName(name);
+        return this.productRepository.findByName(name);
     }
 }

@@ -2,15 +2,16 @@ package com.github.ratel.entity;
 
 import com.github.ratel.payload.EntityStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Data
 @Entity
+@Builder
 @Table(name = "brands")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,18 +25,18 @@ public class Brand {
 
     @NotNull
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
-    private String brandName;
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private EntityStatus status;
 
-    public Brand(String brandName) {
-        this.brandName = brandName;
+    public Brand(String name) {
+        this.name = name;
     }
 
-    public Brand(String brandName, EntityStatus status) {
-        this.brandName = brandName;
+    public Brand(String name, EntityStatus status) {
+        this.name = name;
         this.status = status;
     }
 }

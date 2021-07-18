@@ -5,9 +5,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
+@Builder
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,11 +37,17 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "product")
+    private List<Specification> specification;
+
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
     @Column(name = "quantity", nullable = false)
     private long quantity;
+
+    @OneToMany(mappedBy = "product")
+    private Set<Comment> comments;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

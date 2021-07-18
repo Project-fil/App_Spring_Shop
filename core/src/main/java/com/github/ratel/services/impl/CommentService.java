@@ -1,9 +1,13 @@
 package com.github.ratel.services.impl;
 
+import com.github.ratel.dto.CommentDto;
 import com.github.ratel.entity.Comment;
+import com.github.ratel.entity.Product;
+import com.github.ratel.entity.User;
 import com.github.ratel.repositories.CommentRepository;
+import com.github.ratel.repositories.ProductRepository;
+import com.github.ratel.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -15,6 +19,8 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     public List<Comment> findAllComments() {
         return commentRepository.findAll();
@@ -24,11 +30,11 @@ public class CommentService {
         return commentRepository.findById(id);
     }
 
-    public List<Comment> findCommentByProductId(long productId) {
+    public List<Comment> findCommentsByProductId(long productId) {
         return commentRepository.findCommentByProductId(productId);
     }
 
-    public List<Comment> findCommentByUserId(long userId) {
+    public List<Comment> findCommentsByUserId(long userId) {
         return commentRepository.findCommentByUserId(userId);
     }
 
@@ -36,8 +42,18 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public Comment saveCommentByProductId(Comment comment, long id) {
-        comment.setProductId(id);
+    public Comment saveCommentByProductId(CommentDto dto, long id) {
+        Comment comment = new Comment();
+
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(RuntimeException::new);
+        comment.setProduct(product);
+
+        User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new RuntimeException(""));
+        comment.setUser(user);
+        comment.setCommentText(dto.getCommentText());
+        comment.setCreatedAt(dto.getCreatedAt());
+
         return commentRepository.save(comment);
     }
 
