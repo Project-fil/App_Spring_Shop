@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,6 +48,15 @@ public class SubcategoryController {
         return TransferObj.toAllSubcategoryDto(subcategories);
     }
 
+    @Secured("ROLE_ADMIN")
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<SubcategoryDto> readAllSubcategory() {
+        List<Subcategory> subcategories = this.subcategoryService.findByAllSubcategory();
+        return TransferObj.toAllSubcategoryDto(subcategories);
+    }
+
+    @Secured("ROLE_USER")
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public List<SubcategoryDto> readAllSubcategoryForUser() {
@@ -56,6 +66,7 @@ public class SubcategoryController {
         return TransferObj.toAllSubcategoryDto(subcategories);
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SubcategoryDto readById(@PathVariable long id) {
@@ -63,6 +74,7 @@ public class SubcategoryController {
        return TransferObj.toSubcategory(subcategory);
     }
 
+    @Secured("ROLE_USER")
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public SubcategoryDto readByName(@PathVariable String name) {
@@ -70,6 +82,7 @@ public class SubcategoryController {
         return TransferObj.toSubcategory(subcategory);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveSubcategory(@PathVariable Long categoryId, @RequestBody SubcategoryDto payload) {
@@ -81,13 +94,15 @@ public class SubcategoryController {
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @Secured("ROLE_ADMIN")
+    @ResponseStatus(HttpStatus.OK)
     public void updateSubcategory(@RequestBody SubcategoryDto payload) {
         Subcategory subcategory = TransferObj.toSubcategoryFromUser(payload);
         this.subcategoryService.update(subcategory);
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.OK)
     public void deleteSubcategory(@PathVariable long id) {
         this.subcategoryService.delete(id);

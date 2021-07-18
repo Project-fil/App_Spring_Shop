@@ -41,7 +41,6 @@ public class AuthController {
             throw new NotVerificationException();
         } else if (user.getVerification().equals(UserVerificationStatus.VERIFIED)) {
             token = this.tokenProvider.generateToken(user.getLogin());
-//            token.concat("Bearer ");
         }
         return new AuthResponse(token);
     }

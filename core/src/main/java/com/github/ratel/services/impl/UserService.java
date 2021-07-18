@@ -84,7 +84,6 @@ public class UserService {
 
     public User changeUserInfo(long userId, UserRegDto userRegDto) {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
-
         user.setFirstname(userRegDto.getFirstname());
         user.setLastname(userRegDto.getLastname());
         user.setEmail(userRegDto.getEmail());

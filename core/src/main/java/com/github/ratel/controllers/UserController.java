@@ -40,16 +40,19 @@ public class UserController {
             return TransferObj.toDto(user);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping
     public long createUser(@RequestBody UserRegDto userRegDto) {
         return userService.createUser(userRegDto);
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{userId}")
     public User changeUserInfo(@PathVariable long userId, @RequestBody UserRegDto userRegDto) {
         return userService.changeUserInfo(userId, userRegDto);
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable long userId) {
         this.userService.deleteUserById(userId);

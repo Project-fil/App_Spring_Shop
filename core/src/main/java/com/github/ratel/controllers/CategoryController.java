@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +36,23 @@ public class CategoryController {
     }
 
     @GetMapping
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryDto> readAllCategory() {
         List<Category> categories = this.categoryService.findAllCategory();
         return TransferObj.toAllCategoryDto(categories);
     }
 
+    @Secured("ROLE_USER")
+    @GetMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CategoryDto> readAllCategoryToUser() {
+        List<Category> categories = this.categoryService.findAllCategory();
+        return TransferObj.toAllCategoryDto(categories);
+    }
+
     @GetMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto readById(@PathVariable long id) {
         Category category = this.categoryService.raedById(id);
@@ -52,6 +63,7 @@ public class CategoryController {
         }
     }
 
+    @Secured("ROLE_USER")
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto readByName(@PathVariable String name) {
@@ -64,6 +76,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveCategory(@RequestBody CategoryDto categoryDto) {
         Category category = TransferObj.toCategoryFromUser(categoryDto);
@@ -71,12 +84,14 @@ public class CategoryController {
     }
 
     @PutMapping
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
     public void updateCategory(@RequestBody Category category) {
         this.categoryService.updateCategory(category);
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCategory (@PathVariable long id) {
         this.categoryService.deleteCategoryById(id);

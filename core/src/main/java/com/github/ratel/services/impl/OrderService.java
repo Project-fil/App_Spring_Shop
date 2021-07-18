@@ -31,7 +31,7 @@ public class OrderService {
         order.setEmail(orderDto.getEmail());
         order.setAddress(orderDto.getAddress());
 
-        return orderRepository.save(order).getOrderId();
+        return orderRepository.save(order).getId();
     }
 
     public Order changeOrderInfo(long orderId, OrderDto orderDto) {

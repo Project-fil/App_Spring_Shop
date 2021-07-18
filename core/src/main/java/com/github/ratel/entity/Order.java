@@ -15,8 +15,8 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long orderId;
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
+    private long id;
 
     @Column(name = "order_item_id", nullable = false, columnDefinition = "BIGINT")
     private long orderItemId;

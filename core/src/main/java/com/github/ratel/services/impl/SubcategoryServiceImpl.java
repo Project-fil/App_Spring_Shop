@@ -24,7 +24,6 @@ public class SubcategoryServiceImpl implements SubcategoryService {
 
     @Override
     public List<Subcategory> findByAllSubcategory() {
-
         return this.repository.findAll();
     }
 
