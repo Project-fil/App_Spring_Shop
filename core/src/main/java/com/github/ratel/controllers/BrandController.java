@@ -58,7 +58,7 @@ public class BrandController {
     }
 
     @GetMapping("/name/{brandName}")
-    public BrandDto findByName(@PathVariable("brandName") String brandName) {
+    public BrandDto findByName(@PathVariable String brandName) {
         Brand brand = this.brandService.findBrandByName(brandName);
         if (brand.getStatus().equals(EntityStatus.on)) {
             return TransferObj.toBrand(brand);

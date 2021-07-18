@@ -1,19 +1,17 @@
 package com.github.ratel.controllers;
 
 import com.github.ratel.dto.ProductDto;
-import com.github.ratel.entity.Subcategory;
-import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.entity.Product;
+import com.github.ratel.entity.Subcategory;
 import com.github.ratel.exceptions.ProductException;
+import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.services.SubcategoryService;
 import com.github.ratel.services.impl.ProductService;
 import com.github.ratel.utils.TransferObj;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ public class ProductController {
 
     private final SubcategoryService subcategoryService;
 
-    //GET /product
     @GetMapping
     public List<ProductDto> findAllProducts() {
         List<Product> products = this.productService.findAllProducts();
@@ -75,22 +72,19 @@ public class ProductController {
         return searchResult;
     }
 
-    //GET /product/status
     @GetMapping("/status")
     public List<ProductDto> findAllProductsByStatus(@PathVariable EntityStatus status) {
         List<Product> products = productService.findAllProductsByStatus(status);
         return TransferObj.toAllProductDto(products);
     }
 
-    //GET /product/{vendorCode}
-    @GetMapping("/code/{vendorCode}")
+    @GetMapping("/{vendorCode}")
     public ProductDto findProductByVendorCode(@PathVariable String vendorCode) {
         Product product = productService.findProductByVendorCode(vendorCode)
                 .orElseThrow(() -> new ProductException("Not found product with needed vendor code"));
         return TransferObj.toProduct(product);
     }
 
-    //GET /product/{productId}
     @GetMapping("/{productId}")
     public ProductDto findProductByProductId(@PathVariable long productId) {
         Product product = productService.findProductByProductId(productId)
@@ -98,27 +92,24 @@ public class ProductController {
         return TransferObj.toProduct(product);
     }
 
-    //POST /product
     @PostMapping("/{subcategoryId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@PathVariable Long subcategoryId, @RequestBody ProductDto payload) {
-        Subcategory s = this.subcategoryService.findById(subcategoryId);
-        Product product = TransferObj.toProductos(payload);
-        product.setSubcategory(s);
-        s.addProduct(product);
+    public void createProduct(@PathVariable long subcategoryId, @RequestBody ProductDto payload) {
+        Subcategory subcategory = this.subcategoryService.findById(subcategoryId);
+        Product product = TransferObj.toProducts(payload);
+        product.setSubcategory(subcategory);
+        subcategory.addProduct(product);
         this.productService.createProduct(product);
     }
 
-    //PUT /product/{productId}
     @PutMapping("/{productId}")
-    public void editProduct(@PathVariable long productId, @RequestBody ProductDto payload) {
-        Product product = TransferObj.toProductos(payload);
+    public void updateProduct(@PathVariable long productId, @RequestBody ProductDto payload) {
+        Product product = TransferObj.toProducts(payload);
         this.productService.editProduct(productId, product);
     }
 
-    //DELETE /product/{productId}
-    @DeleteMapping("/{productId}")
-    public void deleteOrder(@PathVariable long productId) {
-        this.productService.deleteProduct(productId);
+    @PutMapping("/{productId}/status")
+    public void updateProductStatus(@PathVariable long productId, @RequestBody EntityStatus status) {
+        this.productService.updateProductStatusOff(productId, status);
     }
 }

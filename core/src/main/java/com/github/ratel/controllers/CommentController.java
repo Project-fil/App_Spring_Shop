@@ -7,29 +7,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.github.ratel.utils.TransferObj.toComment;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "/product/{product-id}")
+@RequestMapping(path = "/comments")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/comment")
-    public List<Comment> findAllCommentByProductId(@PathVariable("product-id") long productId) {
-        return this.commentService.findCommentByProductId(productId);
+    @GetMapping
+    public List<Comment> findAllComments() {
+        return this.commentService.findAllComments();
     }
 
-    @PostMapping("/comment")
-    public Comment createCommentByProductId(@RequestBody CommentDto commentDto, @PathVariable("product-id") long productId) {
-        return this.commentService.saveCommentByProductId(toComment(commentDto), productId);
+    @GetMapping("/{commentsId}")
+    public Optional<Comment> findCommentById(@PathVariable long commentsId) {
+        return this.commentService.findCommentById(commentsId);
     }
 
-    @PutMapping("/comment")
-    public void editCommentByProductId(@RequestBody CommentDto commentDto, @PathVariable("product-id") long productId) {
-        this.commentService.updateCommentByProductId(toComment(commentDto), productId);
+    @GetMapping("/product/{productId}")
+    public List<Comment> findAllCommentsByProductId(@PathVariable long productId) {
+        return this.commentService.findCommentsByProductId(productId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Comment> findAllCommentsByUserId(@PathVariable long userId) {
+        return this.commentService.findCommentsByUserId(userId);
+    }
+
+    @PostMapping("/product/{productId}")
+    public Comment createCommentByProductId(@RequestBody CommentDto commentDto, @PathVariable long productId) {
+        return this.commentService.saveCommentByProductId(commentDto, productId);
+    }
+
+    @PutMapping("/product/{productId}")
+    public void editCommentByProductId(@RequestBody Comment comment, @PathVariable long productId) {
+        this.commentService.updateCommentByProductId(comment, productId);
     }
 }

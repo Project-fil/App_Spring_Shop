@@ -124,37 +124,19 @@ public class TransferObj {
 
     public static Brand toBrand(BrandDto data) {
         return new Brand(
-                data.getBrandName()
+                data.getName()
         );
     }
 
     public static BrandDto fromBrand(Brand data) {
         return new BrandDto(
-                data.getBrandName()
+                data.getName()
         );
     }
 
     public static BrandDto toBrand(Brand data) {
         return new BrandDto(
-                data.getBrandName()
-        );
-    }
-
-    public static Comment toComment(CommentDto data) {
-        return new Comment(
-                data.getUserId(),
-                data.getProductId(),
-                data.getCommentText(),
-                data.getCreatedAt()
-        );
-    }
-
-    public static CommentDto fromComment(Comment data) {
-        return new CommentDto(
-                data.getProductId(),
-                data.getUserId(),
-                data.getCommentText(),
-                data.getCreatedAt()
+                data.getName()
         );
     }
 
@@ -213,7 +195,7 @@ public class TransferObj {
 
     public static List<Product> toProductDt(List<ProductDto> products) {
         return products.stream()
-                .map(product -> toProductos(product))
+                .map(product -> toProducts(product))
                 .collect(Collectors.toList());
     }
 
@@ -227,20 +209,21 @@ public class TransferObj {
     public static ProductDto toProduct(Product product) {
         return new ProductDto(
                 product.getVendorCode(),
+                product.getCategory().getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getQuantity()
         );
     }
 
-        public static Product toProductos(ProductDto productDto){
-            return new Product(
-                    productDto.getVendorCode(),
-                    productDto.getName(),
-                    productDto.getPrice(),
-                    productDto.getQuantity()
-            );
-        }
+    public static Product toProducts(ProductDto productDto) {
+        return new Product(
+                productDto.getVendorCode(),
+                productDto.getName(),
+                productDto.getPrice(),
+                productDto.getQuantity()
+        );
+    }
 
         public static List<ProductDto> toAllProductDto(List<Product> productList) {
         List<ProductDto> productDtoList = new ArrayList<>();
