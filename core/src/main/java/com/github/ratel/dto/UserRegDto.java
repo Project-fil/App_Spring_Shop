@@ -53,4 +53,18 @@ public class UserRegDto {
 
     @NotNull
     private EntityStatus status = EntityStatus.on;
+
+    public UserRegDto(String firstname, String lastname, String email, String login, String password, String phone, String address, Date createdAt,
+                      UserVerificationStatus verification, EntityStatus status) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.createdAt = createdAt;
+        this.verification = verification;
+        this.status = status;
+    }
 }

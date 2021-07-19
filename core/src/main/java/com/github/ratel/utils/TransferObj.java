@@ -88,7 +88,6 @@ public class TransferObj {
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
-                data.getRoles(),
                 data.getVerification(),
                 data.getStatus()
         );
@@ -158,7 +157,7 @@ public class TransferObj {
         Set<SubcategoryDto> categoryDtoSet = subcategoryDtoSet(category.getSubcategories());
         return new CategoryDto(
                 category.getName(),
-                categoryDtoSet,
+//                categoryDtoSet,
                 category.getStatus()
         );
     }
@@ -181,8 +180,8 @@ public class TransferObj {
         List<ProductDto> productDtoList = toProductDtos(subcategory.getProducts());
         return new SubcategoryDto(
                 subcategory.getId(),
-                subcategory.getName(),
-                productDtoList
+                subcategory.getName()
+//                productDtoList
         );
     }
 
