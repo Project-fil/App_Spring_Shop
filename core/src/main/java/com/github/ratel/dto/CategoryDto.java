@@ -17,7 +17,7 @@ public class CategoryDto {
     @NotNull
     private String name;
 
-    private Set<SubcategoryDto> subcategories = new HashSet<>();
+//    private Set<SubcategoryDto> subcategories = new HashSet<>();
 
     private EntityStatus status;
 

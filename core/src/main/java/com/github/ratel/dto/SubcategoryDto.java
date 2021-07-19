@@ -17,6 +17,6 @@ public class SubcategoryDto {
     @NotBlank
     private String name;
 
-    private List<ProductDto> products = new ArrayList<>();
+//    private List<ProductDto> products = new ArrayList<>();
 
 }

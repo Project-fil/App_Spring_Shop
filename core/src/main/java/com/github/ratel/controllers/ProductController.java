@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -72,19 +73,21 @@ public class ProductController {
         return searchResult;
     }
 
+
     @GetMapping("/status")
     public List<ProductDto> findAllProductsByStatus(@PathVariable EntityStatus status) {
         List<Product> products = productService.findAllProductsByStatus(status);
         return TransferObj.toAllProductDto(products);
     }
 
-    @GetMapping("/{vendorCode}")
+    @GetMapping("/code/{vendorCode}")
     public ProductDto findProductByVendorCode(@PathVariable String vendorCode) {
         Product product = productService.findProductByVendorCode(vendorCode)
                 .orElseThrow(() -> new ProductException("Not found product with needed vendor code"));
         return TransferObj.toProduct(product);
     }
 
+    @Secured("ROLE_USER")
     @GetMapping("/{productId}")
     public ProductDto findProductByProductId(@PathVariable long productId) {
         Product product = productService.findProductByProductId(productId)
