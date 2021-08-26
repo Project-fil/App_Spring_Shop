@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/authorization",
                         "/forgot",
                         "/verification").permitAll()
-                .antMatchers("/v2/api-docs",
+                .antMatchers("/v3/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/**",

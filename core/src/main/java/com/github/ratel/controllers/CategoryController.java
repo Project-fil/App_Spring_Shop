@@ -6,8 +6,8 @@ import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.payload.EntityStatus;
 import com.github.ratel.services.CategoryService;
 import com.github.ratel.utils.TransferObj;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+//import io.swagger.annotations.ApiImplicitParam;
+//import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -17,15 +17,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-@ApiImplicitParams(
-        @ApiImplicitParam(
-                name = "Authorization",
-                value = "Access Token",
-                required = true,
-                paramType = "header",
-                example = "Bearer access_token"
-        )
-)
+//@ApiImplicitParams(
+//        @ApiImplicitParam(
+//                name = "Authorization",
+//                value = "Access Token",
+//                required = true,
+//                paramType = "header",
+//                example = "Bearer access_token"
+//        )
+//)
 public class CategoryController {
 
     private final CategoryService categoryService;
