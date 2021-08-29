@@ -3,7 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.entity.Category;
 import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.services.CategoryService;
 import com.github.ratel.utils.TransferObj;
 //import io.swagger.annotations.ApiImplicitParam;

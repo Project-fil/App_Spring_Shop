@@ -1,11 +1,10 @@
 package com.github.ratel.entity;
 
-import com.github.ratel.payload.EntityStatus;
-import com.github.ratel.payload.UserVerificationStatus;
+import com.github.ratel.entity.enums.EntityStatus;
+import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;

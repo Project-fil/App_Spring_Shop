@@ -1,7 +1,7 @@
 package com.github.ratel.dto;
 
-import com.github.ratel.payload.EntityStatus;
-import com.github.ratel.payload.UserVerificationStatus;
+import com.github.ratel.entity.enums.EntityStatus;
+import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

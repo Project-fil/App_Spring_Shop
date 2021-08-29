@@ -1,6 +1,6 @@
 package com.github.ratel.entity;
 
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

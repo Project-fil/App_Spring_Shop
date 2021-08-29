@@ -5,15 +5,18 @@ import com.github.ratel.entity.User;
 import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.exceptions.InvalidTokenException;
 import com.github.ratel.exceptions.UserAlreadyExistException;
-import com.github.ratel.payload.UserVerificationStatus;
+import com.github.ratel.entity.enums.UserVerificationStatus;
+import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.VerificationTokenService;
 import com.github.ratel.services.impl.UserService;
 import com.github.ratel.utils.TransferObj;
+import com.github.ratel.utils.UserTransferObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,22 +45,15 @@ public class RegController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/create/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registration(@RequestBody @Valid UserRegDto payload) {
-        if (this.userService.findByLogin(payload.getLogin()) != null) {
-            throw new UserAlreadyExistException();
-        }
-        User user = TransferObj.toUser(payload);
-        var token = (UUID.randomUUID().toString());
-        var pattern = String.format(
-                this.textMessageEmail, "verification ",
-                this.textMessageSendEmail,
-                "/verification?token=", token);
-        this.emailService.sendMessageToEmail(user.getEmail(), "Verification user",
-                pattern);
-        this.userService.saveUser(user);
-        this.tokenService.create(new VerificationToken(user, token));
+    public ResponseEntity<Object> registrationAdmin(@RequestBody @Valid CreateAdminRequest createAdminRequest) {
+       try {
+           this.userService.saveAdmin(createAdminRequest);
+           return ResponseEntity.ok("Admin register successfully");
+       } catch (UserAlreadyExistException e) {
+           return ResponseEntity.status(422).body(e.getMessage());
+       }
     }
 
     @GetMapping("/verification")

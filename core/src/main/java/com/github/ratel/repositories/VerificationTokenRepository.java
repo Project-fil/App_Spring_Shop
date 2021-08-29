@@ -1,7 +1,7 @@
 package com.github.ratel.repositories;
 
 import com.github.ratel.entity.VerificationToken;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

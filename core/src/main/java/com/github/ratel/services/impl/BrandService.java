@@ -2,7 +2,7 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Brand;
 import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

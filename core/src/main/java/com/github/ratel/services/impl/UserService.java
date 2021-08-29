@@ -1,21 +1,34 @@
 package com.github.ratel.services.impl;
 
-import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.Roles;
 import com.github.ratel.entity.User;
+import com.github.ratel.entity.VerificationToken;
+import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
+import com.github.ratel.exceptions.UserAlreadyExistException;
+import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.repositories.RoleRepository;
 import com.github.ratel.repositories.UserRepository;
+import com.github.ratel.services.EmailService;
+import com.github.ratel.services.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
 public class UserService {
+
+    @Value("${app.email.text}")
+    private String textMessageEmail;
+
+    @Value("${app.verification.domain}")
+    private String textMessageSendEmail;
+
+    private final EmailService emailService;
 
     private final UserRepository userRepository;
 
@@ -23,11 +36,15 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final VerificationTokenService tokenService;
+
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(EmailService emailService, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, VerificationTokenService tokenService) {
+        this.emailService = emailService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     public List<User> findAllUsers() {
@@ -56,12 +73,36 @@ public class UserService {
      throw new EntityNotFound("Entity not found in db");
     }
 
-    @Transactional
+//    @Transactional
     public User saveUser(User user) {
-        Roles userRoles = this.roleRepository.getById(1L);
+        Roles userRoles = this.roleRepository.getById(3L);
         user.setRoles(Set.of(userRoles));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        return this.userRepository.save(user);
+    }
+
+    public void saveAdmin(CreateAdminRequest payload) throws UserAlreadyExistException {
+        checkUserByLogin(payload.getLogin());
+        User user = new User();
+        user.setFirstname(payload.getFirstname());
+        user.setLastname(payload.getLastname());
+        user.setLogin(payload.getLogin());
+        user.setEmail(payload.getEmail());
+        user.setPassword(this.passwordEncoder.encode(payload.getPassword()));
+        user.setCreatedAt(new Date());
+        Roles userRole = this.roleRepository.getById(1L);
+        user.setRoles(Set.of(userRole));
+        user.setVerification(UserVerificationStatus.UNVERIFIED);
+        user.setStatus(EntityStatus.on);
+        var token = (UUID.randomUUID().toString());
+        var pattern = String.format(
+                this.textMessageEmail, "verification ",
+                this.textMessageSendEmail,
+                "/verification?token=", token);
+        this.emailService.sendMessageToEmail(user.getEmail(), "Verification user",
+                pattern);
+        this.userRepository.save(user);
+        this.tokenService.create(new VerificationToken(user, token));
     }
 
     public void updateUser(User user) {
@@ -69,31 +110,31 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public long createUser(UserRegDto userRegDto) {
-        User user = new User();
-        user.setFirstname(userRegDto.getFirstname());
-        user.setLastname(userRegDto.getLastname());
-        user.setEmail(userRegDto.getEmail());
-        user.setLogin(userRegDto.getLogin());
-        user.setPassword(userRegDto.getPassword());
-        user.setPhone(userRegDto.getPhone());
-        user.setAddress(userRegDto.getAddress());
-        doesUserExist(user.getId());
-        return this.userRepository.save(user).getId();
-    }
+//    public long createUser(UserRegDto userRegDto) {
+//        User user = new User();
+//        user.setFirstname(userRegDto.getFirstname());
+//        user.setLastname(userRegDto.getLastname());
+//        user.setEmail(userRegDto.getEmail());
+//        user.setLogin(userRegDto.getLogin());
+//        user.setPassword(userRegDto.getPassword());
+//        user.setPhone(userRegDto.getPhone());
+//        user.setAddress(userRegDto.getAddress());
+//        doesUserExist(user.getId());
+//        return this.userRepository.save(user).getId();
+//    }
 
-    public User changeUserInfo(long userId, UserRegDto userRegDto) {
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
-        user.setFirstname(userRegDto.getFirstname());
-        user.setLastname(userRegDto.getLastname());
-        user.setEmail(userRegDto.getEmail());
-        user.setLogin(userRegDto.getLogin());
-        user.setPassword(userRegDto.getPassword());
-        user.setPhone(userRegDto.getPhone());
-        user.setAddress(userRegDto.getAddress());
-        user.setUpdatedAt(new Date());
-        return this.userRepository.save(user);
-    }
+//    public User changeUserInfo(long userId, UserRegDto userRegDto) {
+//        User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
+//        user.setFirstname(userRegDto.getFirstname());
+//        user.setLastname(userRegDto.getLastname());
+//        user.setEmail(userRegDto.getEmail());
+//        user.setLogin(userRegDto.getLogin());
+//        user.setPassword(userRegDto.getPassword());
+//        user.setPhone(userRegDto.getPhone());
+//        user.setAddress(userRegDto.getAddress());
+//        user.setUpdatedAt(new Date());
+//        return this.userRepository.save(user);
+//    }
 
     public void deleteUserById(long userId) {
         User user = this.userRepository.getById(userId);
@@ -110,4 +151,10 @@ public class UserService {
             throw new RuntimeException("This user already exists!");
         }
     }
+    private void checkUserByLogin(String login) {
+        if(Objects.nonNull(this.userRepository.findByLogin(login))) {
+            throw new UserAlreadyExistException();
+        }
+    }
+
 }

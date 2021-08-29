@@ -4,7 +4,7 @@ import com.github.ratel.dto.ProductDto;
 import com.github.ratel.entity.Product;
 import com.github.ratel.entity.Subcategory;
 import com.github.ratel.exceptions.ProductException;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.services.SubcategoryService;
 import com.github.ratel.services.impl.ProductService;
 import com.github.ratel.utils.TransferObj;

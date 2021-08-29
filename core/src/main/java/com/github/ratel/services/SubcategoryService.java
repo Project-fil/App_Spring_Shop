@@ -1,8 +1,7 @@
 package com.github.ratel.services;
 
-import com.github.ratel.dto.SubcategoryDto;
 import com.github.ratel.entity.Subcategory;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 
 import java.util.List;
 

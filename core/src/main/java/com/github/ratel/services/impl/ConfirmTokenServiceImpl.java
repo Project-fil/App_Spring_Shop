@@ -2,7 +2,7 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.ConfirmToken;
 import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.repositories.ConfirmTokenRepository;
 import com.github.ratel.services.ConfirmTokenService;
 import lombok.RequiredArgsConstructor;

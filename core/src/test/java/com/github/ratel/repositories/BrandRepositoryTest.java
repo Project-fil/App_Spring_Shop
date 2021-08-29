@@ -1,7 +1,7 @@
 package com.github.ratel.repositories;
 
 import com.github.ratel.entity.Brand;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Assert;
 import org.junit.Test;

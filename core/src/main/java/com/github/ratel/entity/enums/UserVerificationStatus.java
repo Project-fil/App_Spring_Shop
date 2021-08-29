@@ -1,4 +1,4 @@
-package com.github.ratel.payload;
+package com.github.ratel.entity.enums;
 
 import lombok.AllArgsConstructor;
 

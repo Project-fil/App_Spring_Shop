@@ -35,11 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/registration",
+                .antMatchers(
+                        "/create/admin",
                         "/authorization",
-                        "/forgot",
-                        "/verification").permitAll()
-                .antMatchers("/v3/api-docs",
+                        "/registration",
+                        "/verification",
+                        "/forgot"
+                ).permitAll()
+                .antMatchers(
+                        "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/**",
@@ -47,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui**",
                         "/swagger-ui/**",
                         "/webjars/**",
-                        "/swagger-resources/**").permitAll()
+                        "/swagger-resources/**"
+                ).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);

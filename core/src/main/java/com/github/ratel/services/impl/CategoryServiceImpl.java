@@ -1,17 +1,14 @@
 package com.github.ratel.services.impl;
 
-import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.entity.Category;
 import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.repositories.CategoryRepository;
 import com.github.ratel.services.CategoryService;
-import com.github.ratel.utils.TransferObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {

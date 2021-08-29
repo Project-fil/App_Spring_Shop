@@ -3,7 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.BrandDto;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.payload.EntityStatus;
+import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.services.impl.BrandService;
 import com.github.ratel.utils.TransferObj;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,8 +3,8 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.UserAuthDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.exceptions.NotVerificationException;
-import com.github.ratel.payload.AuthResponse;
-import com.github.ratel.payload.UserVerificationStatus;
+import com.github.ratel.payload.response.TokenResponse;
+import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.services.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/authorization")
     @ResponseStatus(HttpStatus.OK)
-    public AuthResponse auth(@RequestBody @Valid UserAuthDto userAuthDto) {
+    public TokenResponse auth(@RequestBody @Valid UserAuthDto userAuthDto) {
         User user = this.userService.findByLoginAndPassword(userAuthDto.getLogin(), userAuthDto.getPassword());
         String token = null;
         if (user.getVerification().equals(UserVerificationStatus.UNVERIFIED)) {
@@ -42,6 +42,6 @@ public class AuthController {
         } else if (user.getVerification().equals(UserVerificationStatus.VERIFIED)) {
             token = this.tokenProvider.generateToken(user.getLogin());
         }
-        return new AuthResponse(token);
+        return new TokenResponse(token);
     }
 }
