@@ -30,13 +30,13 @@ public class User {
     @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
     private String email;
 
-    @Column(name = "login", nullable = false, columnDefinition = "TEXT", unique = true)
-    private String login;
+//    @Column(name = "login", nullable = false, columnDefinition = "TEXT", unique = true)
+//    private String login;
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @Column(name = "phone", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "phone", columnDefinition = "TEXT")
     private String phone;
 
     @Column(name = "address", columnDefinition = "TEXT")
@@ -63,13 +63,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
-    public User(String login, String password) {
-        this.login = login;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public User(String login, String password, UserVerificationStatus verification) {
-        this.login = login;
+    public User(String email, String password, UserVerificationStatus verification) {
+        this.email = email;
         this.password = password;
         this.verification = verification;
     }
@@ -78,7 +78,6 @@ public class User {
             String firstname,
             String lastname,
             String email,
-            String login,
             String password,
             String phone,
             String address,
@@ -89,7 +88,6 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.login = login;
         this.password = password;
         this.phone = phone;
         this.address = address;
@@ -103,7 +101,7 @@ public class User {
         return this;
     }
 
-    public User verificUser(UserVerificationStatus verification) {
+    public User verificationUser(UserVerificationStatus verification) {
         this.verification = verification;
         return this;
     }

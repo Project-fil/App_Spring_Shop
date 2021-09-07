@@ -1,6 +1,5 @@
 package com.github.ratel.services;
 
-import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.entity.Category;
 
 import java.util.List;

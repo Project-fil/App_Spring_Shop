@@ -4,6 +4,7 @@ import com.github.ratel.entity.Roles;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.entity.enums.UserVerificationStatus;
+import com.github.ratel.exceptions.ConfirmPasswordException;
 import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.exceptions.UserAlreadyExistException;
@@ -20,13 +21,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserService {
+public class UserServiceImpl {
 
     @Value("${app.email.text}")
     private String textMessageEmail;
 
     @Value("${app.verification.domain}")
-    private String textMessageSendEmail;
+    private String verificationDomain;
 
     private final EmailService emailService;
 
@@ -39,7 +40,7 @@ public class UserService {
     private final VerificationTokenService tokenService;
 
     @Autowired
-    public UserService(EmailService emailService, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, VerificationTokenService tokenService) {
+    public UserServiceImpl(EmailService emailService, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, VerificationTokenService tokenService) {
         this.emailService = emailService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -59,12 +60,14 @@ public class UserService {
        return userRepository.getById(userId);
     }
 
-    public User findByLogin(String login) {
-        return userRepository.findByLogin(login);
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFound("Нет такого пользователя"));
     }
 
-    public User findByLoginAndPassword(String login, String password) {
-        User user = findByLogin(login);
+    public User findByEmailAndPassword(String email, String password) {
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFound("Нет такого пользователя"));
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
@@ -82,13 +85,13 @@ public class UserService {
     }
 
     public void saveAdmin(CreateAdminRequest payload) throws UserAlreadyExistException {
-        checkUserByLogin(payload.getLogin());
+        checkUserByEmail(payload.getEmail());
         User user = new User();
         user.setFirstname(payload.getFirstname());
         user.setLastname(payload.getLastname());
-        user.setLogin(payload.getLogin());
         user.setEmail(payload.getEmail());
-        user.setPassword(this.passwordEncoder.encode(payload.getPassword()));
+        String pass = checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
+        user.setPassword(this.passwordEncoder.encode(pass));
         user.setCreatedAt(new Date());
         Roles userRole = this.roleRepository.getById(1L);
         user.setRoles(Set.of(userRole));
@@ -97,7 +100,7 @@ public class UserService {
         var token = (UUID.randomUUID().toString());
         var pattern = String.format(
                 this.textMessageEmail, "verification ",
-                this.textMessageSendEmail,
+                this.verificationDomain,
                 "/verification?token=", token);
         this.emailService.sendMessageToEmail(user.getEmail(), "Verification user",
                 pattern);
@@ -151,10 +154,18 @@ public class UserService {
             throw new RuntimeException("This user already exists!");
         }
     }
-    private void checkUserByLogin(String login) {
-        if(Objects.nonNull(this.userRepository.findByLogin(login))) {
+
+    private void checkUserByEmail(String email) {
+        if(Objects.nonNull(this.userRepository.findByEmail(email).orElse(null))) {
             throw new UserAlreadyExistException();
         }
     }
 
+    private String checkPassAndConfirmPass(String pass, String confirmPass) {
+        if(pass.equals(confirmPass)) {
+            return confirmPass;
+        } else {
+            throw new ConfirmPasswordException();
+        }
+    }
 }

@@ -7,8 +7,8 @@ import com.github.ratel.exceptions.InvalidTokenException;
 import com.github.ratel.exceptions.WrongUserEmail;
 import com.github.ratel.services.ConfirmTokenService;
 import com.github.ratel.services.EmailService;
-import com.github.ratel.services.impl.ForgotPasswordService;
-import com.github.ratel.services.impl.UserService;
+import com.github.ratel.services.impl.ForgotPasswordServiceImpl;
+import com.github.ratel.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,9 +31,9 @@ public class ForgotPasswordController {
     @Value("${app.forgot.domain}")
     private String forgotPasswordDomain;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    private final ForgotPasswordService passwordService;
+    private final ForgotPasswordServiceImpl passwordService;
 
     private final EmailService emailService;
 
@@ -66,7 +66,7 @@ public class ForgotPasswordController {
         ConfirmToken ct = this.confirmTokenService.findByToken(token);
         if (ct.getToken().equals(token)) {
             User user = ct.getUser();
-            this.userService.updateUser(user.newPass(ct.getNewPass()));
+            this.userServiceImpl.updateUser(user.newPass(ct.getNewPass()));
         } else {
             throw new InvalidTokenException("Invalid forgot token");
         }

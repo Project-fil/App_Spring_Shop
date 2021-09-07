@@ -3,8 +3,7 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.services.impl.UserService;
-import com.github.ratel.utils.TransferObj;
+import com.github.ratel.services.impl.UserServiceImpl;
 import com.github.ratel.utils.UserTransferObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,12 +17,12 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Secured("ROLE_USER")
     @GetMapping
     public List<UserDto> findAllActiveUsers() {
-        List<User> users = this.userService.findAllUsers();
+        List<User> users = this.userServiceImpl.findAllUsers();
         return UserTransferObject.toAllDto(users).stream()
                 .filter(user -> user.getStatus().equals(EntityStatus.on))
                 .collect(Collectors.toList());
@@ -32,7 +31,7 @@ public class UserController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/{userId}")
     public UserDto findUserById(@PathVariable long userId) {
-        User user = userService.findById(userId);
+        User user = userServiceImpl.findById(userId);
             return UserTransferObject.toDto(user);
     }
 
@@ -51,6 +50,6 @@ public class UserController {
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable long userId) {
-        this.userService.deleteUserById(userId);
+        this.userServiceImpl.deleteUserById(userId);
     }
 }

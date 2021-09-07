@@ -19,10 +19,10 @@ public class JwtTokenProvider {
     @Value("${app.jwt.secret}")
     private String secretWord;
 
-    public String generateToken(String login) {
+    public String generateToken(String email) {
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
-                .setSubject(login)
+                .setSubject(email)
                 .setExpiration(date)
                 .signWith(SignatureAlgorithm.HS256, secretWord)
                 .compact();

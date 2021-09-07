@@ -1,23 +1,24 @@
-package com.github.ratel.dto;
+package com.github.ratel.payload.request;
 
 import com.github.ratel.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAuthDto {
+public class UserAuthRequest {
 
-    @NotEmpty
-    @Size(min = 2, max = 20)
-    private String login;
+    @Email
+    private String email;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 50)
     private String password;
 

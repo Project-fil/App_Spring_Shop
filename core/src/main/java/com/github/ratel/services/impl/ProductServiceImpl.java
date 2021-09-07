@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ProductService {
+public class ProductServiceImpl {
 
     private final ProductRepository productRepository;
 

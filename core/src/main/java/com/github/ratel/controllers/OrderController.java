@@ -2,7 +2,7 @@ package com.github.ratel.controllers;
 
 import com.github.ratel.dto.OrderDto;
 import com.github.ratel.entity.Order;
-import com.github.ratel.services.impl.OrderService;
+import com.github.ratel.services.impl.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,30 +13,30 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderController {
 
-    private final OrderService orderService;
+    private final OrderServiceImpl orderServiceImpl;
 
     @GetMapping
     public List<Order> findAllOrders() {
-        return orderService.findAllOrders();
+        return orderServiceImpl.findAllOrders();
     }
 
     @GetMapping("/{orderId}")
     public Order findOrderById(@PathVariable long orderId) {
-        return orderService.findOrderById(orderId).orElseThrow(() -> new RuntimeException("Not found order!"));
+        return orderServiceImpl.findOrderById(orderId).orElseThrow(() -> new RuntimeException("Not found order!"));
     }
 
     @PostMapping
     public long createOrder(@RequestBody OrderDto orderDto) {
-        return orderService.createOrder(orderDto);
+        return orderServiceImpl.createOrder(orderDto);
     }
 
     @PutMapping("/{orderId}")
     public Order changeOrderInfo(@PathVariable long orderId, @RequestBody OrderDto orderDto) {
-        return orderService.changeOrderInfo(orderId, orderDto);
+        return orderServiceImpl.changeOrderInfo(orderId, orderDto);
     }
 
     @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable long orderId) {
-        orderService.deleteOrder(orderId);
+        orderServiceImpl.deleteOrder(orderId);
     }
 }

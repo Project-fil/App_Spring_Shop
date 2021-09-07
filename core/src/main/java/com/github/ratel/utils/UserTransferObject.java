@@ -1,12 +1,11 @@
 package com.github.ratel.utils;
 
 import com.github.ratel.dto.RoleDto;
-import com.github.ratel.dto.UserAuthDto;
+import com.github.ratel.payload.request.UserAuthRequest;
 import com.github.ratel.dto.UserDto;
 import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.Roles;
 import com.github.ratel.entity.User;
-import com.github.ratel.payload.request.CreateAdminRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +14,16 @@ import java.util.stream.Collectors;
 
 public class UserTransferObject {
 
-    public static User toUser(UserAuthDto data) {
+    public static User toUser(UserAuthRequest data) {
         return new User(
-                data.getLogin(),
+                data.getEmail(),
                 data.getPassword()
         );
     }
 
-    public static UserAuthDto fromUserAuth(User data) {
-        return new UserAuthDto(
-                data.getLogin(),
+    public static UserAuthRequest fromUserAuth(User data) {
+        return new UserAuthRequest(
+                data.getEmail(),
                 data.getPassword()
         );
     }
@@ -44,7 +43,6 @@ public class UserTransferObject {
                 user.getFirstname(),
                 user.getLastname(),
                 user.getEmail(),
-                user.getLogin(),
                 user.getPassword(),
                 user.getPhone(),
                 user.getAddress(),
@@ -85,7 +83,6 @@ public class UserTransferObject {
                 data.getFirstname(),
                 data.getLastname(),
                 data.getEmail(),
-                data.getLogin(),
                 data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),

@@ -6,7 +6,7 @@ import com.github.ratel.entity.Subcategory;
 import com.github.ratel.exceptions.ProductException;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.services.SubcategoryService;
-import com.github.ratel.services.impl.ProductService;
+import com.github.ratel.services.impl.ProductServiceImpl;
 import com.github.ratel.utils.TransferObj;
 //import io.swagger.annotations.ApiImplicitParam;
 //import io.swagger.annotations.ApiImplicitParams;
@@ -33,13 +33,13 @@ import java.util.Optional;
 )*/
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
 
     private final SubcategoryService subcategoryService;
 
     @GetMapping
     public List<ProductDto> findAllProducts() {
-        List<Product> products = this.productService.findAllProducts();
+        List<Product> products = this.productServiceImpl.findAllProducts();
         return TransferObj.toAllProductDto(products);
     }
 
@@ -50,24 +50,24 @@ public class ProductController {
             @RequestParam(required = false) String vendorCode) {
         List<Product> searchResult = new ArrayList<>();
         if (status == null && name == null && vendorCode == null) {
-            searchResult = productService.findAllProducts();
+            searchResult = productServiceImpl.findAllProducts();
         } else if (vendorCode != null) {
-            Optional<Product> product = productService.findProductByVendorCode(vendorCode);
+            Optional<Product> product = productServiceImpl.findProductByVendorCode(vendorCode);
             if (product.isPresent()) {
                 searchResult.add(product.get());
             }
         } else if (name != null && status != null) {
-            Optional<Product> product = productService.findProductByNameAndStatus(status, name);
+            Optional<Product> product = productServiceImpl.findProductByNameAndStatus(status, name);
             if (product.isPresent()) {
                 searchResult.add(product.get());
             }
         } else if (name != null) {
-            Optional<Product> product = productService.findByName(name);
+            Optional<Product> product = productServiceImpl.findByName(name);
             if (product.isPresent()) {
                 searchResult.add(product.get());
             }
         } else if (status != null) {
-            searchResult = productService.findAllProductsByStatus(status);
+            searchResult = productServiceImpl.findAllProductsByStatus(status);
         }
 
         return searchResult;
@@ -76,13 +76,13 @@ public class ProductController {
 
     @GetMapping("/status")
     public List<ProductDto> findAllProductsByStatus(@PathVariable EntityStatus status) {
-        List<Product> products = productService.findAllProductsByStatus(status);
+        List<Product> products = productServiceImpl.findAllProductsByStatus(status);
         return TransferObj.toAllProductDto(products);
     }
 
     @GetMapping("/code/{vendorCode}")
     public ProductDto findProductByVendorCode(@PathVariable String vendorCode) {
-        Product product = productService.findProductByVendorCode(vendorCode)
+        Product product = productServiceImpl.findProductByVendorCode(vendorCode)
                 .orElseThrow(() -> new ProductException("Not found product with needed vendor code"));
         return TransferObj.toProduct(product);
     }
@@ -90,7 +90,7 @@ public class ProductController {
     @Secured("ROLE_USER")
     @GetMapping("/{productId}")
     public ProductDto findProductByProductId(@PathVariable long productId) {
-        Product product = productService.findProductByProductId(productId)
+        Product product = productServiceImpl.findProductByProductId(productId)
                 .orElseThrow(() -> new ProductException("Not found product with needed id!"));
         return TransferObj.toProduct(product);
     }
@@ -102,17 +102,17 @@ public class ProductController {
         Product product = TransferObj.toProducts(payload);
         product.setSubcategory(subcategory);
         subcategory.addProduct(product);
-        this.productService.createProduct(product);
+        this.productServiceImpl.createProduct(product);
     }
 
     @PutMapping("/{productId}")
     public void updateProduct(@PathVariable long productId, @RequestBody ProductDto payload) {
         Product product = TransferObj.toProducts(payload);
-        this.productService.editProduct(productId, product);
+        this.productServiceImpl.editProduct(productId, product);
     }
 
     @PutMapping("/{productId}/status")
     public void updateProductStatus(@PathVariable long productId, @RequestBody EntityStatus status) {
-        this.productService.updateProductStatusOff(productId, status);
+        this.productServiceImpl.updateProductStatusOff(productId, status);
     }
 }

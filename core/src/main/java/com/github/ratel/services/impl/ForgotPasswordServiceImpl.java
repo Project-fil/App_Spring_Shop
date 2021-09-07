@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ForgotPasswordService {
+public class ForgotPasswordServiceImpl {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public ForgotPasswordService(UserRepository userRepository) {
+    public ForgotPasswordServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -19,5 +19,5 @@ public class ForgotPasswordService {
         return userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("No email to change password"));
     }
 
-    public User findByLogin (String login) { return userRepository.findByLogin(login); }
+//    public User findByLogin (String login) { return userRepository.findByLogin(login); }
 }

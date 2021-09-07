@@ -1,6 +1,5 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.exceptions.InvalidTokenException;
@@ -9,9 +8,7 @@ import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.VerificationTokenService;
-import com.github.ratel.services.impl.UserService;
-import com.github.ratel.utils.TransferObj;
-import com.github.ratel.utils.UserTransferObject;
+import com.github.ratel.services.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,36 +17,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.UUID;
 
 @Slf4j
 @RestController
 public class RegController {
 
-    @Value("${app.email.text}")
-    private String textMessageEmail;
+    private final UserServiceImpl userServiceImpl;
 
-    @Value("${app.verification.domain}")
-    private String textMessageSendEmail;
+    private final VerificationTokenService verificationTokenService;
 
-    private final UserService userService;
-
-    private final VerificationTokenService tokenService;
-
-    private final EmailService emailService;
 
     @Autowired
-    public RegController(UserService userService, VerificationTokenService tokenService, EmailService emailService) {
-        this.userService = userService;
-        this.tokenService = tokenService;
-        this.emailService = emailService;
+    public RegController(UserServiceImpl userServiceImpl, VerificationTokenService verificationTokenService) {
+        this.userServiceImpl = userServiceImpl;
+        this.verificationTokenService = verificationTokenService;
     }
 
     @PostMapping("/create/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> registrationAdmin(@RequestBody @Valid CreateAdminRequest createAdminRequest) {
        try {
-           this.userService.saveAdmin(createAdminRequest);
+           this.userServiceImpl.saveAdmin(createAdminRequest);
            return ResponseEntity.ok("Admin register successfully");
        } catch (UserAlreadyExistException e) {
            return ResponseEntity.status(422).body(e.getMessage());
@@ -58,13 +46,14 @@ public class RegController {
 
     @GetMapping("/verification")
     @ResponseStatus(HttpStatus.OK)
-    public void passingVerification(@RequestParam("token") String token) {
-        VerificationToken vt = this.tokenService.findByToken(token);
+    public String passingVerification(@RequestParam("token") String token) {
+        VerificationToken vt = this.verificationTokenService.findByToken(token);
         if (vt.getToken().equals(token)) {
             User user = vt.getUser();
-            this.userService.updateUser(user.verificUser(UserVerificationStatus.VERIFIED));
+            this.userServiceImpl.updateUser(user.verificationUser(UserVerificationStatus.VERIFIED));
         } else {
             throw new InvalidTokenException("Invalid verification token");
         }
+        return "Верификация прошла успешно";
     }
 }

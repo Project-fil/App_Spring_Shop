@@ -1,12 +1,12 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.UserAuthDto;
+import com.github.ratel.payload.request.UserAuthRequest;
 import com.github.ratel.entity.User;
 import com.github.ratel.exceptions.NotVerificationException;
 import com.github.ratel.payload.response.TokenResponse;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.security.JwtTokenProvider;
-import com.github.ratel.services.impl.UserService;
+import com.github.ratel.services.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,24 +23,24 @@ public class AuthController {
 
     private final JwtTokenProvider tokenProvider;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
     public AuthController(JwtTokenProvider tokenProvider,
-                          UserService userService) {
+                          UserServiceImpl userServiceImpl) {
         this.tokenProvider = tokenProvider;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @PostMapping("/authorization")
     @ResponseStatus(HttpStatus.OK)
-    public TokenResponse auth(@RequestBody @Valid UserAuthDto userAuthDto) {
-        User user = this.userService.findByLoginAndPassword(userAuthDto.getLogin(), userAuthDto.getPassword());
+    public TokenResponse auth(@RequestBody @Valid UserAuthRequest userAuthRequest) {
+        User user = this.userServiceImpl.findByEmailAndPassword(userAuthRequest.getEmail(), userAuthRequest.getPassword());
         String token = null;
         if (user.getVerification().equals(UserVerificationStatus.UNVERIFIED)) {
             throw new NotVerificationException();
         } else if (user.getVerification().equals(UserVerificationStatus.VERIFIED)) {
-            token = this.tokenProvider.generateToken(user.getLogin());
+            token = this.tokenProvider.generateToken(user.getEmail());
         }
         return new TokenResponse(token);
     }

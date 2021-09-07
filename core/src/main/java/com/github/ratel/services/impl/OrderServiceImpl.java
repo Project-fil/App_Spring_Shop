@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class OrderService {
+public class OrderServiceImpl {
 
     private final OrderRepository orderRepository;
 

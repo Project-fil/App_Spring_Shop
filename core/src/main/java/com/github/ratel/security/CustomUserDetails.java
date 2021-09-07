@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private String login;
+    private String email;
 
     private String password;
 
@@ -20,7 +20,7 @@ public class CustomUserDetails implements UserDetails {
 
     public static CustomUserDetails fromUserToCustomUserDetails(User user) {
         CustomUserDetails cud = new CustomUserDetails();
-        cud.login = user.getLogin();
+        cud.email = user.getEmail();
         cud.password = user.getPassword();
         cud.grantedAuthorities = user.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority(role.getRole()))
@@ -40,7 +40,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override

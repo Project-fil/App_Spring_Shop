@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentServiceImpl {
 
     private final CommentRepository commentRepository;
     private final ProductRepository productRepository;
