@@ -30,9 +30,6 @@ public class User {
     @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
     private String email;
 
-//    @Column(name = "login", nullable = false, columnDefinition = "TEXT", unique = true)
-//    private String login;
-
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 

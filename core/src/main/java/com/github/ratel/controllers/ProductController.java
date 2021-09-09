@@ -10,6 +10,8 @@ import com.github.ratel.services.impl.ProductServiceImpl;
 import com.github.ratel.utils.TransferObj;
 //import io.swagger.annotations.ApiImplicitParam;
 //import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -22,7 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-/*@ApiImplicitParams(
+@ApiImplicitParams(
         @ApiImplicitParam(
                 name = "Authorization",
                 value = "Access Token",
@@ -30,7 +32,7 @@ import java.util.Optional;
                 paramType = "header",
                 example = "Bearer access_token"
         )
-)*/
+)
 public class ProductController {
 
     private final ProductServiceImpl productServiceImpl;
