@@ -30,11 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category raedById(long id) {
-        Category category = null;
-        try {
-            category = this.categoryRepository.getById(id);
-        } catch (JpaObjectRetrievalFailureException ignored) {
-        }
+        Category category = this.categoryRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFound("Category does not exist"));
         if (Objects.nonNull(category) && category.getStatus().equals(EntityStatus.on)) {
             return category;
         } else {
