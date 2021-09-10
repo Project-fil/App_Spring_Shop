@@ -1,4 +1,4 @@
-package com.github.ratel.utils;
+package com.github.ratel.utils.transfer_object;
 
 import com.github.ratel.dto.RoleDto;
 import com.github.ratel.payload.request.UserAuthRequest;

@@ -2,6 +2,7 @@ package com.github.ratel.utils;
 
 import com.github.ratel.dto.*;
 import com.github.ratel.entity.*;
+import com.github.ratel.payload.request.CategoryRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,29 +54,6 @@ public class TransferObj {
     public static BrandDto toBrand(Brand data) {
         return new BrandDto(
                 data.getName()
-        );
-    }
-
-    public static List<CategoryDto> toAllCategoryDto(List<Category> categories) {
-        List<CategoryDto> convertToDto = new ArrayList<>();
-        for (Category category : categories) {
-            convertToDto.add(toCategory(category));
-        }
-        return convertToDto;
-    }
-
-    public static Category toCategoryFromUser(CategoryDto categoryDto) {
-        return new Category(
-                categoryDto.getName()
-        );
-    }
-
-    public static CategoryDto toCategory(Category category) {
-        Set<SubcategoryDto> categoryDtoSet = subcategoryDtoSet(category.getSubcategories());
-        return new CategoryDto(
-                category.getName(),
-//                categoryDtoSet,
-                category.getStatus()
         );
     }
 

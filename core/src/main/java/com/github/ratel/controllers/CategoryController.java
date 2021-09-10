@@ -1,31 +1,34 @@
 package com.github.ratel.controllers;
 
-import com.github.ratel.dto.CategoryDto;
 import com.github.ratel.entity.Category;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.entity.enums.EntityStatus;
+import com.github.ratel.exceptions.EntityNotFound;
+import com.github.ratel.payload.request.CategoryRequest;
 import com.github.ratel.services.CategoryService;
-import com.github.ratel.utils.TransferObj;
-//import io.swagger.annotations.ApiImplicitParam;
-//import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.github.ratel.utils.transfer_object.CategoryTransferObj.*;
+
 @RestController
 @RequestMapping("/category")
-//@ApiImplicitParams(
-//        @ApiImplicitParam(
-//                name = "Authorization",
-//                value = "Access Token",
-//                required = true,
-//                paramType = "header",
-//                example = "Bearer access_token"
-//        )
-//)
+@ApiImplicitParams(
+        @ApiImplicitParam(
+                name = "Authorization",
+                value = "Access Token",
+                required = true,
+                paramType = "header",
+                example = "Bearer access_token"
+        )
+)
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -38,38 +41,36 @@ public class CategoryController {
     @GetMapping
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> readAllCategory() {
+    public List<CategoryRequest> readAllCategory() {
         List<Category> categories = this.categoryService.findAllCategory();
-        return TransferObj.toAllCategoryDto(categories);
+        return toAllCategoryDto(categories);
     }
 
     @Secured("ROLE_USER")
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> readAllCategoryToUser() {
+    public List<CategoryRequest> readAllCategoryToUser() {
         List<Category> categories = this.categoryService.findAllCategory();
-        return TransferObj.toAllCategoryDto(categories);
+        return toAllCategoryDto(categories);
     }
 
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    @ResponseStatus(HttpStatus.OK)
-    public CategoryDto readById(@PathVariable long id) {
-        Category category = this.categoryService.raedById(id);
-        if (category.getStatus().equals(EntityStatus.on)) {
-            return TransferObj.toCategory(category);
-        } else {
-            throw new EntityNotFound("Category does not exist");
+    public ResponseEntity<Object> readById(@PathVariable long id) {
+        try {
+           return ResponseEntity.ok(toCategoryResp(this.categoryService.raedById(id)));
+        } catch (EntityNotFound e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @Secured("ROLE_USER")
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto readByName(@PathVariable String name) {
+    public CategoryRequest readByName(@PathVariable String name) {
         Category category = this.categoryService.findCategoryByName(name);
         if (category.getStatus().equals(EntityStatus.on)) {
-            return TransferObj.toCategory(category);
+            return toCategory(category);
         } else {
             throw new EntityNotFound("Category does not exist");
         }
@@ -78,9 +79,8 @@ public class CategoryController {
     @PostMapping
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveCategory(@RequestBody CategoryDto categoryDto) {
-        Category category = TransferObj.toCategoryFromUser(categoryDto);
-        this.categoryService.createCategory(category);
+    public ResponseEntity<Object> createCategory(@RequestBody CategoryRequest categoryRequest) {
+        return ResponseEntity.ok(this.categoryService.createCategory(categoryRequest));
     }
 
     @PutMapping

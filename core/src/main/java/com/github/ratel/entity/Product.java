@@ -37,8 +37,8 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "product")
-    private List<Specification> specification;
+//    @OneToMany(mappedBy = "product")
+//    private List<Specification> specification;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;

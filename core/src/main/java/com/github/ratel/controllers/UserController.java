@@ -4,7 +4,7 @@ import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.services.impl.UserServiceImpl;
-import com.github.ratel.utils.UserTransferObject;
+import com.github.ratel.utils.transfer_object.UserTransferObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;

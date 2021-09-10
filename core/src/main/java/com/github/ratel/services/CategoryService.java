@@ -1,6 +1,7 @@
 package com.github.ratel.services;
 
 import com.github.ratel.entity.Category;
+import com.github.ratel.payload.request.CategoryRequest;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface CategoryService {
 
     Category findCategoryByName(String name);
 
-    void createCategory(Category category);
+    Category createCategory(CategoryRequest categoryRequest);
 
     void updateCategory(Category category);
 
