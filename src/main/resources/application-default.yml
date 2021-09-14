@@ -1,0 +1,31 @@
+#server:
+#  port: 8083
+#spring:
+#  application:
+#    name: ratel
+#  profiles:
+#    active: prod
+#  mail:
+#    default-encoding: UTF-8
+#    host: smtp.gmail.com
+#    username: forgotandry@gmail.com
+#    password: 12345@wsw
+#    port: 465
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            enable: true
+#          auth: true
+#          starttls:
+#            enable: true
+#
+#app:
+#  jwt:
+#    secret: javamaster
+#  email:
+#    text: Follow the link for %s%s%s%s
+#  verification:
+#    domain: http://localhost:8083
+#  forgot:
+#    domain: http://localhost:8083
