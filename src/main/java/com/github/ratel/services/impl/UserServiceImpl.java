@@ -12,6 +12,7 @@ import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.repositories.RoleRepository;
 import com.github.ratel.repositories.UserRepository;
 import com.github.ratel.services.EmailService;
+import com.github.ratel.services.UserService;
 import com.github.ratel.services.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
     @Value("${app.email.text}")
     private String textMessageEmail;
@@ -84,7 +85,7 @@ public class UserServiceImpl {
         return this.userRepository.save(user);
     }
 
-    public void saveAdmin(CreateAdminRequest payload) throws UserAlreadyExistException {
+    public void saveAdmin(CreateAdminRequest payload) throws UserAlreadyExistException, ConfirmPasswordException {
         checkUserByEmail(payload.getEmail());
         User user = new User();
         user.setFirstname(payload.getFirstname());
