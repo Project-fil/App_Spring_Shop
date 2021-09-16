@@ -2,11 +2,11 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Product;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class ProductServiceImpl {
         if(product.get().getStatus().equals(EntityStatus.on)) {
             return product;
         } else {
-            throw new EntityNotFound("Product not found");
+            throw new EntityNotFoundException("Товар не найден");
         }
     }
 
@@ -38,7 +38,7 @@ public class ProductServiceImpl {
         if(product.get().getStatus().equals(EntityStatus.on)) {
             return product;
         } else {
-         throw new EntityNotFound("Product not found");
+         throw new EntityNotFoundException("Товар не найден");
         }
     }
 
@@ -67,7 +67,7 @@ public class ProductServiceImpl {
             product.setStatus(EntityStatus.off);
             this.productRepository.save(product);
         } else {
-            throw new EntityNotFound("Product not found");
+            throw new EntityNotFoundException("Товар не найден");
         }
     }
 

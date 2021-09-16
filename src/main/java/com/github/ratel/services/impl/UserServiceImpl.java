@@ -6,7 +6,6 @@ import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.exceptions.ConfirmPasswordException;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.exceptions.UserAlreadyExistException;
 import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.repositories.RoleRepository;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
@@ -63,18 +63,18 @@ public class UserServiceImpl implements UserService {
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFound("Нет такого пользователя"));
+                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
     }
 
     public User findByEmailAndPassword(String email, String password) {
         User user = this.userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFound("Нет такого пользователя"));
+                .orElseThrow(() -> new EntityNotFoundException(("Нет такого пользователя")));
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
         }
-     throw new EntityNotFound("Entity not found in db");
+     throw new EntityNotFoundException(("Нет такого пользователя"));
     }
 
 //    @Transactional
@@ -146,13 +146,13 @@ public class UserServiceImpl implements UserService {
             user.setStatus(EntityStatus.off);
             this.updateUser(user);
         } else {
-           throw new EntityNotFound("User has been deleted");
+           throw new EntityNotFoundException("Пользователь удален");
         }
     }
 
     private void doesUserExist(long userId) {
         if (this.userRepository.findById(userId).isPresent()) {
-            throw new RuntimeException("This user already exists!");
+            throw new UserAlreadyExistException();
         }
     }
 

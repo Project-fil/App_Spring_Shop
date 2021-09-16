@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    public JavaMailSender mailSender = new JavaMailSenderImpl();
+    public JavaMailSender mailSender;
 
-//    public EmailServiceImpl(JavaMailSender mailSender) {
-//        this.mailSender = mailSender;
-//    }
+    public EmailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void sendMessageToEmail(String toAddress, String subject, String text) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

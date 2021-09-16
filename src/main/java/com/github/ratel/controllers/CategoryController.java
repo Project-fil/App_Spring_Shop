@@ -2,11 +2,8 @@ package com.github.ratel.controllers;
 
 import com.github.ratel.entity.Category;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.payload.request.CategoryRequest;
 import com.github.ratel.services.CategoryService;
-//import io.swagger.annotations.ApiImplicitParam;
-//import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static com.github.ratel.utils.transfer_object.CategoryTransferObj.*;
@@ -54,7 +52,7 @@ public class CategoryController implements ApiSecurityHeader{
     public ResponseEntity<Object> readById(@PathVariable long id) {
         try {
            return ResponseEntity.ok(toCategoryResp(this.categoryService.raedById(id)));
-        } catch (EntityNotFound e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -68,7 +66,7 @@ public class CategoryController implements ApiSecurityHeader{
         if (category.getStatus().equals(EntityStatus.on)) {
             return toCategory(category);
         } else {
-            throw new EntityNotFound("Category does not exist");
+            throw new EntityNotFoundException("Категория не существует");
         }
     }
 

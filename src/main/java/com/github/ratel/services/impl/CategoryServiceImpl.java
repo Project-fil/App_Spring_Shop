@@ -2,13 +2,13 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Category;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.payload.request.CategoryRequest;
 import com.github.ratel.repositories.CategoryRepository;
 import com.github.ratel.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,17 +30,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category raedById(long id) {
         Category category = this.categoryRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFound("Category does not exist"));
+                    .orElseThrow(() -> new EntityNotFoundException("Категории не существует"));
         if (Objects.nonNull(category) && category.getStatus().equals(EntityStatus.on)) {
             return category;
         } else {
-            throw new EntityNotFound("Category does not exist");
+            throw new EntityNotFoundException("Категории не существует");
         }
     }
 
     @Override
     public Category findCategoryByName(String name) {
-        return this.categoryRepository.findByName(name).orElseThrow();
+        return this.categoryRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Категории не существует"));
     }
 
     @Override
@@ -66,6 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
             category.setStatus(EntityStatus.off);
             this.categoryRepository.save(category);
         }
-        throw new EntityNotFound("Category not found");
+        throw new EntityNotFoundException("Категории не существует");
     }
 }

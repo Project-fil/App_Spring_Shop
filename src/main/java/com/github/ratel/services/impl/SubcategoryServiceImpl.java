@@ -2,13 +2,13 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Subcategory;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.repositories.SubcategoryRepository;
 import com.github.ratel.services.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -38,7 +38,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         if (subcategory.getStatus().equals(EntityStatus.on)) {
             return subcategory;
         } else {
-            throw new EntityNotFound("Subcategory does not exist");
+            throw new EntityNotFoundException("Подкатегории не существует");
         }
     }
 
@@ -48,7 +48,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         if (subcategory.getStatus().equals(EntityStatus.on)) {
             return subcategory;
         }
-        throw new EntityNotFound("Subcategory does not exist");
+        throw new EntityNotFoundException("Подкатегории не существует");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
             subcategory.setStatus(EntityStatus.off);
             this.repository.save(subcategory);
         } else {
-            throw new EntityNotFound("Subcategory not found");
+            throw new EntityNotFoundException("Подкатегории не существует");
         }
     }
 }

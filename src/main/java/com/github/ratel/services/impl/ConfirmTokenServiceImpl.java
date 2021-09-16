@@ -2,11 +2,12 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.ConfirmToken;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.repositories.ConfirmTokenRepository;
 import com.github.ratel.services.ConfirmTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class ConfirmTokenServiceImpl implements ConfirmTokenService {
 
     @Override
     public ConfirmToken findByToken(String token) {
-        return this.tokenRepository.findByToken(token).orElseThrow(() -> new EntityNotFound("Entity not found in db"));
+        return this.tokenRepository.findByToken(token).orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
     }
 
     @Override

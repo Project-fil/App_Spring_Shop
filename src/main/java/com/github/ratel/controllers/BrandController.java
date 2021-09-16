@@ -3,7 +3,6 @@ package com.github.ratel.controllers;
 import com.github.ratel.dto.BrandDto;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.services.BrandService;
 import com.github.ratel.utils.TransferObj;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +50,7 @@ public class BrandController implements ApiSecurityHeader{
         if (brand.getStatus().equals(EntityStatus.on)) {
             return brand;
         } else {
-            throw new EntityNotFound("Brand not found");
+            throw new EntityNotFoundException("Нет такого бренда");
         }
     }
 
@@ -62,7 +62,7 @@ public class BrandController implements ApiSecurityHeader{
         if (brand.getStatus().equals(EntityStatus.on)) {
             return TransferObj.toBrand(brand);
         } else {
-            throw new EntityNotFound("Brand not found");
+            throw new EntityNotFoundException("Нет такого бренда");
         }
     }
 

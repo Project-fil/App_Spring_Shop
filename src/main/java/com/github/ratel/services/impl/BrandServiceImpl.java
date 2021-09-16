@@ -2,12 +2,12 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.exceptions.EntityNotFound;
 import com.github.ratel.repositories.BrandRepository;
 import com.github.ratel.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -25,11 +25,11 @@ public class BrandServiceImpl implements BrandService {
     }
 
     public Brand findBrandById(long id) {
-        return this.brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Id missing"));
+        return this.brandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Нет такого бренда"));
     }
 
     public Brand findBrandByName(String name) {
-        return this.brandRepository.findByName(name).orElseThrow(() -> new RuntimeException("Name missing"));
+        return this.brandRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("Нет такого бренда"));
     }
 
     public void saveBrand(Brand brand) {
@@ -44,7 +44,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     public void deleteBrandById(long id) {
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new EntityNotFound("Entity not found in db"));
+        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Нет такого бренда"));
         if (brand.getStatus().equals(EntityStatus.on)) {
             brand.setStatus(EntityStatus.off);
             this.brandRepository.save(brand);

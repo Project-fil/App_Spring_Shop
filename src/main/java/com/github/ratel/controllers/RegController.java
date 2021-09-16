@@ -27,13 +27,6 @@ public class RegController {
 
     private final VerificationTokenService verificationTokenService;
 
-
-//    @Autowired
-//    public RegController(UserServiceImpl userServiceImpl, VerificationTokenService verificationTokenService) {
-//        this.userServiceImpl = userServiceImpl;
-//        this.verificationTokenService = verificationTokenService;
-//    }
-
     @PostMapping("/create/admin")
     public ResponseEntity<Object> registrationAdmin(@RequestBody @Valid CreateAdminRequest createAdminRequest) {
         try {
@@ -47,7 +40,9 @@ public class RegController {
     @GetMapping("/verification")
     public ResponseEntity<Object> passingVerification(@RequestParam("token") String token) {
         try {
-            this.verificationTokenService.verificationUser(token);
+            VerificationToken vt = verificationTokenService.findByToken(token);
+            User user = vt.getUser();
+            this.userService.updateUser(user.verificationUser(UserVerificationStatus.VERIFIED));
             return ResponseEntity.ok("Верификация прошла успешно");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).body("Неверный токен подтверждения");

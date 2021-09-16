@@ -1,13 +1,6 @@
 package com.github.ratel.services;
 
-import com.github.ratel.entity.Roles;
 import com.github.ratel.entity.User;
-import com.github.ratel.entity.VerificationToken;
-import com.github.ratel.entity.enums.EntityStatus;
-import com.github.ratel.entity.enums.UserVerificationStatus;
-import com.github.ratel.exceptions.ConfirmPasswordException;
-import com.github.ratel.exceptions.EntityNotFound;
-import com.github.ratel.exceptions.UserAlreadyExistException;
 import com.github.ratel.payload.request.CreateAdminRequest;
 
 import java.util.*;
