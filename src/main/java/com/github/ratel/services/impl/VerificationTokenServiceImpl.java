@@ -1,10 +1,7 @@
 package com.github.ratel.services.impl;
 
-import com.github.ratel.entity.User;
 import com.github.ratel.entity.VerificationToken;
-import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.repositories.VerificationTokenRepository;
-import com.github.ratel.services.UserService;
 import com.github.ratel.services.VerificationTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

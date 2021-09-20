@@ -1,7 +1,6 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.ConfirmToken;
-import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.repositories.ConfirmTokenRepository;
 import com.github.ratel.services.ConfirmTokenService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +21,12 @@ public class ConfirmTokenServiceImpl implements ConfirmTokenService {
 
     @Override
     public ConfirmToken findByToken(String token) {
-        return this.tokenRepository.findByToken(token).orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
+        return this.tokenRepository.findByToken(token)
+                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
     }
 
-    @Override
-    public void delete(Long id) {
-        this.tokenRepository.update(id, EntityStatus.off);
-    }
+//    @Override
+//    public void delete(Long id) {
+//        this.tokenRepository.update(id, EntityStatus.off);
+//    }
 }

@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     public User findByEmailAndPassword(String email, String password) {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(("Нет такого пользователя")));
-        if (user != null) {
+        if (Objects.nonNull(user)) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
@@ -100,10 +100,12 @@ public class UserServiceImpl implements UserService {
         user.setStatus(EntityStatus.on);
         var token = (UUID.randomUUID().toString());
         var pattern = String.format(
-                this.textMessageEmail, "verification ",
+                this.textMessageEmail,
+                payload.getFirstname() + " " + payload.getLastname(),
+                "верификации ",
                 this.verificationDomain,
                 "/verification?token=", token);
-        this.emailService.sendMessageToEmail(user.getEmail(), "Verification user",
+        this.emailService.sendMessageToEmail(user.getEmail(), "Верификация пользователя App_Shop",
                 pattern);
         this.userRepository.save(user);
         this.tokenService.create(new VerificationToken(user, token));

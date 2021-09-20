@@ -30,6 +30,7 @@ public class SubcategoryController implements ApiSecurityHeader{
         this.subcategoryService = subcategoryService;
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/status")
     @SecurityRequirement(name = "Authorization")
     @ResponseStatus(HttpStatus.OK)

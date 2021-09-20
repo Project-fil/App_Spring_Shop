@@ -7,7 +7,4 @@ public interface ConfirmTokenService {
     ConfirmToken create(ConfirmToken crt);
 
     ConfirmToken findByToken(String token);
-
-    void delete(Long id);
-
 }
