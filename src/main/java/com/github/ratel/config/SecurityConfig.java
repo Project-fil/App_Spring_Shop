@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/authorization",
                         "/registration",
                         "/verification",
-                        "/forgot"
+                        "/forgot/**"
                 ).permitAll()
                 .antMatchers(
                         "/v3/api-docs",

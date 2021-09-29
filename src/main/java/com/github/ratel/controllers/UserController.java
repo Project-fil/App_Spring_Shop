@@ -20,14 +20,14 @@ public class UserController implements ApiSecurityHeader{
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @Secured("ROLE_USER")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping
     @SecurityRequirement(name = "Authorization")
     public List<UserDto> findAllActiveUsers() {
-        List<User> users = this.userServiceImpl.findAllUsers();
-        return UserTransferObject.toAllDto(users).stream()
+        List<User> users = this.userServiceImpl.findAllUsers().stream()
                 .filter(user -> user.getStatus().equals(EntityStatus.on))
                 .collect(Collectors.toList());
+        return UserTransferObject.toAllDto(users);
     }
 
     @Secured("ROLE_ADMIN")

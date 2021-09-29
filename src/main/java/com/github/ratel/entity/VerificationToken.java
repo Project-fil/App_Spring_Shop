@@ -26,6 +26,10 @@ public class VerificationToken {
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status = EntityStatus.on;
+
     @Column(name = "create_at", columnDefinition = "TIMESTAMP")
     private Date createAt = new Date();
 

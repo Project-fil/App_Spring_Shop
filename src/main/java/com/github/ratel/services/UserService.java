@@ -1,9 +1,12 @@
 package com.github.ratel.services;
 
+import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.payload.request.CreateAdminRequest;
+import com.github.ratel.payload.request.ManagerRequest;
+import com.github.ratel.payload.response.UserResponse;
 
-import java.util.*;
+import java.util.List;
 
 public interface UserService {
 
@@ -17,17 +20,19 @@ public interface UserService {
 
     User findByEmailAndPassword(String email, String password);
 
-    User saveUser(User user);
-
     void saveAdmin(CreateAdminRequest payload);
+
+    UserResponse createUser(UserDto payload);
+
+    void createManager(ManagerRequest payload);
 
     void updateUser(User user);
 
-//    long createUser(UserRegDto userRegDto);
-
 //    User changeUserInfo(long userId, UserRegDto userRegDto);
 
-     void deleteUserById(long userId);
+    String checkPassAndConfirmPass(String pass, String confirmPass);
+
+    void deleteUserById(long userId);
 
 
 }

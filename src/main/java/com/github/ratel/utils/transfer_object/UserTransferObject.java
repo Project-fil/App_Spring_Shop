@@ -6,6 +6,7 @@ import com.github.ratel.dto.UserRegDto;
 import com.github.ratel.entity.Roles;
 import com.github.ratel.entity.User;
 import com.github.ratel.payload.request.UserAuthRequest;
+import com.github.ratel.payload.response.UserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,19 +39,13 @@ public class UserTransferObject {
     }
 
     public static UserDto toDto(User user) {
-        Set<RoleDto> roleDTO = toDTO(user.getRoles());
+//        Set<RoleDto> roleDTO = toDTO(user.getRoles());
         return new UserDto(
                 user.getFirstname(),
                 user.getLastname(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getPhone(),
-                user.getAddress(),
-                user.getCreatedAt(),
-                user.getUpdatedAt(),
-                roleDTO,
-                user.getVerification(),
-                user.getStatus()
+                user.getPhone()
         );
     }
 
@@ -78,15 +73,18 @@ public class UserTransferObject {
 //        );
 //    }
 
-    public static UserRegDto fromUserReg(User data) {
-        return new UserRegDto(
+    public static UserResponse fromUserReg(User data) {
+        Set<RoleDto> roleDTO = toDTO(data.getRoles());
+        return new UserResponse(
+                data.getId(),
                 data.getFirstname(),
                 data.getLastname(),
                 data.getEmail(),
-                data.getPassword(),
                 data.getPhone(),
                 data.getAddress(),
                 data.getCreatedAt(),
+                data.getUpdatedAt(),
+                roleDTO,
                 data.getVerification(),
                 data.getStatus()
         );

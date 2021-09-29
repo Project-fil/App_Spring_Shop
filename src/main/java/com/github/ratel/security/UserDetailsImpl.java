@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class CustomUserDetails implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private String email;
 
@@ -16,8 +16,8 @@ public class CustomUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public static CustomUserDetails fromUserToCustomUserDetails(User user) {
-        CustomUserDetails cud = new CustomUserDetails();
+    public static UserDetailsImpl fromUserToCustomUserDetails(User user) {
+        UserDetailsImpl cud = new UserDetailsImpl();
         cud.email = user.getEmail();
         cud.password = user.getPassword();
         cud.grantedAuthorities = user.getRoles().stream()

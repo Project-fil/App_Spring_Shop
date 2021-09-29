@@ -29,6 +29,10 @@ public class ConfirmToken {
     @Column(name = "new_pass")
     private String newPass;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status = EntityStatus.on;
+
     @Column(name = "create_at", columnDefinition = "TIMESTAMP")
     private Date createAt = new Date();
 
