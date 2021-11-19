@@ -21,18 +21,26 @@ import static org.springframework.util.StringUtils.hasText;
 @Component
 public class JwtFilter extends GenericFilterBean {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public static final String TOKEN_PREFIX = "Bearer ";
+
+    public static final String HEADER_STRING = "Authorization";
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    public JwtFilter(JwtTokenProvider jwtTokenProvider, CustomUserDetailsService customUserDetailsService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = getTokenFromRequest((HttpServletRequest) request);
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            String userLogin = jwtTokenProvider.getLoginFromToken(token);
-            UserDetailsImpl userDetailsImpl = customUserDetailsService.loadUserByUsername(userLogin);
+            var userId = jwtTokenProvider.getIdFromToken(token);
+            UserDetailsImpl userDetailsImpl = customUserDetailsService.loadUserById(Long.valueOf(userId));
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(userDetailsImpl, null, userDetailsImpl.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -41,9 +49,9 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private String getTokenFromRequest(HttpServletRequest req) {
-        String bearer = req.getHeader("Authorization");
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
+        String bearer = req.getHeader(HEADER_STRING);
+        if (hasText(bearer) && bearer.startsWith(TOKEN_PREFIX)) {
+            return bearer.split(" ")[1];
         }
         return null;
     }

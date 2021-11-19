@@ -1,10 +1,9 @@
 package com.github.ratel.security;
 
 import com.github.ratel.exceptions.InvalidTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Log
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -23,8 +22,9 @@ public class JwtTokenProvider {
     private String secretWord;
 
     public String generateToken(UserDetailsImpl payload) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", String.valueOf(payload.getId()));
         claims.put("email", payload.getUsername());
         return Jwts.builder()
                 .setClaims(claims)
@@ -37,13 +37,32 @@ public class JwtTokenProvider {
         try {
             Jwts.parser().setSigningKey(secretWord).parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
-            throw new InvalidTokenException("Invalid token");
+        } catch (InvalidTokenException |
+                SignatureException |
+                MalformedJwtException |
+                ExpiredJwtException |
+                IllegalArgumentException ex) {
+            log.error(ex.getMessage());
+            return false;
         }
     }
 
+    public String getIdFromToken(String token) {
+        if(token.isEmpty()) {
+            return "";
+        }
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretWord)
+                .parseClaimsJws(token)
+                .getBody();
+        return String.valueOf(claims.get("id"));
+    }
+
     public String getLoginFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secretWord).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretWord)
+                .parseClaimsJws(token)
+                .getBody();
         return String.valueOf(claims.get("email"));
     }
 }

@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
+    private Long id;
+
     private String email;
 
     private String password;
@@ -18,6 +20,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl fromUserToCustomUserDetails(User user) {
         UserDetailsImpl cud = new UserDetailsImpl();
+        cud.id = user.getId();
         cud.email = user.getEmail();
         cud.password = user.getPassword();
         cud.grantedAuthorities = user.getRoles().stream()
@@ -60,4 +63,6 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public Long getId() { return id; }
 }
