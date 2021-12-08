@@ -1,4 +1,4 @@
-package com.github.ratel.exceptions;
+package com.github.ratel.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

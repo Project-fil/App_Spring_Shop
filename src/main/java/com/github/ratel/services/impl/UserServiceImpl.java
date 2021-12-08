@@ -8,6 +8,7 @@ import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.exceptions.ConfirmPasswordException;
 import com.github.ratel.exceptions.UserAlreadyExistException;
+import com.github.ratel.exceptions.statuscode.StatusCode;
 import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.payload.request.ManagerRequest;
 import com.github.ratel.payload.response.UserResponse;
@@ -21,7 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import com.github.ratel.exceptions.EntityNotFoundException;
 import java.util.*;
 
 @Service
@@ -56,12 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(long id) {
-        return userRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public User findUserById(long userId) {
-        return userRepository.getById(userId);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(StatusCode.NOT_FOUND));
     }
 
     @Override
@@ -179,7 +176,7 @@ public class UserServiceImpl implements UserService {
 
     private void checkUserByEmail(String email) {
         if (this.userRepository.findByEmail(email).isPresent()) {
-            throw new UserAlreadyExistException();
+            throw new UserAlreadyExistException("Пользователь уже существует");
         }
     }
 

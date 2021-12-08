@@ -7,6 +7,7 @@ import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.exceptions.ConfirmPasswordException;
 import com.github.ratel.exceptions.InvalidTokenException;
 import com.github.ratel.exceptions.WrongUserEmail;
+import com.github.ratel.exceptions.statuscode.StatusCode;
 import com.github.ratel.repositories.ConfirmTokenRepository;
 import com.github.ratel.repositories.UserRepository;
 import com.github.ratel.services.ConfirmTokenService;
@@ -63,7 +64,7 @@ public class ForgotPasswordServiceImpl {
                     user.getEmail(), "Password change", pattern);
             this.tokenRepository.save(ct);
         } else {
-            throw new WrongUserEmail();
+            throw new WrongUserEmail(StatusCode.WRONG_USER_EMAIL);
         }
     }
 

@@ -1,10 +1,23 @@
 package com.github.ratel.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.github.ratel.exceptions.statuscode.StatusCode;
+import lombok.Getter;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND)
+@Getter
 public class EntityNotFoundException extends RuntimeException {
+
+    private Integer statusCode;
+    private String message;
+
+    public EntityNotFoundException(StatusCode error) {
+        this.statusCode = error.getCode();
+        this.message = error.getMessage();
+    }
+
+    public EntityNotFoundException(Integer statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
 
     public EntityNotFoundException(String massage) {super(massage);}
 

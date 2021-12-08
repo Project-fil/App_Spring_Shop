@@ -1,12 +1,13 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.VerificationToken;
+import com.github.ratel.exceptions.statuscode.StatusCode;
 import com.github.ratel.repositories.VerificationTokenRepository;
 import com.github.ratel.services.VerificationTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import com.github.ratel.exceptions.EntityNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Override
     public VerificationToken findByToken(String token) {
         return this.tokenRepository.findByToken(token)
-                .orElseThrow( () -> new EntityNotFoundException("Обьект не найден"));
+                .orElseThrow( () -> new EntityNotFoundException(StatusCode.NOT_FOUND));
     }
 
 }
