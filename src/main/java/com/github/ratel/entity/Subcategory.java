@@ -30,7 +30,10 @@ public class Subcategory {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subcategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "subcategory",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Product> products = new ArrayList<>();
 
     @Column(nullable = false)

@@ -2,8 +2,7 @@ package com.github.ratel.utils.transfer_object;
 
 import com.github.ratel.dto.RoleDto;
 import com.github.ratel.dto.UserDto;
-import com.github.ratel.dto.UserRegDto;
-import com.github.ratel.entity.Roles;
+import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.User;
 import com.github.ratel.payload.request.UserAuthRequest;
 import com.github.ratel.payload.response.UserResponse;
@@ -49,18 +48,18 @@ public class UserTransferObject {
         );
     }
 
-    private static Set<RoleDto> toDTO(Set<Roles> role) {
-        return role.stream()
-                .map(role1 -> toDto(role1))
-                .collect(Collectors.toSet());
-    }
-
-    private static RoleDto toDto(Roles roles) {
-        return new RoleDto(
-                roles.getId(),
-                roles.getRole()
-        );
-    }
+//    private static Set<RoleDto> toDTO(Set<Roles> role) {
+//        return role.stream()
+//                .map(role1 -> toDto(role1))
+//                .collect(Collectors.toSet());
+//    }
+//
+//    private static RoleDto toDto(Roles roles) {
+//        return new RoleDto(
+//                roles.getId(),
+//                roles.getRole()
+//        );
+//    }
 
 //    public static User toUser(CreateAdminRequest data) {
 //        return new User(
@@ -74,7 +73,6 @@ public class UserTransferObject {
 //    }
 
     public static UserResponse fromUserReg(User data) {
-        Set<RoleDto> roleDTO = toDTO(data.getRoles());
         return new UserResponse(
                 data.getId(),
                 data.getFirstname(),
@@ -84,7 +82,7 @@ public class UserTransferObject {
                 data.getAddress(),
                 data.getCreatedAt(),
                 data.getUpdatedAt(),
-                roleDTO,
+                data.getRoles(),
                 data.getVerification(),
                 data.getStatus()
         );

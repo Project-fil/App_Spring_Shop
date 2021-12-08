@@ -1,6 +1,7 @@
 package com.github.ratel.entity;
 
 import com.github.ratel.entity.enums.EntityStatus;
+import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.*;
 
@@ -45,12 +46,9 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private Date updatedAt;
 
-    @ToString.Exclude
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Roles> roles = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, columnDefinition = "TEXT")
+    private Roles roles;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")

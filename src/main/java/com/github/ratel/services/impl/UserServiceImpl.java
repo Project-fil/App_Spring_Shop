@@ -1,7 +1,7 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.dto.UserDto;
-import com.github.ratel.entity.Roles;
+import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.entity.enums.EntityStatus;
@@ -11,7 +11,6 @@ import com.github.ratel.exceptions.UserAlreadyExistException;
 import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.payload.request.ManagerRequest;
 import com.github.ratel.payload.response.UserResponse;
-import com.github.ratel.repositories.RoleRepository;
 import com.github.ratel.repositories.UserRepository;
 import com.github.ratel.services.EmailService;
 import com.github.ratel.services.UserService;
@@ -38,17 +37,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     private final VerificationTokenService tokenService;
 
     @Autowired
-    public UserServiceImpl(EmailService emailService, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, VerificationTokenService tokenService) {
+    public UserServiceImpl(EmailService emailService, UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenService tokenService) {
         this.emailService = emailService;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
     }
@@ -65,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(long userId) {
-       return userRepository.getById(userId);
+        return userRepository.getById(userId);
     }
 
     @Override
@@ -76,22 +72,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws EntityNotFoundException {
-        User user = this.userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
-        if (Objects.nonNull(user)) {
+        User user = this.findUserByEmail(email);
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
-        }
-     throw new EntityNotFoundException(("Нет такого пользователя"));
+        throw new ConfirmPasswordException(("Пароль не верный"));
     }
 
     @Override
     public void createManager(ManagerRequest payload) {
-        User user = this.userRepository.findById(payload.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
-        Roles userRoles = this.roleRepository.getById(2L);
-        user.setRoles(Set.of(userRoles));
+        User user = this.findById(payload.getUserId());
+        user.setRoles(Roles.ROLE_MANAGER);
         user.setUpdatedAt(new Date());
         this.userRepository.save(user);
     }
@@ -106,9 +97,7 @@ public class UserServiceImpl implements UserService {
         String pass = checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
         user.setPassword(this.passwordEncoder.encode(pass));
         user.setCreatedAt(new Date());
-        Roles userRole = this.roleRepository.findById(1L)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
-        user.setRoles(Set.of(userRole));
+        user.setRoles(Roles.ROLE_ADMIN);
         user.setVerification(UserVerificationStatus.UNVERIFIED);
         user.setStatus(EntityStatus.on);
         var token = (UUID.randomUUID().toString());
@@ -144,9 +133,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(this.passwordEncoder.encode(userPass));
         user.setPhone(payload.getPhone());
         user.setCreatedAt(new Date());
-        Roles roles = this.roleRepository.findByRole("ROLE_USER")
-                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
-        user.setRoles(Set.of(roles));
+        user.setRoles(Roles.ROLE_USER);
         user.setVerification(UserVerificationStatus.UNVERIFIED);
         user.setStatus(EntityStatus.on);
         var userToken = UUID.randomUUID().toString();
@@ -182,22 +169,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(long userId) {
         User user = this.userRepository.getById(userId);
-        if(user.getStatus().equals(EntityStatus.on)) {
+        if (user.getStatus().equals(EntityStatus.on)) {
             user.setStatus(EntityStatus.off);
             this.updateUser(user);
         } else {
-           throw new EntityNotFoundException("Пользователь удален");
+            throw new EntityNotFoundException("Пользователь удален");
         }
     }
 
     private void checkUserByEmail(String email) {
-        if(this.userRepository.findByEmail(email).isPresent()) {
+        if (this.userRepository.findByEmail(email).isPresent()) {
             throw new UserAlreadyExistException();
         }
     }
 
     public String checkPassAndConfirmPass(String pass, String confirmPass) {
-        if(pass.equals(confirmPass)) {
+        if (pass.equals(confirmPass)) {
             return confirmPass;
         } else {
             throw new ConfirmPasswordException("Пароли не совпадают");
