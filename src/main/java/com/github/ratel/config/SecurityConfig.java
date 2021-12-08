@@ -46,10 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(
-                        "/create/admin",
-                        "/authorization",
-                        "/registration",
-                        "/verification",
+//                        "/create/admin",
+//                        "/authorization",
+//                        "/registration",
+//                        "/verification",
+                "/app/shop/auth/**",
                         "/forgot/**"
                 ).permitAll()
                 .antMatchers(

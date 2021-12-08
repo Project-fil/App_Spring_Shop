@@ -25,7 +25,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/app/shop")
+@RequestMapping("/app/shop/auth")
 @RequiredArgsConstructor
 public class RegController {
 
@@ -51,7 +51,12 @@ public class RegController {
             VerificationToken vt = verificationTokenService.findByToken(token);
             User user = vt.getUser();
             this.userService.updateUser(user.verificationUser(UserVerificationStatus.VERIFIED));
-            return ResponseEntity.ok("Верификация прошла успешно");
+            return ResponseEntity.ok(new TokenResponse(
+                    this.tokenProvider.generateToken(UserDetailsImpl.fromUserToCustomUserDetails(user)),
+                    user.getId(),
+                    user.getFirstname(),
+                    user.getRoles()
+            ));
     }
 
     @PostMapping("/authorization")

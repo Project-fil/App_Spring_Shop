@@ -1,14 +1,17 @@
 package com.github.ratel.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -37,14 +40,10 @@ public class User {
     @Column(name = "phone", columnDefinition = "TEXT")
     private String phone;
 
-    @Column(name = "address", columnDefinition = "TEXT")
-    private String address;
-
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private Date createdAt;
-
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private Date updatedAt;
+//    @Column(name = "address", columnDefinition = "TEXT")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, columnDefinition = "TEXT")
@@ -57,6 +56,16 @@ public class User {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
+
+    @JsonIgnore
+    @CreatedDate
+    @Column(name = "createdDate", columnDefinition = "TIMESTAMP")
+    private Date createdDate;
+
+    @JsonIgnore
+    @LastModifiedDate
+    @Column(name = "lastModifiedDate", columnDefinition = "TIMESTAMP")
+    private Date lastModifiedDate;
 
     public User(String email, String password) {
         this.email = email;
@@ -75,8 +84,8 @@ public class User {
             String email,
             String password,
             String phone,
-            String address,
-            Date createdAt,
+            Address address,
+            Date createdDate,
             UserVerificationStatus verification,
             EntityStatus status
     ) {
@@ -86,7 +95,7 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.address = address;
-        this.createdAt = createdAt;
+        this.createdDate = createdDate;
         this.verification = verification;
         this.status = status;
     }

@@ -1,6 +1,7 @@
 package com.github.ratel.payload.response;
 
 import com.github.ratel.dto.RoleDto;
+import com.github.ratel.entity.Address;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
@@ -27,11 +28,7 @@ public class UserResponse {
 
     private String phone;
 
-    private String address;
-
-    private Date createdAt;
-
-    private Date updatedAt;
+    private Address address;
 
     private Roles role;
 

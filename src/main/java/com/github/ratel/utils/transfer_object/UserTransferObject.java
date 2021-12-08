@@ -80,8 +80,6 @@ public class UserTransferObject {
                 data.getEmail(),
                 data.getPhone(),
                 data.getAddress(),
-                data.getCreatedAt(),
-                data.getUpdatedAt(),
                 data.getRoles(),
                 data.getVerification(),
                 data.getStatus()

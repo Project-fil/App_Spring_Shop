@@ -80,7 +80,6 @@ public class UserServiceImpl implements UserService {
     public void createManager(ManagerRequest payload) {
         User user = this.findById(payload.getUserId());
         user.setRoles(Roles.ROLE_MANAGER);
-        user.setUpdatedAt(new Date());
         this.userRepository.save(user);
     }
 
@@ -93,7 +92,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(payload.getEmail());
         String pass = checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
         user.setPassword(this.passwordEncoder.encode(pass));
-        user.setCreatedAt(new Date());
         user.setRoles(Roles.ROLE_ADMIN);
         user.setVerification(UserVerificationStatus.UNVERIFIED);
         user.setStatus(EntityStatus.on);
@@ -115,7 +113,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        user.setUpdatedAt(new Date());
         userRepository.save(user);
     }
 
@@ -129,7 +126,6 @@ public class UserServiceImpl implements UserService {
         String userPass = checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
         user.setPassword(this.passwordEncoder.encode(userPass));
         user.setPhone(payload.getPhone());
-        user.setCreatedAt(new Date());
         user.setRoles(Roles.ROLE_USER);
         user.setVerification(UserVerificationStatus.UNVERIFIED);
         user.setStatus(EntityStatus.on);
