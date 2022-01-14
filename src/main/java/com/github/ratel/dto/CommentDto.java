@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class CommentDto {
 
-    private long userId;
+    private String userId;
 
     private long productId;
 

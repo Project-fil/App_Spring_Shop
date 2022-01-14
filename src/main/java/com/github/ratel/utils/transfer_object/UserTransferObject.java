@@ -1,33 +1,30 @@
 package com.github.ratel.utils.transfer_object;
 
-import com.github.ratel.dto.RoleDto;
 import com.github.ratel.dto.UserDto;
-import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.User;
 import com.github.ratel.payload.request.UserAuthRequest;
 import com.github.ratel.payload.response.UserResponse;
+import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@UtilityClass
 public class UserTransferObject {
 
-    public static User toUser(UserAuthRequest data) {
-        return new User(
+    public static UserResponse fromUser(User data) {
+        return new UserResponse(
+                data.getId(),
+                data.getFirstname(),
+                data.getLastname(),
                 data.getEmail(),
-                data.getPassword()
+                data.getPhone(),
+                AddressTransferObject.fromAddress(data.getAddress()),
+                data.getRoles(),
+                data.getVerification(),
+                data.getStatus()
         );
     }
-
-    public static UserAuthRequest fromUserAuth(User data) {
-        return new UserAuthRequest(
-                data.getEmail(),
-                data.getPassword()
-        );
-    }
-
 
     public static List<UserDto> toAllDto(List<User> users) {
         List<UserDto> convertToDto = new ArrayList<>();
@@ -45,44 +42,7 @@ public class UserTransferObject {
                 user.getEmail(),
                 user.getPassword(),
                 user.getPhone()
-        );
-    }
 
-//    private static Set<RoleDto> toDTO(Set<Roles> role) {
-//        return role.stream()
-//                .map(role1 -> toDto(role1))
-//                .collect(Collectors.toSet());
-//    }
-//
-//    private static RoleDto toDto(Roles roles) {
-//        return new RoleDto(
-//                roles.getId(),
-//                roles.getRole()
-//        );
-//    }
-
-//    public static User toUser(CreateAdminRequest data) {
-//        return new User(
-//                data.getFirstname(),
-//                data.getLastname(),
-//                data.getLogin(),
-//                data.getEmail(),
-//                data.getPassword(),
-//                data.getConfirmPassword()
-//        );
-//    }
-
-    public static UserResponse fromUserReg(User data) {
-        return new UserResponse(
-                data.getId(),
-                data.getFirstname(),
-                data.getLastname(),
-                data.getEmail(),
-                data.getPhone(),
-                data.getAddress(),
-                data.getRoles(),
-                data.getVerification(),
-                data.getStatus()
         );
     }
 

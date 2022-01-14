@@ -1,5 +1,6 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.dto.ProductDto;
 import com.github.ratel.entity.Product;
 import com.github.ratel.entity.Subcategory;
@@ -23,7 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-public class ProductController implements ApiSecurityHeader{
+public class ProductController implements ApiSecurityHeader {
 
     private final ProductServiceImpl productServiceImpl;
 

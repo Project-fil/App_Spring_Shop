@@ -1,5 +1,6 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.dto.OrderDto;
 import com.github.ratel.entity.Order;
 import com.github.ratel.services.impl.OrderServiceImpl;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @AllArgsConstructor
-public class OrderController implements ApiSecurityHeader{
+public class OrderController implements ApiSecurityHeader {
 
     private final OrderServiceImpl orderServiceImpl;
 

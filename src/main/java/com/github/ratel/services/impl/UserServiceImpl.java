@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(long id) {
+    public User findById(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(StatusCode.NOT_FOUND));
     }
@@ -77,38 +77,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createManager(ManagerRequest payload) {
-        User user = this.findById(payload.getUserId());
-        user.setRoles(Roles.ROLE_MANAGER);
-        this.userRepository.save(user);
-    }
-
-    @Override
-    public void saveAdmin(CreateAdminRequest payload) throws UserAlreadyExistException, ConfirmPasswordException {
-        checkUserByEmail(payload.getEmail());
-        User user = new User();
-        user.setFirstname(payload.getFirstname());
-        user.setLastname(payload.getLastname());
-        user.setEmail(payload.getEmail());
-        String pass = checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
-        user.setPassword(this.passwordEncoder.encode(pass));
-        user.setRoles(Roles.ROLE_ADMIN);
-        user.setVerification(UserVerificationStatus.UNVERIFIED);
-        user.setStatus(EntityStatus.on);
-        var token = (UUID.randomUUID().toString());
-        var pattern = String.format(
-                this.textMessageEmail,
-                payload.getFirstname() + " " + payload.getLastname(),
-                "верификации ",
-                this.verificationDomain,
-                "/verification?token=", token);
-        this.emailService.sendMessageToEmail(
-                user.getEmail(),
-                "Верификация пользователя App_Shop",
-                pattern
-        );
-        this.userRepository.save(user);
-        this.tokenService.create(new VerificationToken(user, token));
+    public User save(User user) {
+        return this.userRepository.save(user);
     }
 
     @Override
@@ -116,7 +86,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    @Override
     public UserResponse createUser(UserDto payload) {
         checkUserByEmail(payload.getEmail());
         User user = new User();
@@ -143,7 +112,7 @@ public class UserServiceImpl implements UserService {
         );
         this.userRepository.save(user);
         this.tokenService.create(new VerificationToken(user, userToken));
-        return UserTransferObject.fromUserReg(user);
+        return UserTransferObject.fromUser(user);
     }
 
 //    public User changeUserInfo(long userId, UserRegDto userRegDto) {
@@ -160,8 +129,8 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public void deleteUserById(long userId) {
-        User user = this.userRepository.getById(userId);
+    public void deleteUserById(String userId) {
+        User user = this.userRepository.findById(userId).orElseThrow();
         if (user.getStatus().equals(EntityStatus.on)) {
             user.setStatus(EntityStatus.off);
             this.updateUser(user);
@@ -170,7 +139,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void checkUserByEmail(String email) {
+    public void checkUserByEmail(String email) {
         if (this.userRepository.findByEmail(email).isPresent()) {
             throw new UserAlreadyExistException("Пользователь уже существует");
         }

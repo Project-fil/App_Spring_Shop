@@ -40,7 +40,7 @@ public class JwtFilter extends GenericFilterBean {
         String token = getTokenFromRequest((HttpServletRequest) request);
         if (token != null && jwtTokenProvider.validateToken(token)) {
             var userId = jwtTokenProvider.getIdFromToken(token);
-            UserDetailsImpl userDetailsImpl = customUserDetailsService.loadUserById(Long.valueOf(userId));
+            UserDetailsImpl userDetailsImpl = customUserDetailsService.loadUserByUsername(userId);
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(userDetailsImpl, null, userDetailsImpl.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);

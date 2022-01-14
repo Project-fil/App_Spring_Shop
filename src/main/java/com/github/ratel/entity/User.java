@@ -11,19 +11,22 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "user_table")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 7990653085947378299L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long id;
+    @Column(name = "id")
+    private String id = UUID.randomUUID().toString();
 
     @Column(name = "firstname", nullable = false, columnDefinition = "TEXT")
     private String firstname;
@@ -40,9 +43,8 @@ public class User {
     @Column(name = "phone", columnDefinition = "TEXT")
     private String phone;
 
-//    @Column(name = "address", columnDefinition = "TEXT")
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @Enumerated(EnumType.STRING)

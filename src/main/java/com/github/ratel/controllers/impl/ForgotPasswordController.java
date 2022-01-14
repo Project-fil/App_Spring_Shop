@@ -1,4 +1,4 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
 import com.github.ratel.dto.ForgotPassDto;
 import com.github.ratel.exceptions.ConfirmPasswordException;
@@ -17,13 +17,13 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/forgot")
+@RequestMapping("app/shop/")
 @RequiredArgsConstructor
 public class ForgotPasswordController {
 
     private final ForgotPasswordServiceImpl passwordService;
 
-    @PostMapping
+    @PostMapping("free/forgot")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> submitForgotPassword(@Valid @RequestBody ForgotPassDto payload) {
         try {
@@ -36,7 +36,7 @@ public class ForgotPasswordController {
         return ResponseEntity.ok("Для подтверждения воспользуйтесь електронной почтой");
     }
 
-    @GetMapping("/password")
+    @GetMapping("free/password")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> changePassword(@RequestParam("token") String token) {
         try {

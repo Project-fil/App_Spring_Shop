@@ -1,12 +1,15 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.enums.EntityStatus;
+import com.github.ratel.payload.response.UserResponse;
 import com.github.ratel.services.impl.UserServiceImpl;
 import com.github.ratel.utils.transfer_object.UserTransferObject;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
-public class UserController implements ApiSecurityHeader{
+public class UserController implements ApiSecurityHeader {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
@@ -23,17 +26,17 @@ public class UserController implements ApiSecurityHeader{
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping
     @SecurityRequirement(name = "Authorization")
-    public List<UserDto> findAllActiveUsers() {
-        List<User> users = this.userServiceImpl.findAllUsers().stream()
+    public ResponseEntity<List<UserResponse>> findAllActiveUsers() {
+        return ResponseEntity.ok(this.userServiceImpl.findAllUsers().stream()
                 .filter(user -> user.getStatus().equals(EntityStatus.on))
-                .collect(Collectors.toList());
-        return UserTransferObject.toAllDto(users);
+                .map(UserTransferObject::fromUser)
+                .collect(Collectors.toList()));
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/{userId}")
     @SecurityRequirement(name = "Authorization")
-    public UserDto findUserById(@PathVariable long userId) {
+    public UserDto findUserById(@PathVariable String userId) {
         User user = userServiceImpl.findById(userId);
             return UserTransferObject.toDto(user);
     }
@@ -53,7 +56,7 @@ public class UserController implements ApiSecurityHeader{
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{userId}")
     @SecurityRequirement(name = "Authorization")
-    public void deleteUser(@PathVariable long userId) {
+    public void deleteUser(@PathVariable String userId) {
         this.userServiceImpl.deleteUserById(userId);
     }
 }

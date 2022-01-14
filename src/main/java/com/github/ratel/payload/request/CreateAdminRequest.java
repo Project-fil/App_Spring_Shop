@@ -31,4 +31,8 @@ public class CreateAdminRequest {
     @Size(min = 8, max = 40)
     private String confirmPassword;
 
+    @NotEmpty
+    @Size(min = 9, max = 20)
+    private String phone;
+
 }

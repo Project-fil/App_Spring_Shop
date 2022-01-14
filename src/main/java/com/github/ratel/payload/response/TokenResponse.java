@@ -10,7 +10,7 @@ import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 public class TokenResponse {
 
     private String token;
-    private Long userId;
+    private String userId;
     private String userName;
     private Roles role;
 

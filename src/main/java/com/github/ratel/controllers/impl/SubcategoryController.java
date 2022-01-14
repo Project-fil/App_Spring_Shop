@@ -1,5 +1,6 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.dto.SubcategoryDto;
 import com.github.ratel.entity.Category;
 import com.github.ratel.entity.Subcategory;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/subcategory")
-public class SubcategoryController implements ApiSecurityHeader{
+public class SubcategoryController implements ApiSecurityHeader {
 
     private final CategoryService categoryService;
 

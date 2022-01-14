@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private Long id;
+    private String id;
 
     private String email;
 
@@ -66,5 +66,5 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
 }

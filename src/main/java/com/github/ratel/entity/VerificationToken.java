@@ -6,18 +6,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.sql.rowset.serial.SerialArray;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "verification_token")
-public class VerificationToken {
+public class VerificationToken implements Serializable {
+
+    private static final long serialVersionUID = -2634418014000059593L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id")
+    private String id = UUID.randomUUID().toString();
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id", referencedColumnName = "id")

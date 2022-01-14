@@ -12,6 +12,6 @@ import javax.validation.constraints.NotEmpty;
 public class ManagerRequest {
 
     @NotEmpty
-    private long userId;
+    private String userId;
 
 }

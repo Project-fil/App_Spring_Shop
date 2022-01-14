@@ -1,5 +1,6 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.entity.Category;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.payload.request.CategoryRequest;
@@ -19,7 +20,7 @@ import static com.github.ratel.utils.transfer_object.CategoryTransferObj.*;
 @CrossOrigin
 @RestController
 @RequestMapping("/category")
-public class CategoryController implements ApiSecurityHeader{
+public class CategoryController implements ApiSecurityHeader {
 
     private final CategoryService categoryService;
 

@@ -12,25 +12,20 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    User findById(long id);
+    User findById(String id);
 
     User findUserByEmail(String email);
 
     User findByEmailAndPassword(String email, String password);
 
-    void saveAdmin(CreateAdminRequest payload);
-
-    UserResponse createUser(UserDto payload);
-
-    void createManager(ManagerRequest payload);
+    User save(User user);
 
     void updateUser(User user);
 
-//    User changeUserInfo(long userId, UserRegDto userRegDto);
+    void deleteUserById(String userId);
+
+    void checkUserByEmail(String email);
 
     String checkPassAndConfirmPass(String pass, String confirmPass);
-
-    void deleteUserById(long userId);
-
 
 }

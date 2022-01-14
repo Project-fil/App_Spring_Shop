@@ -17,12 +17,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
-        return UserDetailsImpl.fromUserToCustomUserDetails(userRepository.findByEmail(username)
+        return UserDetailsImpl.fromUserToCustomUserDetails(userRepository.findById(username)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден")));
     }
 
-    public UserDetailsImpl loadUserById(Long userId) throws UsernameNotFoundException {
-        return UserDetailsImpl.fromUserToCustomUserDetails(userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(StatusCode.NOT_FOUND)));
-    }
+//    public UserDetailsImpl loadUserByLongId(Long userId) throws UsernameNotFoundException {
+//        return UserDetailsImpl.fromUserToCustomUserDetails(userRepository.findById(userId)
+//                .orElseThrow(() -> new EntityNotFoundException(StatusCode.NOT_FOUND)));
+//    }
+
 }

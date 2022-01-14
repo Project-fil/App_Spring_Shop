@@ -1,5 +1,6 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.dto.CommentDto;
 import com.github.ratel.entity.Comment;
 import com.github.ratel.services.impl.CommentServiceImpl;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @CrossOrigin
 @RestController
 @RequestMapping(path = "/comments")
-public class CommentController implements ApiSecurityHeader{
+public class CommentController implements ApiSecurityHeader {
 
     @Autowired
     private CommentServiceImpl commentServiceImpl;
@@ -44,7 +45,7 @@ public class CommentController implements ApiSecurityHeader{
 
     @PostMapping("/product/{productId}")
     @SecurityRequirement(name = "Authorization")
-    public Comment createCommentByProductId(@RequestBody CommentDto commentDto, @PathVariable long productId) {
+    public Comment createCommentByProductId(@RequestBody CommentDto commentDto, @PathVariable String productId) {
         return this.commentServiceImpl.saveCommentByProductId(commentDto, productId);
     }
 

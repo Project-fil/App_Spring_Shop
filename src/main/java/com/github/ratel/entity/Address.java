@@ -4,25 +4,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "user_addres")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+public class Address implements Serializable {
+
+    private static final long serialVersionUID = -3314738285065551787L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, columnDefinition = "BIGINT", unique = true)
-    private long id;
+    @Column(name = "id")
+    private String id= UUID.randomUUID().toString();
 
     @Column(name = "country", nullable = false, columnDefinition = "TEXT")
     private String country;
@@ -39,8 +43,8 @@ public class Address {
     @Column(name = "apartmentNumber", columnDefinition = "INT")
     private int apartmentNumber;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "address")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     private List<User> userAddress = new ArrayList<>();
 
     @JsonIgnore

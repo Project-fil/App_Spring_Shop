@@ -42,7 +42,7 @@ public class CommentServiceImpl {
         return commentRepository.save(comment);
     }
 
-    public Comment saveCommentByProductId(CommentDto dto, long id) {
+    public Comment saveCommentByProductId(CommentDto dto, String id) {
         Comment comment = new Comment();
 
         Product product = productRepository.findById(dto.getProductId())

@@ -1,5 +1,6 @@
-package com.github.ratel.controllers;
+package com.github.ratel.controllers.impl;
 
+import com.github.ratel.controllers.ApiSecurityHeader;
 import com.github.ratel.dto.BrandDto;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.enums.EntityStatus;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/brand")
-public class BrandController implements ApiSecurityHeader{
+public class BrandController implements ApiSecurityHeader {
 
     private final BrandService brandService;
 

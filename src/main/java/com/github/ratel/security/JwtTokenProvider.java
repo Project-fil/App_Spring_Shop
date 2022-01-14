@@ -24,7 +24,7 @@ public class JwtTokenProvider {
     public String generateToken(UserDetailsImpl payload) {
         Date date = Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", String.valueOf(payload.getId()));
+        claims.put("id", payload.getId());
         claims.put("email", payload.getUsername());
         return Jwts.builder()
                 .setClaims(claims)
