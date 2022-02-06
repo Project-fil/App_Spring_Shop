@@ -1,0 +1,45 @@
+package com.github.ratel.utils;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class EmailText {
+
+    @Value("${app.email.text}")
+    private String textMessageEmail;
+
+    @Value("${app.verification.domain}")
+    private String verificationDomain;
+
+    public String regLetter(String firstName, String lastName, String token) {
+        return "Здравсвуйте"
+                + " "
+                + firstName
+                + " "
+                + lastName
+                + "."
+                + "\n"
+                + this.textMessageEmail
+                + "верификации "
+                + this.verificationDomain
+                + "/verification?token="
+                + token;
+    }
+
+    public String confirmPass(String firstName, String lastName, String token) {
+        return "Здравсвуйте"
+                + " "
+                + firstName
+                + " "
+                + lastName
+                + "."
+                + "\n"
+                + this.textMessageEmail
+                + "верификации "
+                + this.verificationDomain
+                + "/verification?token="
+                + token;
+    }
+
+}

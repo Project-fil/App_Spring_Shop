@@ -7,17 +7,19 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "subcategories")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Subcategory {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true, columnDefinition = "BIGINT")
-    private long id;
+    private Long id;
 
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
@@ -36,23 +38,19 @@ public class Subcategory {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Product> products = new ArrayList<>();
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EntityStatus status = EntityStatus.on;
+    @Column(name = "is_removed")
+    private boolean removed;
 
-    public Subcategory(long id, String name) {
-        this.id = id;
+    public Subcategory(String name) {
         this.name = name;
     }
 
-    public Subcategory(long id, String name, Category category) {
-        this.id = id;
+    public Subcategory(String name, Category category) {
         this.name = name;
         this.category = category;
     }
 
-    public Subcategory(long id, String name, Category category, List<Product> products) {
-        this.id = id;
+    public Subcategory(String name, Category category, List<Product> products) {
         this.name = name;
         this.category = category;
         this.products = products;

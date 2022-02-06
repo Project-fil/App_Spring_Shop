@@ -16,6 +16,6 @@ public interface BrandService {
 
     public void updateBrandById(Brand brand);
 
-    public void deleteBrandById(long id);
+//    public void deleteBrandById(long id);
 
 }

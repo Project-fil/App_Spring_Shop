@@ -47,9 +47,6 @@ public class UserRegDto {
     @NotNull
     private UserVerificationStatus verification = UserVerificationStatus.UNVERIFIED;
 
-    @NotNull
-    private EntityStatus status = EntityStatus.on;
-
     public UserRegDto(String firstname, String lastname, String email, String password, String phone, String address, Date createdAt,
                       UserVerificationStatus verification, EntityStatus status) {
         this.firstname = firstname;
@@ -60,6 +57,5 @@ public class UserRegDto {
         this.address = address;
         this.createdAt = createdAt;
         this.verification = verification;
-        this.status = status;
     }
 }

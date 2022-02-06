@@ -15,6 +15,8 @@ import java.util.List;
 @Transactional
 public class SubcategoryServiceImpl implements SubcategoryService {
 
+    // TODO: 06.02.2022 refactor all
+
     private final SubcategoryRepository repository;
 
     @Autowired
@@ -28,32 +30,22 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     }
 
     @Override
-    public List<Subcategory> findAllSubcategoryByStatus(EntityStatus status) {
-        return this.repository.findAllByStatus(status);
+    public List<Subcategory> findAllSubcategoryByStatus() {
+        return this.repository.findAllByRemovedFalse();
     }
 
     @Override
     public Subcategory findById(long id) {
-        Subcategory subcategory = this.repository.findById(id).orElseThrow();
-        if (subcategory.getStatus().equals(EntityStatus.on)) {
-            return subcategory;
-        } else {
-            throw new EntityNotFoundException("Подкатегории не существует");
-        }
+        return this.repository.findById(id).orElseThrow();
     }
 
     @Override
     public Subcategory findByName(String name) {
-        Subcategory subcategory = this.repository.findByName(name).orElseThrow();
-        if (subcategory.getStatus().equals(EntityStatus.on)) {
-            return subcategory;
-        }
-        throw new EntityNotFoundException("Подкатегории не существует");
+        return this.repository.findByName(name).orElseThrow();
     }
 
     @Override
     public void create(Subcategory subcategory) {
-        subcategory.setStatus(EntityStatus.on);
         this.repository.save(subcategory);
     }
 
@@ -64,14 +56,8 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         this.repository.save(updateSubcategory);
     }
 
-    @Override
-    public void delete(long id) {
-        Subcategory subcategory = this.repository.findById(id).orElseThrow();
-        if (subcategory.getStatus().equals(EntityStatus.on)) {
-            subcategory.setStatus(EntityStatus.off);
-            this.repository.save(subcategory);
-        } else {
-            throw new EntityNotFoundException("Подкатегории не существует");
-        }
-    }
+//    @Override
+//    public void delete(long id) {
+//}
+
 }

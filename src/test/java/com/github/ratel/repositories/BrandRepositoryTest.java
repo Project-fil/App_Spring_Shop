@@ -49,10 +49,10 @@ public class BrandRepositoryTest {
         Assert.assertThat(act, IsIterableContainingInAnyOrder.containsInAnyOrder(exp.toArray()));
     }
 
-    @Test
-    public void createBrandTest() {
-        this.brandRepository.save(new Brand("Ceresit", EntityStatus.on));
-    }
+//    @Test
+//    public void createBrandTest() {
+//        this.brandRepository.save(new Brand("Ceresit", EntityStatus.on));
+//    }
 
     @Test
     @Sql(value = {"schema-brand.sql", "ratel-brand-data.sql"})

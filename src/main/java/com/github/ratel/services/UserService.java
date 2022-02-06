@@ -12,7 +12,7 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    User findById(String id);
+    User findById(Long id);
 
     User findUserByEmail(String email);
 
@@ -24,8 +24,6 @@ public interface UserService {
 
     void deleteUserById(String userId);
 
-    void checkUserByEmail(String email);
-
-    String checkPassAndConfirmPass(String pass, String confirmPass);
+    User checkUserByEmail(String email);
 
 }

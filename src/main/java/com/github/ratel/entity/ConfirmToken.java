@@ -1,9 +1,10 @@
 package com.github.ratel.entity;
 
-import com.github.ratel.entity.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,12 +30,18 @@ public class ConfirmToken {
     @Column(name = "new_pass")
     private String newPass;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EntityStatus status = EntityStatus.on;
+    @Column(name = "removed")
+    private boolean removed;
 
-    @Column(name = "create_at", columnDefinition = "TIMESTAMP")
-    private Date createAt = new Date();
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date cratedAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     public ConfirmToken(User user, String token, String newPass) {
         this.user = user;

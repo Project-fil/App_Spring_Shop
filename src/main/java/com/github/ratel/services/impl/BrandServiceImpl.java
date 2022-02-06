@@ -33,7 +33,6 @@ public class BrandServiceImpl implements BrandService {
     }
 
     public void saveBrand(Brand brand) {
-        brand.setStatus(EntityStatus.on);
         this.brandRepository.save(brand);
     }
 
@@ -43,11 +42,11 @@ public class BrandServiceImpl implements BrandService {
         this.brandRepository.save(updateBrand);
     }
 
-    public void deleteBrandById(long id) {
-        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Нет такого бренда"));
-        if (brand.getStatus().equals(EntityStatus.on)) {
-            brand.setStatus(EntityStatus.off);
-            this.brandRepository.save(brand);
-        }
-    }
+//    public void deleteBrandById(long id) {
+//        Brand brand = this.brandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Нет такого бренда"));
+//        if (brand.getStatus().equals(EntityStatus.on)) {
+//            brand.setStatus(EntityStatus.off);
+//            this.brandRepository.save(brand);
+//        }
+//    }
 }

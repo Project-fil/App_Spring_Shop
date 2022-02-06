@@ -24,7 +24,7 @@ app:
   jwt:
     secret: javamaster
   email:
-    text: Здравсвуйте %s. Перейдите по ссылке для %s%s%s%s
+    text: Перейдите по ссылке для
   verification:
     domain: http://localhost:8083
   forgot:

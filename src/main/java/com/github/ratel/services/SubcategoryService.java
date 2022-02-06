@@ -9,7 +9,7 @@ public interface SubcategoryService {
 
     List<Subcategory> findByAllSubcategory();
 
-    List<Subcategory> findAllSubcategoryByStatus(EntityStatus status);
+    List<Subcategory> findAllSubcategoryByStatus();
 
     Subcategory findById(long id);
 
@@ -19,5 +19,5 @@ public interface SubcategoryService {
 
     void update(Subcategory subcategory);
 
-    void delete(long id);
+//    void delete(long id);
 }

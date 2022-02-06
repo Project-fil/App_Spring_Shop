@@ -27,19 +27,16 @@ public class UserController implements ApiSecurityHeader {
     @GetMapping
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<List<UserResponse>> findAllActiveUsers() {
-        return ResponseEntity.ok(this.userServiceImpl.findAllUsers().stream()
-                .filter(user -> user.getStatus().equals(EntityStatus.on))
-                .map(UserTransferObject::fromUser)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(List.of());
     }
 
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/{userId}")
-    @SecurityRequirement(name = "Authorization")
-    public UserDto findUserById(@PathVariable String userId) {
-        User user = userServiceImpl.findById(userId);
-            return UserTransferObject.toDto(user);
-    }
+//    @Secured("ROLE_ADMIN")
+//    @GetMapping("/{userId}")
+//    @SecurityRequirement(name = "Authorization")
+//    public UserDto findUserById(@PathVariable String userId) {
+//        User user = userServiceImpl.findById(userId);
+//            return UserTransferObject.toDto(user);
+//    }
 
 //    @Secured("ROLE_ADMIN")
 //    @PostMapping

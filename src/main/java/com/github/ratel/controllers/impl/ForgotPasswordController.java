@@ -26,25 +26,14 @@ public class ForgotPasswordController {
     @PostMapping("free/forgot")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> submitForgotPassword(@Valid @RequestBody ForgotPassDto payload) {
-        try {
-            this.passwordService.passwordRecovery(payload);
-        } catch (EntityNotFoundException | ConfirmPasswordException |
-                WrongUserEmail | InvalidTokenException ex) {
-            log.error(ex.getMessage());
-            return ResponseEntity.status(404).body(ex.getMessage());
-        }
+        this.passwordService.passwordRecovery(payload);
         return ResponseEntity.ok("Для подтверждения воспользуйтесь електронной почтой");
     }
 
     @GetMapping("free/password")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> changePassword(@RequestParam("token") String token) {
-        try {
-            this.passwordService.passwordChange(token);
-        } catch (InvalidTokenException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
+        this.passwordService.passwordChange(token);
         return ResponseEntity.status(200).body("Изменение пароля прошло успешно");
     }
 }

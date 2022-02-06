@@ -1,28 +1,29 @@
 package com.github.ratel.entity;
 
-import com.github.ratel.entity.enums.EntityStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.sql.rowset.serial.SerialArray;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "verification_token")
 public class VerificationToken implements Serializable {
 
+    @Transient
     private static final long serialVersionUID = -2634418014000059593L;
 
     @Id
     @Column(name = "id")
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id", referencedColumnName = "id")
@@ -31,12 +32,18 @@ public class VerificationToken implements Serializable {
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EntityStatus status = EntityStatus.on;
+    @Column(name = "is_removed")
+    private boolean removed;
 
-    @Column(name = "create_at", columnDefinition = "TIMESTAMP")
-    private Date createAt = new Date();
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date cratedAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     public VerificationToken(User user, String token) {
         this.user = user;

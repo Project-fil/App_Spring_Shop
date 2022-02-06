@@ -14,6 +14,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductServiceImpl {
 
+    // TODO: 06.02.2022 refactor all
+
     private final ProductRepository productRepository;
 
     public List<Product> findAllProducts() {
@@ -24,22 +26,14 @@ public class ProductServiceImpl {
         return productRepository.findAllByStatus(status);
     }
 
-    public Optional<Product> findProductByProductId(long productId) {
-        Optional<Product> product = this.productRepository.findById(productId);
-        if(product.get().getStatus().equals(EntityStatus.on)) {
-            return product;
-        } else {
-            throw new EntityNotFoundException("Товар не найден");
-        }
+    public Product findProductByProductId(long productId) {
+        return this.productRepository.findById(productId)
+                .orElseThrow();
     }
 
-    public Optional<Product> findProductByVendorCode(String vendorCode) {
-        Optional<Product> product = this.productRepository.findProductByVendorCode(vendorCode);
-        if(product.get().getStatus().equals(EntityStatus.on)) {
-            return product;
-        } else {
-         throw new EntityNotFoundException("Товар не найден");
-        }
+    public Product findProductByVendorCode(String vendorCode) {
+        return this.productRepository.findProductByVendorCode(vendorCode)
+                .orElseThrow();
     }
 
     public Optional<Product> findProductByNameAndStatus(EntityStatus status, String name) {
@@ -47,28 +41,16 @@ public class ProductServiceImpl {
     }
 
     public void createProduct(Product product) {
-        product.setStatus(EntityStatus.on);
         this.productRepository.save(product);
     }
 
     public void editProduct(long productId, Product product) {
-        Product newProduct = findProductByProductId(productId).orElseThrow(() -> new RuntimeException("Not found product!"));
+        Product newProduct = findProductByProductId(productId);
         newProduct.setVendorCode(product.getVendorCode());
         newProduct.setName(product.getName());
         newProduct.setPrice(product.getPrice());
         newProduct.setQuantity(product.getQuantity());
         this.productRepository.save(newProduct);
-    }
-
-    public void updateProductStatusOff(long productId, EntityStatus status) {
-        Product product = this.productRepository.findById(productId).orElseThrow();
-        status = product.getStatus();
-        if (status.equals(EntityStatus.on)) {
-            product.setStatus(EntityStatus.off);
-            this.productRepository.save(product);
-        } else {
-            throw new EntityNotFoundException("Товар не найден");
-        }
     }
 
     public Optional<Product> findByName(String name) {

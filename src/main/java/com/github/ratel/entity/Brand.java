@@ -1,6 +1,5 @@
 package com.github.ratel.entity;
 
-import com.github.ratel.entity.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,16 +26,15 @@ public class Brand {
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private EntityStatus status;
+    @Column(name = "removed")
+    private boolean removed;
 
     public Brand(String name) {
         this.name = name;
     }
 
-    public Brand(String name, EntityStatus status) {
+    public Brand(Long id, String name) {
+        this.id = id;
         this.name = name;
-        this.status = status;
     }
 }

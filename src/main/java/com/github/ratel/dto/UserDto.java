@@ -37,11 +37,4 @@ public class UserDto {
     @Size(min = 9, max = 20)
     private String phone;
 
-    public UserDto(String firstname, String lastname, String email, String password, String phone) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-    }
 }

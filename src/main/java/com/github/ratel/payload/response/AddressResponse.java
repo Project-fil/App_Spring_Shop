@@ -13,7 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class AddressResponse {
 
-    private String id;
+    private Long id;
+
+    private String comment;
+
+    private String phone;
 
     private String country;
 

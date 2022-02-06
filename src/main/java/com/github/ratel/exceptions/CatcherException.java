@@ -77,8 +77,8 @@ public class CatcherException extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(value = UserAlreadyExistException.class)
-    public ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistException ex, HttpServletRequest request) {
+    @ExceptionHandler(value = EntityAlreadyExistException.class)
+    public ResponseEntity<Object> handleUserAlreadyExistException(EntityAlreadyExistException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
                         Instant.now(),

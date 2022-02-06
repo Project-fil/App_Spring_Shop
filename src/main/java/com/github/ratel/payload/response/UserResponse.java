@@ -1,6 +1,5 @@
 package com.github.ratel.payload.response;
 
-import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponse {
 
-    private String id;
+    private Long id;
 
     private String firstname;
 
@@ -20,14 +19,12 @@ public class UserResponse {
 
     private String email;
 
-    private String phone;
-
     private AddressResponse address;
 
     private Roles role;
 
     private UserVerificationStatus verification;
 
-    private EntityStatus status;
+    private boolean removed;
 
 }

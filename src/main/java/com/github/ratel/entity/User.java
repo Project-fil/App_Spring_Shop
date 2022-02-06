@@ -1,32 +1,34 @@
 package com.github.ratel.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
+@Getter
+@Setter
+@ToString
 @Entity
-@Data
 @Table(name = "user_table")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
 
+    @Transient
     private static final long serialVersionUID = 7990653085947378299L;
 
     @Id
     @Column(name = "id")
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "firstname", nullable = false, columnDefinition = "TEXT")
     private String firstname;
@@ -40,10 +42,7 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @Column(name = "phone", columnDefinition = "TEXT")
-    private String phone;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -55,19 +54,18 @@ public class User implements Serializable {
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private EntityStatus status;
+    @Column(name = "removed")
+    private boolean removed;
 
-    @JsonIgnore
-    @CreatedDate
-    @Column(name = "createdDate", columnDefinition = "TIMESTAMP")
-    private Date createdDate;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date cratedAt;
 
-    @JsonIgnore
-    @LastModifiedDate
-    @Column(name = "lastModifiedDate", columnDefinition = "TIMESTAMP")
-    private Date lastModifiedDate;
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     public User(String email, String password) {
         this.email = email;
@@ -85,21 +83,17 @@ public class User implements Serializable {
             String lastname,
             String email,
             String password,
-            String phone,
             Address address,
-            Date createdDate,
             UserVerificationStatus verification,
-            EntityStatus status
+            boolean removed
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
-        this.phone = phone;
         this.address = address;
-        this.createdDate = createdDate;
         this.verification = verification;
-        this.status = status;
+        this.removed = removed;
     }
 
     public User newPass(String password) {
