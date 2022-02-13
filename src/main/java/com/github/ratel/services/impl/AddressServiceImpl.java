@@ -1,6 +1,7 @@
 package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.Address;
+import com.github.ratel.entity.User;
 import com.github.ratel.exceptions.EntityNotFoundException;
 import com.github.ratel.repositories.AddressRepository;
 import com.github.ratel.services.AddressService;
@@ -26,12 +27,18 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address save(Address address) {
+    public Address create(Address address) {
         return this.addressRepository.save(address);
     }
 
     @Override
     public Address update(Address address) {
+        return this.addressRepository.save(address);
+    }
+
+    @Override
+    public Address updateWithUser(Address address, User user) {
+        address.addUser(user);
         return this.addressRepository.save(address);
     }
 

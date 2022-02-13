@@ -15,35 +15,6 @@ public class OrderServiceImpl {
 
     private final OrderRepository orderRepository;
 
-    public List<Order> findAllOrders() {
-        return orderRepository.findAll();
-    }
-
-    public Optional<Order> findOrderById(long orderId) {
-        return orderRepository.findById(orderId);
-    }
-
-    public long createOrder(OrderDto orderDto) {
-        Order order = new Order();
-        order.setOrderItemId(orderDto.getOrder_item_id());
-        order.setCreatedAt(orderDto.getCreatedAt());
-        order.setPrice(orderDto.getPrice());
-        order.setEmail(orderDto.getEmail());
-        order.setAddress(orderDto.getAddress());
-
-        return orderRepository.save(order).getId();
-    }
-
-    public Order changeOrderInfo(long orderId, OrderDto orderDto) {
-        Order order = findOrderById(orderId).orElseThrow(() -> new RuntimeException("Not found order!"));
-        order.setOrderItemId(orderDto.getOrder_item_id());
-        order.setCreatedAt(orderDto.getCreatedAt());
-        order.setPrice(orderDto.getPrice());
-        order.setEmail(orderDto.getEmail());
-        order.setAddress(orderDto.getAddress());
-
-        return orderRepository.save(order);
-    }
 
     public void deleteOrder(long orderId) {
         orderRepository.deleteById(orderId);

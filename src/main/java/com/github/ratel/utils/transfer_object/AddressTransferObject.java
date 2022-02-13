@@ -32,11 +32,29 @@ public class AddressTransferObject {
         );
     }
 
+    public static AddressResponse fromAddressWithoutUser(Address payload) {
+        if (Objects.isNull(payload)) {
+            return null;
+        }
+        return new AddressResponse(
+                payload.getId(),
+                payload.getComment(),
+                payload.getPhone(),
+                payload.getCountry(),
+                payload.getCity(),
+                payload.getStreet(),
+                payload.getHouseNumber(),
+                payload.getApartmentNumber(),
+                payload.getCreatedDate(),
+                payload.getLastModifiedDate()
+        );
+    }
+
     private static List<UserResponse> ifExist(List<User> users) {
         if (users.isEmpty()) {
             return List.of();
         } else {
-            return users.stream().map(UserTransferObject::fromUser).collect(Collectors.toList());
+            return users.stream().map(UserTransferObject::fromUserWithoutAddress).collect(Collectors.toList());
         }
     }
 

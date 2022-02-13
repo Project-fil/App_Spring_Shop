@@ -1,7 +1,7 @@
 package com.github.ratel.services;
 
 import com.github.ratel.entity.Address;
-import org.springframework.stereotype.Service;
+import com.github.ratel.entity.User;
 
 public interface AddressService {
 
@@ -9,9 +9,11 @@ public interface AddressService {
 
     Address findByPhone(String phone);
 
-    Address save(Address address);
+    Address create(Address address);
 
     Address update(Address address);
+
+    Address updateWithUser(Address address, User user);
 
     void delete(Long id);
 

@@ -6,9 +6,12 @@ import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.payload.request.ManagerRequest;
 import com.github.ratel.payload.response.UserResponse;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
+
+    User getCurrentUser(Principal principal);
 
     List<User> findAllUsers();
 
@@ -25,5 +28,4 @@ public interface UserService {
     void deleteUserById(String userId);
 
     User checkUserByEmail(String email);
-
 }

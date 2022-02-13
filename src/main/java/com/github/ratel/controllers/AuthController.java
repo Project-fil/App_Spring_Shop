@@ -7,7 +7,6 @@ import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import com.github.ratel.exceptions.UnverifiedException;
-import com.github.ratel.exceptions.EntityAlreadyExistException;
 import com.github.ratel.exceptions.statuscode.StatusCode;
 import com.github.ratel.payload.request.CreateAdminRequest;
 import com.github.ratel.payload.request.UserAuthRequest;
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -40,6 +38,8 @@ import java.util.UUID;
 public class AuthController {
 
     private final EmailText emailText;
+
+    private final CheckUtil checkUtil;
 
     private final UserService userService;
 
@@ -56,25 +56,26 @@ public class AuthController {
     @Transactional
     @PostMapping("free/create/admin")
     public ResponseEntity<Object> registrationAdmin(@RequestBody @Valid CreateAdminRequest payload) {
-        checkUserByEmail(payload.getEmail());
+        this.checkUtil.checkUserByEmail(payload.getEmail());
+        String pass = this.checkUtil.checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
         User user = new User();
         user.setFirstname(payload.getFirstname());
         user.setLastname(payload.getLastname());
         user.setEmail(payload.getEmail());
-        String pass = CheckUtil.checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
         user.setPassword(this.passwordEncoder.encode(pass));
-        Address address = new Address();
-        address.setPhone(payload.getPhone());
         user.setRoles(Roles.ROLE_ADMIN);
         user.setVerification(UserVerificationStatus.UNVERIFIED);
-        user.setAddress(address);
         var token = (UUID.randomUUID().toString());
+        Address address = new Address();
+        address.setPhone(payload.getPhone());
+        address = this.addressService.create(address);
+        user.setAddress(address);
         this.userService.save(user);
         this.verificationTokenService.create(new VerificationToken(user, token));
         this.emailService.sendMessageToEmail(
                 user.getEmail(),
                 "Верификация пользователя App_Shop",
-                this.emailText.regLetter(user.getFirstname(), user.getLastname(),token)
+                this.emailText.regLetter(user.getFirstname(), user.getLastname(), token)
         );
         return ResponseEntity.ok(UserTransferObject.fromUser(user));
     }
@@ -140,12 +141,6 @@ public class AuthController {
                     user.getFirstname(),
                     user.getRoles()
             ));
-        }
-    }
-
-    public void checkUserByEmail(String email) {
-        if (Objects.nonNull(this.userService.checkUserByEmail(email))) {
-            throw new EntityAlreadyExistException("Пользователь уже существует");
         }
     }
 

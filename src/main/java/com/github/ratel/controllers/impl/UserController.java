@@ -5,27 +5,36 @@ import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.payload.response.UserResponse;
+import com.github.ratel.services.UserService;
 import com.github.ratel.services.impl.UserServiceImpl;
 import com.github.ratel.utils.transfer_object.UserTransferObject;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/app/shop/")
+@SecurityRequirement(name = "Authorization")
+@RequiredArgsConstructor
 public class UserController implements ApiSecurityHeader {
 
-    @Autowired
-    private UserServiceImpl userServiceImpl;
+    private final UserService userService;
+
+    @GetMapping("user")
+    public UserResponse getCurrentUser(Principal principal) {
+        User user = this.userService.getCurrentUser(principal);
+        return UserTransferObject.fromUser(user);
+    }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @GetMapping
-    @SecurityRequirement(name = "Authorization")
+    @GetMapping("user/all")
     public ResponseEntity<List<UserResponse>> findAllActiveUsers() {
         return ResponseEntity.ok(List.of());
     }
@@ -54,6 +63,6 @@ public class UserController implements ApiSecurityHeader {
     @DeleteMapping("/{userId}")
     @SecurityRequirement(name = "Authorization")
     public void deleteUser(@PathVariable String userId) {
-        this.userServiceImpl.deleteUserById(userId);
+        this.userService.deleteUserById(userId);
     }
 }

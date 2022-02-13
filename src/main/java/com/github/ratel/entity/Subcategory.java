@@ -1,10 +1,12 @@
 package com.github.ratel.entity;
 
-import com.github.ratel.entity.enums.EntityStatus;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -24,22 +26,34 @@ public class Subcategory {
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @EqualsAndHashCode.Exclude
+//    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "subcategory",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+            cascade = CascadeType.ALL
+//            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            )
     private List<Product> products = new ArrayList<>();
 
     @Column(name = "is_removed")
     private boolean removed;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
+    private Date cratedAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     public Subcategory(String name) {
         this.name = name;
@@ -57,6 +71,8 @@ public class Subcategory {
     }
 
     public void addProduct(Product product) {
+        if (this.products.isEmpty())
+            this.products = new ArrayList<>();
         this.products.add(product);
     }
 }

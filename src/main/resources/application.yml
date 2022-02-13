@@ -25,7 +25,4 @@ app:
     secret: javamaster
   email:
     text: Перейдите по ссылке для
-  verification:
-    domain: http://localhost:8083
-  forgot:
-    domain: http://localhost:8083
+    domain: http://localhost:8083/app/shop/free

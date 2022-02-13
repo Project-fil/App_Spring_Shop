@@ -9,8 +9,8 @@ public class EmailText {
     @Value("${app.email.text}")
     private String textMessageEmail;
 
-    @Value("${app.verification.domain}")
-    private String verificationDomain;
+    @Value("${app.email.domain}")
+    private String hostDomain;
 
     public String regLetter(String firstName, String lastName, String token) {
         return "Здравсвуйте"
@@ -21,8 +21,9 @@ public class EmailText {
                 + "."
                 + "\n"
                 + this.textMessageEmail
-                + "верификации "
-                + this.verificationDomain
+                + "верификации"
+                + "\n"
+                + this.hostDomain
                 + "/verification?token="
                 + token;
     }
@@ -36,9 +37,10 @@ public class EmailText {
                 + "."
                 + "\n"
                 + this.textMessageEmail
-                + "верификации "
-                + this.verificationDomain
-                + "/verification?token="
+                + " подтверждения замены пароля"
+                + "\n"
+                + this.hostDomain
+                + "/password?token="
                 + token;
     }
 

@@ -2,42 +2,30 @@ package com.github.ratel.services.impl;
 
 import com.github.ratel.entity.User;
 import com.github.ratel.exceptions.ConfirmPasswordException;
+import com.github.ratel.exceptions.EntityNotFoundException;
 import com.github.ratel.exceptions.statuscode.StatusCode;
 import com.github.ratel.repositories.UserRepository;
-import com.github.ratel.services.EmailService;
 import com.github.ratel.services.UserService;
-import com.github.ratel.services.VerificationTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.github.ratel.exceptions.EntityNotFoundException;
-import java.util.*;
+import java.security.Principal;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    @Value("${app.email.text}")
-    private String textMessageEmail;
-
-    @Value("${app.verification.domain}")
-    private String verificationDomain;
-
-    private final EmailService emailService;
 
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    private final VerificationTokenService tokenService;
 
-    @Autowired
-    public UserServiceImpl(EmailService emailService, UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenService tokenService) {
-        this.emailService = emailService;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
+    @Override
+    public User getCurrentUser(Principal principal) {
+        String userName = principal.getName();
+        return this.findUserByEmail(userName);
     }
 
     @Override
@@ -63,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmailAndPassword(String email, String password) throws EntityNotFoundException {
+    public User findByEmailAndPassword(String email, String password) {
         User user = this.findUserByEmail(email);
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;

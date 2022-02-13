@@ -1,17 +1,16 @@
 package com.github.ratel.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -42,9 +41,21 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "file_id")
+    private FileEntity fileEntity;
+
+    @ManyToOne()
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Order> orders = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, columnDefinition = "TEXT")
@@ -105,4 +116,11 @@ public class User implements Serializable {
         this.verification = verification;
         return this;
     }
+
+    public void addOrder(Order order) {
+        if (this.orders.isEmpty())
+            this.orders = new ArrayList<>();
+        this.orders.add(order);
+    }
+
 }

@@ -13,11 +13,23 @@ public class UserTransferObject {
                 data.getFirstname(),
                 data.getLastname(),
                 data.getEmail(),
-                AddressTransferObject.fromAddress(data.getAddress()),
+                AddressTransferObject.fromAddressWithoutUser(data.getAddress()),
                 data.getRoles(),
                 data.getVerification(),
                 data.isRemoved()
                 );
+    }
+
+    public static UserResponse fromUserWithoutAddress(User data) {
+        return new UserResponse(
+                data.getId(),
+                data.getFirstname(),
+                data.getLastname(),
+                data.getEmail(),
+                data.getRoles(),
+                data.getVerification(),
+                data.isRemoved()
+        );
     }
 
 //    public static List<UserDto> toAllDto(List<User> users) {

@@ -27,4 +27,13 @@ public class UserResponse {
 
     private boolean removed;
 
+    public UserResponse(Long id, String firstname, String lastname, String email, Roles role, UserVerificationStatus verification, boolean removed) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.role = role;
+        this.verification = verification;
+        this.removed = removed;
+    }
 }

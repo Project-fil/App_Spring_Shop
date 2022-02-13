@@ -1,10 +1,9 @@
 package com.github.ratel.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -15,7 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "user_addres")
 @NoArgsConstructor
@@ -58,15 +59,15 @@ public class Address implements Serializable {
     @Column(name = "removed")
     private boolean removed;
 
-    @JsonIgnore
-    @CreatedDate
-    @Column(name = "createdDate", columnDefinition = "TIMESTAMP")
-    private Date createdDate;
-
-    @JsonIgnore
-    @LastModifiedDate
-    @Column(name = "lastModifiedDate", columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    @Column(name = "last_modified_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
+
+    @UpdateTimestamp
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 
     public void addUser(User user) {
         if (Objects.isNull(this.userAddress))

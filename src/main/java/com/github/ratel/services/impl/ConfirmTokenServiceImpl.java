@@ -15,15 +15,21 @@ public class ConfirmTokenServiceImpl implements ConfirmTokenService {
     private final ConfirmTokenRepository tokenRepository;
 
     @Override
+    public ConfirmToken findByToken(String token) {
+        return this.tokenRepository.findByToken(token)
+                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
+    }
+
+    @Override
     public ConfirmToken create(ConfirmToken crt) {
         return this.tokenRepository.save(crt);
     }
 
     @Override
-    public ConfirmToken findByToken(String token) {
-        return this.tokenRepository.findByToken(token)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя"));
+    public ConfirmToken update(ConfirmToken confirmToken) {
+        return this.tokenRepository.save(confirmToken);
     }
+
 
 //    @Override
 //    public void delete(Long id) {
