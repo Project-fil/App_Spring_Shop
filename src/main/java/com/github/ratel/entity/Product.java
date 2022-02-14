@@ -1,10 +1,12 @@
 package com.github.ratel.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -16,7 +18,10 @@ import java.util.*;
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Product implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = -4343383509861032886L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +42,16 @@ public class Product {
 
     @ToString.Exclude
     @OneToMany()
-    @JoinColumn(name = "file_id")
+    @JoinTable(
+            name = "product_files",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_id")
+    )
     private Set<FileEntity> files = new HashSet<>();
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subcategory_id", referencedColumnName = "id")
     private Subcategory subcategory;
@@ -65,17 +72,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "basket_id")
     )
-    private List<Basket> baskets = new ArrayList<>();
-
-    @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "order_products",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private List<Order> orderList = new ArrayList<>();
-
+    private List<Cart> baskets = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
     private Set<Comment> comments;
@@ -124,5 +121,19 @@ public class Product {
             this.comments = new HashSet<>();
         this.comments.add(comment);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Product that = (Product) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 
 }

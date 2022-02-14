@@ -1,13 +1,16 @@
 package com.github.ratel.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,7 +19,10 @@ import java.util.List;
 @Table(name = "subcategories")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subcategory {
+public class Subcategory implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = -8575113865763641062L;
 
     @Id
     @Column(name = "id")
@@ -26,13 +32,10 @@ public class Subcategory {
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
 
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -75,4 +78,18 @@ public class Subcategory {
             this.products = new ArrayList<>();
         this.products.add(product);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Subcategory that = (Subcategory) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 }

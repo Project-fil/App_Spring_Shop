@@ -33,6 +33,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/app/shop/")
 @RequiredArgsConstructor
 public class AuthController {

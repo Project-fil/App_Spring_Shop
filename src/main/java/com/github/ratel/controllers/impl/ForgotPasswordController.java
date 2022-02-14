@@ -70,7 +70,6 @@ public class ForgotPasswordController {
                 throw new EntityNotFoundException("Нет такого пользователя");
             }
             this.userService.updateUser(user.newPass(ct.getNewPass()));
-//            this.confirmTokenService.update(ct);
         } else {
             throw new InvalidTokenException("Неверный токен");
         }

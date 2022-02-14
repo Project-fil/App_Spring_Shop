@@ -15,12 +15,14 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
 @ControllerAdvice
 public class CatcherException extends ResponseEntityExceptionHandler {
+
+    // TODO: 14.02.2022 fix statusCode in method
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -45,7 +47,7 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleConfirmPasswordException(ConfirmPasswordException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(new ErrorResponse(
-                        Instant.now(),
+                        new Date(),
                         ex.getStatus(),
                         ex.getMessage(),
                         request.getRequestURI()
@@ -56,10 +58,10 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
-                        Instant.now(),
-                        ex.getStatusCode(),
-                        ex.getMessage(),
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
+                        new Date(),
+                        HttpStatus.NOT_FOUND.value(),
+                        HttpStatus.NOT_FOUND.getReasonPhrase(),
                         request.getRequestURI()
                 )
         );
@@ -69,7 +71,7 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
-                        Instant.now(),
+                        new Date(),
                         ex.getStatusCode(),
                         ex.getMessage(),
                         request.getRequestURI()
@@ -81,7 +83,7 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleUserAlreadyExistException(EntityAlreadyExistException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
-                        Instant.now(),
+                        new Date(),
                         ex.getStatusCode(),
                         ex.getMessage(),
                         request.getRequestURI()
@@ -93,7 +95,7 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleUnverifiedException(UnverifiedException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
-                        Instant.now(),
+                        new Date(),
                         ex.getStatusCode(),
                         ex.getMessage(),
                         request.getRequestURI()
@@ -105,7 +107,7 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleWrongUserEmail(WrongUserEmail ex, HttpServletRequest request) {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
-                        Instant.now(),
+                        new Date(),
                         ex.getStatusCode(),
                         ex.getMessage(),
                         request.getRequestURI()

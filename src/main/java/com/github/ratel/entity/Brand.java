@@ -1,14 +1,17 @@
 package com.github.ratel.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,7 +20,10 @@ import java.util.List;
 @Table(name = "brands")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Brand {
+public class Brand implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = 3022905791477242674L;
 
     @Id
     @Column(name = "id")
@@ -72,4 +78,19 @@ public class Brand {
             this.products = new ArrayList<>();
         this.products.add(product);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Brand that = (Brand) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+
 }

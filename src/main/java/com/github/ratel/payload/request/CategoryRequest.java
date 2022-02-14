@@ -14,6 +14,4 @@ public class CategoryRequest {
     @NotBlank
     private String name;
 
-//    private Set<SubcategoryDto> subcategories = new HashSet<>();
-
 }

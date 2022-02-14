@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,7 +18,10 @@ import java.util.Objects;
 @Table(name = "file_entity")
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileEntity {
+public class FileEntity implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = -16188978762573874L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

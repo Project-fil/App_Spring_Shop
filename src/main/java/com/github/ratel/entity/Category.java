@@ -1,12 +1,15 @@
 package com.github.ratel.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -16,7 +19,10 @@ import java.util.Set;
 @Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Category implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = -7870245864375181013L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +32,11 @@ public class Category {
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
 
-    //    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "category",
             cascade = CascadeType.ALL
-//            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     private Set<Subcategory> subcategories = new HashSet<>();
 
@@ -60,5 +64,19 @@ public class Category {
             subcategories = new HashSet<>();
         this.subcategories.add(subcategory);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Category that = (Category) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 
 }
