@@ -30,7 +30,6 @@ public class CategoryControllerAppImpl implements CategoryControllerApp, ApiSecu
     @CrossOrigin("*")
     public ResponseEntity<List<CategoryResponse>> readAllCategory() {
         return ResponseEntity.ok(this.categoryService.findAllCategory().stream()
-                .filter(category -> !category.isRemoved())
                 .sorted(Comparator.comparing(Category::getId))
                 .map(CategoryTransferObj::fromCategory)
                 .collect(Collectors.toList()));
@@ -38,11 +37,11 @@ public class CategoryControllerAppImpl implements CategoryControllerApp, ApiSecu
 
     @Override
     public ResponseEntity<CategoryResponse> getById(Long id) {
-        return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.getById(id)));
+        return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.findById(id)));
     }
 
     @Override
     public ResponseEntity<CategoryResponse> getByName(String name) {
-        return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.getCategoryByName(name)));
+        return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.findCategoryByName(name)));
     }
 }

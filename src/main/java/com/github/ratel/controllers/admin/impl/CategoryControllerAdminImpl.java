@@ -5,6 +5,7 @@ import com.github.ratel.controllers.admin.CategoryControllerAdmin;
 import com.github.ratel.entity.Category;
 import com.github.ratel.payload.request.CategoryRequest;
 import com.github.ratel.payload.response.CategoryResponse;
+import com.github.ratel.payload.response.MessageResponse;
 import com.github.ratel.services.CategoryService;
 import com.github.ratel.utils.transfer_object.CategoryTransferObj;
 import lombok.RequiredArgsConstructor;
@@ -29,30 +30,6 @@ public class CategoryControllerAdminImpl implements CategoryControllerAdmin, Api
     @Override
     @CrossOrigin("*")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<List<CategoryResponse>> findAllCategory() {
-        return ResponseEntity.ok(this.categoryService.findAllCategory().stream()
-                .sorted(Comparator.comparing(Category::getId))
-                .map(CategoryTransferObj::fromCategory)
-                .collect(Collectors.toList()));
-    }
-
-    @Override
-    @CrossOrigin("*")
-    @Secured("ROLE_ADMIN")
-    public ResponseEntity<CategoryResponse> findById(Long id) {
-        return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.findById(id)));
-    }
-
-    @Override
-    @CrossOrigin("*")
-    @Secured("ROLE_ADMIN")
-    public ResponseEntity<CategoryResponse> findByName(String name) {
-        return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.findCategoryByName(name)));
-    }
-
-    @Override
-    @CrossOrigin("*")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<CategoryResponse> createCategory(CategoryRequest categoryRequest) {
         return ResponseEntity.ok(CategoryTransferObj.fromCategory(
                 this.categoryService.createCategory(CategoryTransferObj.toCategory(categoryRequest)))
@@ -68,11 +45,12 @@ public class CategoryControllerAdminImpl implements CategoryControllerAdmin, Api
         return ResponseEntity.ok(CategoryTransferObj.fromCategory(this.categoryService.updateCategory(category)));
     }
 
-//    @Override
-//    @CrossOrigin("*")
-//    @Secured("ROLE_ADMIN")
-//    public void deleteCategory (@RequestParam long id) {
-//        this.categoryService.deleteCategoryById(id);
-//    }
+    @Override
+    @CrossOrigin("*")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<MessageResponse> deleteCategory (long id) {
+        this.categoryService.deleteCategoryById(id);
+        return ResponseEntity.ok(new MessageResponse("Категория удалена"));
+    }
 }
 

@@ -6,7 +6,9 @@ import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ import java.util.Objects;
 @Table(name = "user_table")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE user_table SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class User implements Serializable {
 
     @Transient
@@ -72,7 +76,7 @@ public class User implements Serializable {
     @Column(name = "verification", nullable = false, columnDefinition = "TEXT")
     private UserVerificationStatus verification;
 
-    @Column(name = "removed")
+    @Column(name = "is_removed")
     private boolean removed;
 
     @CreationTimestamp

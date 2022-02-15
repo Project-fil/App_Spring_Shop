@@ -9,18 +9,14 @@ public interface CategoryService {
 
     List<Category> findAllCategory();
 
-    Category findById(Long id);
-
-    Category getById(Long id);
+    Category findById(long id);
 
     Category findCategoryByName(String name);
-
-    Category getCategoryByName(String name);
 
     Category createCategory(Category category);
 
     Category updateCategory(Category category);
 
-    void deleteCategoryById(Long id);
+    void deleteCategoryById(long id);
 
 }

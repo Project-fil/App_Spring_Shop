@@ -1,12 +1,11 @@
 package com.github.ratel.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,9 +18,11 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
-@Table(name = "user_addres")
+@Table(name = "user_address")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE user_address SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class Address implements Serializable {
 
     @Transient
@@ -57,7 +58,7 @@ public class Address implements Serializable {
     @OneToMany(mappedBy = "address")
     private List<User> userAddress = new ArrayList<>();
 
-    @Column(name = "removed")
+    @Column(name = "is_removed")
     private boolean removed;
 
     @CreationTimestamp

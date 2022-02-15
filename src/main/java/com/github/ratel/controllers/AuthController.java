@@ -20,7 +20,7 @@ import com.github.ratel.services.UserService;
 import com.github.ratel.services.VerificationTokenService;
 import com.github.ratel.utils.CheckUtil;
 import com.github.ratel.utils.EmailText;
-import com.github.ratel.utils.transfer_object.UserTransferObject;
+import com.github.ratel.utils.transfer_object.UserTransferObj;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +78,7 @@ public class AuthController {
                 "Верификация пользователя App_Shop",
                 this.emailText.regLetter(user.getFirstname(), user.getLastname(), token)
         );
-        return ResponseEntity.ok(UserTransferObject.fromUser(user));
+        return ResponseEntity.ok(UserTransferObj.fromUser(user));
     }
 
     @PostMapping("free/registration")

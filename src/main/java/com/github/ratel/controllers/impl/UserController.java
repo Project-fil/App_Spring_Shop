@@ -1,23 +1,18 @@
 package com.github.ratel.controllers.impl;
 
 import com.github.ratel.controllers.ApiSecurityHeader;
-import com.github.ratel.dto.UserDto;
 import com.github.ratel.entity.User;
-import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.payload.response.UserResponse;
 import com.github.ratel.services.UserService;
-import com.github.ratel.services.impl.UserServiceImpl;
-import com.github.ratel.utils.transfer_object.UserTransferObject;
+import com.github.ratel.utils.transfer_object.UserTransferObj;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/app/shop/")
@@ -30,7 +25,7 @@ public class UserController implements ApiSecurityHeader {
     @GetMapping("user")
     public UserResponse getCurrentUser(Principal principal) {
         User user = this.userService.getCurrentUser(principal);
-        return UserTransferObject.fromUser(user);
+        return UserTransferObj.fromUser(user);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})

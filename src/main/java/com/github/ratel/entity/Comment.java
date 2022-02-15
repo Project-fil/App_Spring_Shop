@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
@@ -20,6 +22,8 @@ import java.util.Objects;
 @Table(name = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE comments SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class Comment implements Serializable {
 
     @Transient

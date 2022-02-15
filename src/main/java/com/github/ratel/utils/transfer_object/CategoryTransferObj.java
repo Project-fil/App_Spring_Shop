@@ -15,7 +15,7 @@ public class CategoryTransferObj {
                 payload.getId(),
                 payload.getName(),
                 payload.getSubcategories().stream()
-                        .map(SubcategoryTransferObject::fromSubcategoryWithoutCategory)
+                        .map(SubcategoryTransferObj::fromSubcategory)
                         .collect(Collectors.toSet()),
                 payload.isRemoved(),
                 payload.getCratedAt(),

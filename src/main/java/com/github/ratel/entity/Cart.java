@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,9 +19,11 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
-@Table(name = "basket")
+@Table(name = "cart")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE cart SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class Cart implements Serializable {
 
     @Transient
@@ -44,7 +48,7 @@ public class Cart implements Serializable {
     @JsonIgnore
     private User user;
 
-    @Column(name = "removed")
+    @Column(name = "is_removed")
     private boolean removed;
 
     @CreationTimestamp

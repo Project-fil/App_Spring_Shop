@@ -4,7 +4,9 @@ import com.github.ratel.entity.enums.OrderStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +20,8 @@ import java.util.*;
 @Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE orders SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class Order implements Serializable {
 
     @Transient
@@ -50,7 +54,7 @@ public class Order implements Serializable {
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @Column(name = "removed")
+    @Column(name = "is_removed")
     private boolean removed;
 
     @CreationTimestamp

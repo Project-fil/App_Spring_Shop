@@ -22,8 +22,6 @@ import java.util.Objects;
 @ControllerAdvice
 public class CatcherException extends ResponseEntityExceptionHandler {
 
-    // TODO: 14.02.2022 fix statusCode in method
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers,
@@ -46,10 +44,10 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = ConfirmPasswordException.class)
     public ResponseEntity<Object> handleConfirmPasswordException(ConfirmPasswordException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatus()).body(new ErrorResponse(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(
                         new Date(),
-                        ex.getStatus(),
-                        ex.getMessage(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.BAD_REQUEST.getReasonPhrase(),
                         request.getRequestURI()
                 )
         );
@@ -70,10 +68,10 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = InvalidTokenException.class)
     public ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(
                         new Date(),
-                        ex.getStatusCode(),
-                        ex.getMessage(),
+                        HttpStatus.FORBIDDEN.value(),
+                        HttpStatus.FORBIDDEN.getReasonPhrase(),
                         request.getRequestURI()
                 )
         );
@@ -82,10 +80,10 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = EntityAlreadyExistException.class)
     public ResponseEntity<Object> handleUserAlreadyExistException(EntityAlreadyExistException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(
                         new Date(),
-                        ex.getStatusCode(),
-                        ex.getMessage(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.BAD_REQUEST.getReasonPhrase(),
                         request.getRequestURI()
                 )
         );
@@ -94,10 +92,10 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = UnverifiedException.class)
     public ResponseEntity<Object> handleUnverifiedException(UnverifiedException ex, HttpServletRequest request) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(
                         new Date(),
-                        ex.getStatusCode(),
-                        ex.getMessage(),
+                        HttpStatus.FORBIDDEN.value(),
+                        HttpStatus.FORBIDDEN.getReasonPhrase(),
                         request.getRequestURI()
                 )
         );
@@ -106,10 +104,10 @@ public class CatcherException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = WrongUserEmail.class)
     public ResponseEntity<Object> handleWrongUserEmail(WrongUserEmail ex, HttpServletRequest request) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(
                         new Date(),
-                        ex.getStatusCode(),
-                        ex.getMessage(),
+                        HttpStatus.FORBIDDEN.value(),
+                        HttpStatus.FORBIDDEN.getReasonPhrase(),
                         request.getRequestURI()
                 )
         );

@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +19,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "confirm_token")
+@SQLDelete(sql = "UPDATE confirm_token SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class ConfirmToken implements Serializable {
 
     @Transient
@@ -37,7 +41,7 @@ public class ConfirmToken implements Serializable {
     @Column(name = "new_pass")
     private String newPass;
 
-    @Column(name = "removed")
+    @Column(name = "is_removed")
     private boolean removed;
 
     @CreationTimestamp

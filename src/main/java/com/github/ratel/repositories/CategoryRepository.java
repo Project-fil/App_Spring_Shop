@@ -10,10 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Optional<Category> findByIdAndRemovedFalse(Long id);
-
     Optional<Category> findByName(String name);
-
-    Optional<Category> findByNameAndRemovedFalse(String name);
 
 }

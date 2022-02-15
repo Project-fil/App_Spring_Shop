@@ -5,7 +5,7 @@ import com.github.ratel.payload.response.UserResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class UserTransferObject {
+public class UserTransferObj {
 
     public static UserResponse fromUser(User data) {
         return new UserResponse(
@@ -13,7 +13,7 @@ public class UserTransferObject {
                 data.getFirstname(),
                 data.getLastname(),
                 data.getEmail(),
-                AddressTransferObject.fromAddressWithoutUser(data.getAddress()),
+                AddressTransferObj.fromAddressWithoutUser(data.getAddress()),
                 data.getRoles(),
                 data.getVerification(),
                 data.isRemoved()

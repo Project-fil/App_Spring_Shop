@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @UtilityClass
-public class AddressTransferObject {
+public class AddressTransferObj {
 
     public static AddressResponse fromAddress(Address payload) {
         if (Objects.isNull(payload)) {
@@ -54,7 +54,7 @@ public class AddressTransferObject {
         if (users.isEmpty()) {
             return List.of();
         } else {
-            return users.stream().map(UserTransferObject::fromUserWithoutAddress).collect(Collectors.toList());
+            return users.stream().map(UserTransferObj::fromUserWithoutAddress).collect(Collectors.toList());
         }
     }
 

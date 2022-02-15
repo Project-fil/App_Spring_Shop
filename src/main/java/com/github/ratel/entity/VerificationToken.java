@@ -3,7 +3,9 @@ package com.github.ratel.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +19,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "verification_token")
+@SQLDelete(sql = "UPDATE verification_token SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class VerificationToken implements Serializable {
 
     @Transient

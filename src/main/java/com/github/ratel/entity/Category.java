@@ -3,7 +3,9 @@ package com.github.ratel.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +21,8 @@ import java.util.Set;
 @Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE categories SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class Category implements Serializable {
 
     @Transient
@@ -40,7 +44,7 @@ public class Category implements Serializable {
     )
     private Set<Subcategory> subcategories = new HashSet<>();
 
-    @Column(name = "removed")
+    @Column(name = "is_removed")
     private boolean removed;
 
     @CreationTimestamp

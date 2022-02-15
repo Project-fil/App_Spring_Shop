@@ -3,7 +3,9 @@ package com.github.ratel.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +20,8 @@ import java.util.*;
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE products SET is_removed = true WHERE id=?")
+@Where(clause = "is_removed=false")
 public class Product implements Serializable {
 
     @Transient
@@ -72,7 +76,7 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "basket_id")
     )
-    private List<Cart> baskets = new ArrayList<>();
+    private List<Cart> carts = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
     private Set<Comment> comments;

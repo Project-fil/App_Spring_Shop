@@ -21,26 +21,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(Long id) {
+    public Category findById(long id) {
         return this.categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
-    }
-
-    @Override
-    public Category getById(Long id) {
-        return this.categoryRepository.findByIdAndRemovedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
     }
 
     @Override
     public Category findCategoryByName(String name) {
         return this.categoryRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
-    }
-
-    @Override
-    public Category getCategoryByName(String name) {
-        return this.categoryRepository.findByNameAndRemovedFalse(name)
                 .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
     }
 
@@ -55,8 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategoryById(Long id) {
-
+    public void deleteCategoryById(long id) {
+        this.categoryRepository.deleteById(id);
     }
 
 }

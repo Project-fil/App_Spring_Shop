@@ -17,7 +17,7 @@ public class SubcategoryResponse {
 
     private String name;
 
-    private CategoryResponse categoryResponse;
+    private String categoryName;
 
     private List<ProductResponse> productResponseList;
 
