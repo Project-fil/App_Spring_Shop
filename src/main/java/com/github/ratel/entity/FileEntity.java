@@ -69,4 +69,10 @@ public class FileEntity implements Serializable {
         return getClass().hashCode();
     }
 
+    public FileEntity(String path, String fileName, String contentType, long size) {
+        this.path = path;
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.size = size;
+    }
 }

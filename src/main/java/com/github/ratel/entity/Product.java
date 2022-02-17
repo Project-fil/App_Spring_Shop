@@ -44,8 +44,10 @@ public class Product implements Serializable {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    // TODO: 17.02.2022 delete cascade PERSIST after create FileService
+
     @ToString.Exclude
-    @OneToMany()
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "product_files",
             joinColumns = @JoinColumn(name = "product_id"),

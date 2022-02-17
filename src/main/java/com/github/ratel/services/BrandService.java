@@ -10,6 +10,8 @@ public interface BrandService {
 
     public Brand findBrandById(long id);
 
+    Brand checkBrandById(long id);
+
     public Brand findBrandByName(String name);
 
     public void saveBrand(Brand brand);

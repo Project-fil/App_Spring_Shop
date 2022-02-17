@@ -4,6 +4,7 @@ import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.enums.EntityStatus;
 import com.github.ratel.repositories.BrandRepository;
 import com.github.ratel.services.BrandService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,10 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
-
-    @Autowired
-    public BrandServiceImpl(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
-    }
 
     public List<Brand> findAllBrand() {
         return this.brandRepository.findAll();
@@ -26,6 +23,10 @@ public class BrandServiceImpl implements BrandService {
 
     public Brand findBrandById(long id) {
         return this.brandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Нет такого бренда"));
+    }
+
+    public Brand checkBrandById(long id) {
+        return this.brandRepository.findById(id).orElse(null);
     }
 
     public Brand findBrandByName(String name) {
