@@ -1,7 +1,7 @@
 package com.github.ratel.controllers.admin.impl;
 
 import com.github.ratel.controllers.ApiSecurityHeader;
-import com.github.ratel.controllers.admin.ProductControllerAdmin;
+import com.github.ratel.controllers.admin.interf.ProductControllerAdmin;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.FileEntity;
 import com.github.ratel.entity.Product;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,7 +48,6 @@ public class ProductControllerAdminImpl implements ProductControllerAdmin, ApiSe
         Product product = ProductTransferObj.toProduct(new Product(), productRequest);
         Set<FileEntity> newFiles = new HashSet<>();
         if (Objects.nonNull(files)) {
-
             newFiles = files.stream().map(this.fileHandler::writeFile).collect(Collectors.toSet());
         }
         Brand brand = this.brandService.checkBrandById(productRequest.getBrandId());

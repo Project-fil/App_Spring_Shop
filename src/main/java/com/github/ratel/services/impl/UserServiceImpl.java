@@ -69,50 +69,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-//    public UserResponse createUser(UserDto payload) {
-//        checkUserByEmail(payload.getEmail());
-//        User user = new User();
-//        user.setFirstname(payload.getFirstname());
-//        user.setLastname(payload.getLastname());
-//        user.setEmail(payload.getEmail());
-//        String userPass = checkPassAndConfirmPass(payload.getPassword(), payload.getConfirmPassword());
-//        user.setPassword(this.passwordEncoder.encode(userPass));
-//        user.setPhone(payload.getPhone());
-//        user.setRoles(Roles.ROLE_USER);
-//        user.setVerification(UserVerificationStatus.UNVERIFIED);
-//        user.setStatus(EntityStatus.on);
-//        var userToken = UUID.randomUUID().toString();
-//        var userPattern = String.format(
-//                this.textMessageEmail,
-//                payload.getFirstname() + " " + payload.getLastname(),
-//                "верификации ",
-//                this.verificationDomain,
-//                "/verification?token=", userToken);
-//        this.emailService.sendMessageToEmail(
-//                payload.getEmail(),
-//                "Верификация пользователя App_Shop",
-//                userPattern
-//        );
-//        this.userRepository.save(user);
-//        this.tokenService.create(new VerificationToken(user, userToken));
-//        return UserTransferObject.fromUser(user);
-//    }
-
-//    public User changeUserInfo(long userId, UserRegDto userRegDto) {
-//        User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Not found user!"));
-//        user.setFirstname(userRegDto.getFirstname());
-//        user.setLastname(userRegDto.getLastname());
-//        user.setEmail(userRegDto.getEmail());
-//        user.setLogin(userRegDto.getLogin());
-//        user.setPassword(userRegDto.getPassword());
-//        user.setPhone(userRegDto.getPhone());
-//        user.setAddress(userRegDto.getAddress());
-//        user.setUpdatedAt(new Date());
-//        return this.userRepository.save(user);
-//    }
-
     @Override
-    public void deleteUserById(String userId) {
+    public void deleteUserById(Long userId) {
+        this.userRepository.deleteById(userId);
     }
 
 }

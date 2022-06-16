@@ -1,7 +1,7 @@
 package com.github.ratel.controllers.app.impl;
 
 import com.github.ratel.controllers.ApiSecurityHeader;
-import com.github.ratel.controllers.app.CategoryControllerApp;
+import com.github.ratel.controllers.app.interfaces.CategoryControllerApp;
 import com.github.ratel.entity.Category;
 import com.github.ratel.payload.response.CategoryResponse;
 import com.github.ratel.services.CategoryService;

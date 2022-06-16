@@ -1,4 +1,4 @@
-package com.github.ratel.controllers.app;
+package com.github.ratel.controllers.app.interfaces;
 
 import com.github.ratel.payload.response.SubcategoryResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
