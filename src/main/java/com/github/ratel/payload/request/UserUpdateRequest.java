@@ -15,4 +15,16 @@ public class UserUpdateRequest {
 
     private String lastname;
 
+    private String phone;
+
+    private String country;
+
+    private String city;
+
+    private String street;
+
+    private int houseNumber;
+
+    private int apartmentNumber;
+
 }

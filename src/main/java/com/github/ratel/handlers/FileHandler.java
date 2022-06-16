@@ -42,18 +42,18 @@ public class FileHandler {
         }
         filePath += "/" + fileName;
         try {
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get(filePath);
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(filePath);
             Files.write(path, bytes);
-            return new FileEntity(
-                    filePath,
-                    fileName,
-                    contentType,
-                    file.getSize()
-            );
         } catch (IOException e) {
-         throw new FileTypeException(e.getMessage());
+            throw new FileTypeException(e.getMessage());
         }
+        return new FileEntity(
+                filePath,
+                fileName,
+                contentType,
+                file.getSize()
+        );
     }
 
 }

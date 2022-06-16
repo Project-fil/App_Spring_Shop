@@ -1,4 +1,4 @@
-package com.github.ratel.controllers.admin.interf;
+package com.github.ratel.controllers.admin;
 
 import com.github.ratel.payload.request.CategoryRequest;
 import com.github.ratel.payload.response.CategoryResponse;

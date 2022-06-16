@@ -23,7 +23,7 @@ public interface UserService {
 
     User save(User user);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
     void deleteUserById(Long userId);
 

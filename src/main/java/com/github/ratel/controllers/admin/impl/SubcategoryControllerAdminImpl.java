@@ -1,7 +1,7 @@
 package com.github.ratel.controllers.admin.impl;
 
 import com.github.ratel.controllers.ApiSecurityHeader;
-import com.github.ratel.controllers.admin.interf.SubcategoryControllerAdmin;
+import com.github.ratel.controllers.admin.SubcategoryControllerAdmin;
 import com.github.ratel.entity.Subcategory;
 import com.github.ratel.payload.request.SubcategoryRequest;
 import com.github.ratel.payload.response.MessageResponse;

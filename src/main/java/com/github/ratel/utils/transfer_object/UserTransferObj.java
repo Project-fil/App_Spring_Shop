@@ -1,6 +1,7 @@
 package com.github.ratel.utils.transfer_object;
 
 import com.github.ratel.entity.User;
+import com.github.ratel.payload.request.UserUpdateRequest;
 import com.github.ratel.payload.response.UserResponse;
 import lombok.experimental.UtilityClass;
 
@@ -30,6 +31,18 @@ public class UserTransferObj {
                 data.getVerification(),
                 data.isRemoved()
         );
+    }
+
+    public static User updateUser(User user, UserUpdateRequest payload) {
+        user.setFirstname(payload.getFirstname());
+        user.setLastname(payload.getLastname());
+        user.getAddress().setPhone(payload.getPhone());
+        user.getAddress().setCountry(payload.getCountry());
+        user.getAddress().setCity(payload.getCity());
+        user.getAddress().setStreet(payload.getStreet());
+        user.getAddress().setHouseNumber(payload.getHouseNumber());
+        user.getAddress().setApartmentNumber(payload.getApartmentNumber());
+        return user;
     }
 
 //    public static List<UserDto> toAllDto(List<User> users) {

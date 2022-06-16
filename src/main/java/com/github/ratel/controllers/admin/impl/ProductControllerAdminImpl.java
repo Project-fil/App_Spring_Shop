@@ -1,7 +1,7 @@
 package com.github.ratel.controllers.admin.impl;
 
 import com.github.ratel.controllers.ApiSecurityHeader;
-import com.github.ratel.controllers.admin.interf.ProductControllerAdmin;
+import com.github.ratel.controllers.admin.ProductControllerAdmin;
 import com.github.ratel.entity.Brand;
 import com.github.ratel.entity.FileEntity;
 import com.github.ratel.entity.Product;
