@@ -32,10 +32,14 @@ public class SubcategoryControllerAdminImpl implements SubcategoryControllerAdmi
     @CrossOrigin("*")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<SubcategoryResponse> createCategory(SubcategoryRequest subcategoryRequest) {
-        return ResponseEntity.ok(SubcategoryTransferObj.fromSubcategory(this.subcategoryService.create(
-                SubcategoryTransferObj.toSubcategory(subcategoryRequest),
-                this.categoryService.findById(subcategoryRequest.getCategoryId())
-        )));
+        return ResponseEntity.ok(
+                SubcategoryTransferObj.fromSubcategory(
+                        this.subcategoryService.create(
+                        SubcategoryTransferObj.toSubcategory(subcategoryRequest),
+                        this.categoryService.findById(subcategoryRequest.getCategoryId())
+                        )
+                )
+        );
     }
 
     @Override

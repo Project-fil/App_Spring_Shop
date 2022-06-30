@@ -1,6 +1,5 @@
 package com.github.ratel.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
 import lombok.*;
@@ -47,10 +46,6 @@ public class User implements Serializable {
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Cart cart;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "file_id")

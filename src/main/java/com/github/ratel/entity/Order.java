@@ -46,9 +46,8 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(name = "note")
+    private String note;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")

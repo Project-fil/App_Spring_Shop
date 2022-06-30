@@ -15,7 +15,7 @@ import java.util.List;
 @SecurityRequirement(name = "Authorization")
 public interface ProductControllerAdmin {
 
-    @PostMapping(value = "product/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE )
+    @PostMapping(value = "product/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ProductResponse> create(
             @RequestPart(value = "body") ProductRequest productRequest,
             @RequestPart(value = "file", required = false) List<MultipartFile> files

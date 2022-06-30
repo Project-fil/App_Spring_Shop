@@ -63,22 +63,13 @@ public class Product implements Serializable {
     private Subcategory subcategory;
 
     @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "products_brand",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "brand_id")
     )
     private Set<Brand> brands = new HashSet<>();
-
-    @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "basket_products",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "basket_id")
-    )
-    private List<Cart> carts = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
     private Set<Comment> comments;

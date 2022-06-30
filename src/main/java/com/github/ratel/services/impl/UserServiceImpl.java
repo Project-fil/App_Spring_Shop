@@ -70,8 +70,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long userId) {
+    public String deleteUserById(Long userId) {
+        User user = this.findById(userId);
         this.userRepository.deleteById(userId);
+        return user.getFirstname() + " " + user.getLastname();
     }
 
 }

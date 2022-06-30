@@ -4,6 +4,7 @@ import com.github.ratel.entity.FileEntity;
 import com.github.ratel.exceptions.FileTypeException;
 import com.github.ratel.utils.ImageCompressor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -26,7 +26,7 @@ public class FileHandler {
 
     public FileEntity writeFile(MultipartFile file) {
         String filePath;
-        String fileName = UUID.randomUUID() + "." + ImageCompressor.getExtension(file.getContentType());
+        String fileName = RandomString.make(6) + "." + ImageCompressor.getExtension(file.getContentType());
         String contentType = file.getContentType();
         if (ImageCompressor.getTypeData(file.getContentType()).equals("image")) {
             filePath = SAVE_IMAGE_PATH;

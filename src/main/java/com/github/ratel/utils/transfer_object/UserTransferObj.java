@@ -14,6 +14,7 @@ public class UserTransferObj {
                 data.getFirstname(),
                 data.getLastname(),
                 data.getEmail(),
+                FileTransferObj.fromFile(data.getFileEntity()),
                 AddressTransferObj.fromAddressWithoutUser(data.getAddress()),
                 data.getRoles(),
                 data.getVerification(),

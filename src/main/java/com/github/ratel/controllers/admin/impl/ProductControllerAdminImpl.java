@@ -45,13 +45,13 @@ public class ProductControllerAdminImpl implements ProductControllerAdmin, ApiSe
     @CrossOrigin("*")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<ProductResponse> create(ProductRequest productRequest, List<MultipartFile> files) {
+        Subcategory subcategory = this.subcategoryService.findById(productRequest.getSubcategoryId());
+        Brand brand = this.brandService.findBrandById(productRequest.getBrandId());
         Product product = ProductTransferObj.toProduct(new Product(), productRequest);
         Set<FileEntity> newFiles = new HashSet<>();
         if (Objects.nonNull(files)) {
             newFiles = files.stream().map(this.fileHandler::writeFile).collect(Collectors.toSet());
         }
-        Brand brand = this.brandService.checkBrandById(productRequest.getBrandId());
-        Subcategory subcategory = this.subcategoryService.findById(productRequest.getSubcategoryId());
         product.setFiles(newFiles);
         product.addBrand(brand);
         return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.create(product, subcategory)));
