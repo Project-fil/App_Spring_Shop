@@ -1,12 +1,13 @@
 package com.github.ratel.payload.response;
 
-import com.github.ratel.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -29,7 +30,7 @@ public class ProductResponse {
 
     private String subcategoryName;
 
-    private Set<BrandResponse> brands = new HashSet<>();
+    private String brand;
 
     private Set<CommentResponse> comments;
 
@@ -39,29 +40,4 @@ public class ProductResponse {
 
     private Date updatedAt;
 
-    public ProductResponse(Long id,
-                           String name,
-                           String vendorCode,
-                           String description,
-                           BigDecimal price,
-                           Set<FileEntityResponse> files,
-                           int quantity,
-                           String subcategoryName,
-                           Set<CommentResponse> comments,
-                           boolean removed,
-                           Date cratedAt,
-                           Date updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.vendorCode = vendorCode;
-        this.description = description;
-        this.price = price;
-        this.files = files;
-        this.quantity = quantity;
-        this.subcategoryName = subcategoryName;
-        this.comments = comments;
-        this.removed = removed;
-        this.cratedAt = cratedAt;
-        this.updatedAt = updatedAt;
-    }
 }

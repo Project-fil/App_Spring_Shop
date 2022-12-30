@@ -19,6 +19,8 @@ public class ProductRequest {
 
     private BigDecimal price;
 
+    private String brand;
+
     private int quantity;
 
     private long subcategoryId;

@@ -62,14 +62,8 @@ public class Product implements Serializable {
     @JoinColumn(name = "subcategory_id", referencedColumnName = "id")
     private Subcategory subcategory;
 
-    @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "products_brand",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "brand_id")
-    )
-    private Set<Brand> brands = new HashSet<>();
+    @Column(name = "brand")
+    private String brand;
 
     @OneToMany(mappedBy = "product")
     private Set<Comment> comments;
@@ -99,12 +93,6 @@ public class Product implements Serializable {
         this.subcategory = subcategory;
         this.name = name;
         this.price = price;
-    }
-
-    public void addBrand(Brand brand) {
-        if (this.brands.isEmpty())
-            this.brands = new HashSet<>();
-        this.brands.add(brand);
     }
 
     public void addFile(FileEntity fileEntity) {

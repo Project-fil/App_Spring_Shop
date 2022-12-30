@@ -1,9 +1,6 @@
 package com.github.ratel.repositories;
 
 
-import com.github.ratel.entity.Brand;
-import com.github.ratel.entity.enums.EntityStatus;
-
 import java.util.List;
 
 public class BrandRepositoryMock {

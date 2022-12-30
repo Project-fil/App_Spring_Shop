@@ -24,7 +24,7 @@ public class ProductTransferObj {
                 payload.getFiles().stream().map(FileTransferObj::fromFile).collect(Collectors.toSet()),
                 payload.getQuantity(),
                 payload.getSubcategory().getName(),
-                payload.getBrands().stream().map(BrandTransferObj::fromBrand).collect(Collectors.toSet()),
+                payload.getBrand(),
                 checkComment(payload.getComments()),
                 payload.isRemoved(),
                 payload.getCratedAt(),
@@ -36,6 +36,7 @@ public class ProductTransferObj {
         product.setName(payload.getName());
         product.setVendorCode(payload.getVendorCode());
         product.setDescription(payload.getDescription());
+        product.setBrand(payload.getBrand());
         product.setPrice(payload.getPrice());
         product.setQuantity(payload.getQuantity());
         return product;
