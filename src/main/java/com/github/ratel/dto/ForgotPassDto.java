@@ -18,11 +18,11 @@ public class ForgotPassDto {
     private String email;
 
     @NotBlank
-    @Size(min = 2, max = 70)
+    @Size(min = 8, max = 20)
     private String newPassword;
 
     @NotBlank
-    @Size(min = 2, max = 70)
+    @Size(min = 8, max = 20)
     private String confirmPassword;
 
 }

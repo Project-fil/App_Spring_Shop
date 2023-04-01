@@ -15,7 +15,7 @@ import com.github.ratel.payload.response.UserResponse;
 import com.github.ratel.security.JwtTokenProvider;
 import com.github.ratel.security.UserDetailsImpl;
 import com.github.ratel.services.AddressService;
-import com.github.ratel.services.EmailService;
+import com.github.ratel.services.SendGridMailService;
 import com.github.ratel.services.UserService;
 import com.github.ratel.services.VerificationTokenService;
 import com.github.ratel.utils.CheckUtil;
@@ -44,17 +44,17 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final EmailService emailService;
-
     private final AddressService addressService;
 
     private final JwtTokenProvider tokenProvider;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final SendGridMailService sendGridMailService;
+
     private final VerificationTokenService verificationTokenService;
 
-    @Transactional
+    @Transactional()
     @PostMapping("free/create/admin")
     public ResponseEntity<Object> registrationAdmin(@RequestBody @Valid CreateAdminRequest payload) {
         this.checkUtil.checkUserByEmail(payload.getEmail());
@@ -73,7 +73,7 @@ public class AuthController {
         user.setAddress(address);
         this.userService.save(user);
         this.verificationTokenService.create(new VerificationToken(user, token));
-        this.emailService.sendMessageToEmail(
+        this.sendGridMailService.sendMessage(
                 user.getEmail(),
                 "Верификация пользователя App_Shop",
                 this.emailText.regLetter(user.getFirstname(), user.getLastname(), token)

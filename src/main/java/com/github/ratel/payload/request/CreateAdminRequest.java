@@ -24,11 +24,11 @@ public class CreateAdminRequest {
     private String email;
 
     @NotEmpty
-    @Size(min = 8, max = 40)
+    @Size(min = 8, max = 20)
     private String password;
 
     @NotEmpty
-    @Size(min = 8, max = 40)
+    @Size(min = 8, max = 20)
     private String confirmPassword;
 
     @NotEmpty

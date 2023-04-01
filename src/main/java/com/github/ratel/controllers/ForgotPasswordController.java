@@ -1,4 +1,4 @@
-package com.github.ratel.controllers.impl;
+package com.github.ratel.controllers;
 
 import com.github.ratel.dto.ForgotPassDto;
 import com.github.ratel.entity.ConfirmToken;
@@ -9,7 +9,7 @@ import com.github.ratel.exceptions.WrongUserEmail;
 import com.github.ratel.exceptions.statuscode.StatusCode;
 import com.github.ratel.payload.response.MessageResponse;
 import com.github.ratel.services.ConfirmTokenService;
-import com.github.ratel.services.EmailService;
+import com.github.ratel.services.SendGridMailService;
 import com.github.ratel.services.UserService;
 import com.github.ratel.utils.CheckUtil;
 import com.github.ratel.utils.EmailText;
@@ -33,8 +33,8 @@ public class ForgotPasswordController {
     private final CheckUtil checkUtil;
     private final EmailText emailText;
     private final UserService userService;
-    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final SendGridMailService sendGridMailService;
     private final ConfirmTokenService confirmTokenService;
 
     @PostMapping("free/forgot")
@@ -49,7 +49,7 @@ public class ForgotPasswordController {
                     token,
                     this.passwordEncoder.encode(payload.getConfirmPassword())
             ));
-            this.emailService.sendMessageToEmail(
+            this.sendGridMailService.sendMessage(
                     user.getEmail(),
                     "Замена пароля App_Shop",
                     this.emailText.confirmPass(user.getFirstname(), user.getLastname(), token)
