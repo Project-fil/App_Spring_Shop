@@ -9,7 +9,7 @@ public interface AddressService {
 
     Address findByPhone(String phone);
 
-    Address create(Address address);
+    Address save(Address address);
 
     Address update(Address address);
 

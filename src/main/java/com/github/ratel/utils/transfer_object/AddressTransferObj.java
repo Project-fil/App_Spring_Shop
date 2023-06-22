@@ -33,7 +33,7 @@ public class AddressTransferObj {
     }
 
     public static AddressResponse fromAddressWithoutUser(Address payload) {
-        if (Objects.isNull(payload)) {
+        if (payload == null) {
             return null;
         }
         return new AddressResponse(

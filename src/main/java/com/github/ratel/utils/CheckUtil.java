@@ -1,27 +1,24 @@
 package com.github.ratel.utils;
 
+import com.github.ratel.entity.User;
 import com.github.ratel.exceptions.ConfirmPasswordException;
 import com.github.ratel.exceptions.EntityAlreadyExistException;
-import com.github.ratel.services.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 
-import java.util.Objects;
-
-@Component
-@RequiredArgsConstructor
+@UtilityClass
 public class CheckUtil {
 
-    private final UserService userService;
-
-    public void checkUserByEmail(String email) {
-        if (Objects.nonNull(this.userService.checkUserByEmail(email))) {
+    public boolean checkUserByEmail(User user) {
+        if (user == null) {
+            return true;
+        } else {
             throw new EntityAlreadyExistException("Пользователь уже существует");
         }
     }
-    public String checkPassAndConfirmPass(String pass, String confirmPass) {
+
+    public boolean checkPassAndConfirmPass(String pass, String confirmPass) {
         if (pass.equals(confirmPass)) {
-            return confirmPass;
+            return true;
         } else {
             throw new ConfirmPasswordException("Пароли не совпадают");
         }

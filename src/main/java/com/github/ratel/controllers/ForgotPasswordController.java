@@ -30,7 +30,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ForgotPasswordController {
 
-    private final CheckUtil checkUtil;
     private final EmailText emailText;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -41,7 +40,7 @@ public class ForgotPasswordController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> submitForgotPassword(@Valid @RequestBody ForgotPassDto payload) {
         User user = this.userService.findUserByEmail(payload.getEmail());
-        this.checkUtil.checkPassAndConfirmPass(payload.getNewPassword(), payload.getConfirmPassword());
+        CheckUtil.checkPassAndConfirmPass(payload.getNewPassword(), payload.getConfirmPassword());
         if (StringUtils.hasText(user.getEmail())) {
             String token = UUID.randomUUID().toString();
             this.confirmTokenService.create(new ConfirmToken(

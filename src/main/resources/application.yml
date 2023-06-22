@@ -10,20 +10,23 @@ spring:
       enabled: true
       max-file-size: 5000MB
       max-request-size: 5000MB
-  mail:
-    default-encoding: UTF-8
-    host: smtp.gmail.com
-    username: forgotandry@gmail.com
-    password: 12345@wsw
-    port: 465
-    properties:
-      mail:
-        smtp:
-          ssl:
-            enable: true
-          auth: true
-          starttls:
-            enable: true
+  sendgrid:
+    api-key: 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
+#  mail:
+#    default-encoding: UTF-8
+#    host: smtp.gmail.com
+#    username: forgotandry@gmail.com
+#    password: WarsW@12345
+#    port: 465
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            enable: true
+#          auth: true
+#          starttls:
+#            enable: true
+#  44oTvZ4MrgSBM2Mn
 
 app:
   jwt:

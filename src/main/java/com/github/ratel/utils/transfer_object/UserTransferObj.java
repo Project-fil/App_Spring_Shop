@@ -34,7 +34,7 @@ public class UserTransferObj {
         );
     }
 
-    public static User updateUser(User user, UserUpdateRequest payload) {
+    public static void updateUser(User user, UserUpdateRequest payload) {
         user.setFirstname(payload.getFirstname());
         user.setLastname(payload.getLastname());
         user.getAddress().setPhone(payload.getPhone());
@@ -43,7 +43,6 @@ public class UserTransferObj {
         user.getAddress().setStreet(payload.getStreet());
         user.getAddress().setHouseNumber(payload.getHouseNumber());
         user.getAddress().setApartmentNumber(payload.getApartmentNumber());
-        return user;
     }
 
 //    public static List<UserDto> toAllDto(List<User> users) {

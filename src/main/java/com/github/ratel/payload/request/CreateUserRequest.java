@@ -1,20 +1,18 @@
-package com.github.ratel.dto;
+package com.github.ratel.payload.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class CreateUserRequest {
 
     @NotBlank
     private String firstname;
@@ -26,11 +24,11 @@ public class UserDto {
     private String email;
 
     @NotEmpty
-    @Size(min = 8, max = 40)
+    @Size(min = 8, max = 20)
     private String password;
 
     @NotEmpty
-    @Size(min = 8, max = 40)
+    @Size(min = 8, max = 20)
     private String confirmPassword;
 
     @NotEmpty

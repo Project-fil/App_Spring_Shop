@@ -4,13 +4,11 @@ import com.github.ratel.entity.FileEntity;
 import com.github.ratel.payload.response.FileEntityResponse;
 import lombok.experimental.UtilityClass;
 
-import java.util.Objects;
-
 @UtilityClass
 public class FileTransferObj {
 
     public static FileEntityResponse fromFile(FileEntity fileEntity) {
-        if (Objects.isNull(fileEntity)) {
+        if (fileEntity == null) {
             return null;
         }
         return new FileEntityResponse(

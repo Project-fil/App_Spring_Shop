@@ -27,7 +27,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address create(Address address) {
+    public Address save(Address address) {
         return this.addressRepository.save(address);
     }
 
