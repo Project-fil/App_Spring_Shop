@@ -1,7 +1,6 @@
 package com.github.ratel.services;
 
 import com.github.ratel.entity.Category;
-import com.github.ratel.payload.request.CategoryRequest;
 
 import java.util.List;
 
@@ -9,7 +8,11 @@ public interface CategoryService {
 
     List<Category> findAllCategory();
 
+    List<Category> findAllCategoryForAdmin();
+
     Category findById(long id);
+
+    Category getByIdForAdmin(long id);
 
     Category findCategoryByName(String name);
 
@@ -18,5 +21,4 @@ public interface CategoryService {
     Category updateCategory(Category category);
 
     void deleteCategoryById(long id);
-
 }

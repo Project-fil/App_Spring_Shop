@@ -13,7 +13,7 @@ public class EmailText {
     private String hostDomain;
 
     public String regLetter(String firstName, String lastName, String token) {
-        return "Здравсвуйте"
+        return "Hello"
                 + " "
                 + firstName
                 + " "
@@ -21,7 +21,7 @@ public class EmailText {
                 + "."
                 + "\n"
                 + this.textMessageEmail
-                + "верификации"
+                + "verification"
                 + "\n"
                 + this.hostDomain
                 + "/verification?token="
@@ -29,7 +29,7 @@ public class EmailText {
     }
 
     public String confirmPass(String firstName, String lastName, String token) {
-        return "Здравсвуйте"
+        return "Hello"
                 + " "
                 + firstName
                 + " "
@@ -37,7 +37,7 @@ public class EmailText {
                 + "."
                 + "\n"
                 + this.textMessageEmail
-                + " подтверждения замены пароля"
+                + " password change confirmation"
                 + "\n"
                 + this.hostDomain
                 + "/password?token="

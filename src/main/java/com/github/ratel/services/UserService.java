@@ -1,6 +1,7 @@
 package com.github.ratel.services;
 
 import com.github.ratel.entity.User;
+import com.github.ratel.entity.enums.Roles;
 
 import java.security.Principal;
 import java.util.List;
@@ -11,7 +12,11 @@ public interface UserService {
 
     List<User> findAllUsers();
 
+    List<User> findAllUsersForAdmin();
+
     User findById(Long id);
+
+    User findUserForAdmin(Long userId);
 
     User findUserByEmail(String email);
 
@@ -24,4 +29,6 @@ public interface UserService {
     String deleteUserById(Long userId);
 
     User checkUserByEmail(String email);
+
+    boolean findUserByRole(Roles role);
 }

@@ -2,13 +2,14 @@ package com.github.ratel.services;
 
 import com.github.ratel.entity.Category;
 import com.github.ratel.entity.Subcategory;
-import com.github.ratel.entity.enums.EntityStatus;
 
 import java.util.List;
 
 public interface SubcategoryService {
 
     List<Subcategory> findByAll(Category category);
+
+    List<Subcategory> findByAllForAdmin(Category category);
 
     Subcategory findById(long id);
 
@@ -18,7 +19,7 @@ public interface SubcategoryService {
 
     Subcategory getByName(String name);
 
-    Subcategory create(Subcategory subcategory, Category category);
+    Subcategory create(Subcategory subcategory);
 
     Subcategory update(Subcategory subcategory);
 

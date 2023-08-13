@@ -38,7 +38,7 @@ public class FileHandler {
         } else if (ImageCompressor.getTypeData(file.getContentType()).equals("video")) {
             filePath = SAVE_VIDEO_PATH;
         } else {
-            throw new FileTypeException("Ошибка формата");
+            throw new FileTypeException("Format error");
         }
         filePath += "/" + fileName;
         try {

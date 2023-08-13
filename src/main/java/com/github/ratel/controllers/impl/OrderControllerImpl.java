@@ -1,11 +1,20 @@
-package com.github.ratel.controllers.app.impl;
+package com.github.ratel.controllers.impl;
 
-import com.github.ratel.controllers.app.interfaces.OrderControllerApp;
+import com.github.ratel.controllers.interfaces.OrderController;
 import com.github.ratel.payload.request.CreateOrderRequest;
 import com.github.ratel.payload.request.UpdateOrderRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public class OrderControllerAppImpl implements OrderControllerApp {
+@CrossOrigin("*")
+@RequiredArgsConstructor
+@RequestMapping("/app/shop/")
+@RestController(value = "orderControllerAdminImpl")
+public class OrderControllerImpl implements OrderController {
+
 
     @Override
     public ResponseEntity<Object> getById(Long orderId) {
@@ -31,5 +40,4 @@ public class OrderControllerAppImpl implements OrderControllerApp {
     public ResponseEntity<Object> deleteOrder(Long id) {
         return null;
     }
-
 }

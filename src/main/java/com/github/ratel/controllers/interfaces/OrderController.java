@@ -1,4 +1,4 @@
-package com.github.ratel.controllers.app.interfaces;
+package com.github.ratel.controllers.interfaces;
 
 import com.github.ratel.payload.request.CreateOrderRequest;
 import com.github.ratel.payload.request.UpdateOrderRequest;
@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @SecurityRequirement(name = "Authorization")
-public interface OrderControllerApp {
+public interface OrderController {
 
     @GetMapping("order/get/id/{orderId}")
     ResponseEntity<Object> getById(@PathVariable("orderId") Long orderId);

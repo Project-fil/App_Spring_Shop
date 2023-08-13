@@ -22,32 +22,36 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     }
 
     @Override
+    public List<Subcategory> findByAllForAdmin(Category category) {
+        return this.subcategoryRepository.findAllByCategoryAndRemovedFalse(category);
+    }
+
+    @Override
     public Subcategory findById(long id) {
         return this.subcategoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такой сабкатегории"));
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory not found"));
     }
 
     @Override
     public Subcategory getById(long id) {
         return this.subcategoryRepository.findByIdAndRemovedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такой сабкатегории"));
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory not found"));
     }
 
     @Override
     public Subcategory findByName(String name) {
         return this.subcategoryRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такой сабкатегории"));
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory not found"));
     }
 
     @Override
     public Subcategory getByName(String name) {
         return this.subcategoryRepository.findByNameAndRemovedFalse(name)
-                .orElseThrow(() -> new EntityNotFoundException("Нет такой сабкатегории"));
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory not found"));
     }
 
     @Override
-    public Subcategory create(Subcategory subcategory, Category category) {
-        subcategory.setCategory(category);
+    public Subcategory create(Subcategory subcategory) {
         return this.subcategoryRepository.save(subcategory);
     }
 

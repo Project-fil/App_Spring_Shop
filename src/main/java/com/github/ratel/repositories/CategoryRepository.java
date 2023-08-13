@@ -12,4 +12,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findByName(String name);
 
+    List<Category> findAllByRemovedFalse();
+
+    Optional<Category> findByIdAndRemovedFalse(long id);
+
 }

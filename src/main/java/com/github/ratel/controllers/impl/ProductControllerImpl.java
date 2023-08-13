@@ -1,7 +1,7 @@
-package com.github.ratel.controllers.admin.impl;
+package com.github.ratel.controllers.impl;
 
 import com.github.ratel.controllers.ApiSecurityHeader;
-import com.github.ratel.controllers.admin.ProductControllerAdmin;
+import com.github.ratel.controllers.interfaces.ProductController;
 import com.github.ratel.entity.FileEntity;
 import com.github.ratel.entity.Product;
 import com.github.ratel.entity.Subcategory;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/app/shop/")
 @RestController(value = "productControllerAdmin")
-public class ProductControllerAdminImpl implements ProductControllerAdmin, ApiSecurityHeader {
+public class ProductControllerImpl implements ApiSecurityHeader, ProductController {
 
     private final FileHandler fileHandler;
 
@@ -40,9 +40,56 @@ public class ProductControllerAdminImpl implements ProductControllerAdmin, ApiSe
     private final SubcategoryService subcategoryService;
 
     @Override
-    @Transactional
+    @CrossOrigin("*")
+    public ResponseEntity<List<ProductResponse>> findAll(long subcategoryId) {
+        Subcategory subcategory = this.subcategoryService.findById(subcategoryId);
+        return ResponseEntity.ok(
+                this.productService.findAll(subcategory).stream()
+                        .map(ProductTransferObj::fromProduct)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @Override
     @CrossOrigin("*")
     @Secured("ROLE_ADMIN")
+    public ResponseEntity<List<ProductResponse>> findAllForAdmin() {
+        return ResponseEntity.ok(
+                this.productService.findAllForAdmin().stream()
+                .map(ProductTransferObj::fromProduct)
+                .collect(Collectors.toList())
+        );
+    }
+
+    @Override
+    @CrossOrigin("*")
+    public ResponseEntity<ProductResponse> findById(long id) {
+        return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.findById(id)));
+    }
+
+    @Override
+    @CrossOrigin("*")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ProductResponse> findByIdForAdmin(long id) {
+        return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.findByIdForAdmin(id)));
+    }
+
+    @Override
+    public ResponseEntity<ProductResponse> findByVendorCode(String code) {
+        return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.findByVendorCode(code)));
+    }
+
+    @Override
+    @CrossOrigin("*")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ProductResponse> findByVendorCodeForAdmin(String code) {
+        return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.findByVendorCodeForAdmin(code)));
+    }
+
+    @Override
+    @Transactional
+    @CrossOrigin("*")
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     public ResponseEntity<ProductResponse> create(ProductRequest productRequest, List<MultipartFile> files) {
         Subcategory subcategory = this.subcategoryService.findById(productRequest.getSubcategoryId());
         Product product = ProductTransferObj.toProduct(new Product(), productRequest);
@@ -51,26 +98,27 @@ public class ProductControllerAdminImpl implements ProductControllerAdmin, ApiSe
             newFiles = files.stream().map(this.fileHandler::writeFile).collect(Collectors.toSet());
         }
         product.setFiles(newFiles);
-        return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.create(product, subcategory)));
+        product.setSubcategory(subcategory);
+        return ResponseEntity.ok(ProductTransferObj.fromProduct(this.productService.create(product)));
     }
 
     @Override
     @CrossOrigin("*")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     public ResponseEntity<ProductResponse> update(ProductRequest productRequest) {
         return null;
     }
 
     @Override
     @CrossOrigin("*")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     public ResponseEntity<ProductResponse> updateImage(long id, MultipartFile file) {
         return null;
     }
 
     @Override
     @CrossOrigin("*")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     public ResponseEntity<MessageResponse> delete(long id) {
         return null;
     }

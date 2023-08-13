@@ -22,20 +22,38 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findAllForAdmin() {
+        return this.productRepository.findAllByRemovedFalse();
+    }
+
+    @Override
     public Product findById(long id) {
         return this.productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Продукт не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+    }
+
+    @Override
+    public Product findByIdForAdmin(long id) {
+        return this.productRepository.findByIdAndRemovedFalse(id).orElseThrow(
+                () -> new EntityNotFoundException("Product not found")
+        );
     }
 
     @Override
     public Product findByVendorCode(String code) {
         return this.productRepository.findByVendorCode(code)
-                .orElseThrow(() -> new EntityNotFoundException("Продукт не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 
     @Override
-    public Product create(Product product, Subcategory subcategory) {
-        product.setSubcategory(subcategory);
+    public Product findByVendorCodeForAdmin(String code) {
+        return this.productRepository.findByVendorCodeAndRemovedFalse(code).orElseThrow(
+                () -> new EntityNotFoundException("Product not found")
+        );
+    }
+
+    @Override
+    public Product create(Product product) {
         return this.productRepository.save(product);
     }
 

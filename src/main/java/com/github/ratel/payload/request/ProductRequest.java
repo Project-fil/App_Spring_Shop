@@ -25,6 +25,4 @@ public class ProductRequest {
 
     private long subcategoryId;
 
-    private long brandId;
-
 }

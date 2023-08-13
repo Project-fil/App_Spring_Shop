@@ -5,6 +5,7 @@ import com.github.ratel.entity.User;
 import com.github.ratel.entity.VerificationToken;
 import com.github.ratel.entity.enums.Roles;
 import com.github.ratel.entity.enums.UserVerificationStatus;
+import com.github.ratel.exceptions.EntityAlreadyExistException;
 import com.github.ratel.payload.request.CreateUserRequest;
 import com.github.ratel.services.*;
 import com.github.ratel.utils.CheckUtil;
@@ -53,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         this.verificationTokenService.create(new VerificationToken(user, token));
         this.sendGridMailService.sendMessage(
                 user.getEmail(),
-                "Верификация пользователя App_Shop",
+                "App_Shop user verification",
                 this.emailText.regLetter(user.getFirstname(), user.getLastname(), token)
         );
         return user;
@@ -71,5 +72,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User userAuth(String email, String password) {
         return this.userService.findByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public void checkAdminIsExist() {
+        if (this.userService.findUserByRole(Roles.ROLE_ADMIN)) {
+            throw new EntityAlreadyExistException("Administrator already exists");
+        }
     }
 }

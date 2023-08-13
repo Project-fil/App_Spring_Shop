@@ -43,11 +43,13 @@ public class ForgotPasswordController {
         CheckUtil.checkPassAndConfirmPass(payload.getNewPassword(), payload.getConfirmPassword());
         if (StringUtils.hasText(user.getEmail())) {
             String token = UUID.randomUUID().toString();
-            this.confirmTokenService.create(new ConfirmToken(
-                    user,
-                    token,
-                    this.passwordEncoder.encode(payload.getConfirmPassword())
-            ));
+            this.confirmTokenService.create(
+                    new ConfirmToken(
+                            user,
+                            token,
+                            this.passwordEncoder.encode(payload.getConfirmPassword())
+                    )
+            );
             this.sendGridMailService.sendMessage(
                     user.getEmail(),
                     "Замена пароля App_Shop",
